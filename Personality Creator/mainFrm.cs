@@ -383,28 +383,49 @@ namespace Personality_Creator
 
         private void assembleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Directory.Exists(this.OpenPersona.Path + @"\Release\"))
+            DirectoryInfo ReleaseDir = new DirectoryInfo(this.OpenPersona.Path + @"\Release");
+
+            if (!Directory.Exists(ReleaseDir.FullName))
             {
-                Directory.CreateDirectory(this.OpenPersona.Path + @"\Release\");
+                Directory.CreateDirectory(ReleaseDir.FullName);
             }
-            if (!Directory.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name))
+            if (!Directory.Exists(ReleaseDir + this.OpenPersona.Name))
             {
-                Directory.CreateDirectory(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name);
+                Directory.CreateDirectory(ReleaseDir + this.OpenPersona.Name);
             }
 
             assembleDirectory(this.OpenPersona.Path);
             
-            Directory.Delete(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + @"\Fragments", true);
+            Directory.Delete(ReleaseDir + @"\" + this.OpenPersona.Name + @"\Fragments", true);
 
             string timestamp = DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
             timestamp = timestamp.Replace(":", "_");
             timestamp = timestamp.Replace(".", "_");
-            string sourceFolder = this.OpenPersona.Path + @"\Release\";
-            string tempdest = this.OpenPersona.Path + @"\" + timestamp + ".zip";
-            string destFileName = this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + "_" + "Release_" + timestamp + ".zip";
+
+            string zipName = this.OpenPersona.Name + "_" + "Release_" + timestamp + ".zip";
+
+            string sourceFolder = ReleaseDir.FullName;
+
+            string tempdest = this.OpenPersona.Path + @"\" + zipName; //workaround as zipping a directory into it self is not supported by ZipFile class
+            string destFileName = ReleaseDir + @"\" + zipName;
+            
+            foreach(FileInfo file in ReleaseDir.GetFiles()) //workaround so zips do not accumulate in themselfes
+            {
+                if(file.Name.Contains(this.OpenPersona.Name + "_" + "Release_"))
+                {
+                    file.MoveTo(this.OpenPersona.Path + @"\" + file.Name);
+                }
+            }
 
             ZipFile.CreateFromDirectory(sourceFolder, tempdest, CompressionLevel.Optimal, false);
-            File.Move(tempdest, destFileName); //workaround as ZipFile class doesn't allow do pack a directory into itself
+
+            foreach (FileInfo file in this.OpenPersona.Path.GetFiles())
+            {
+                if (file.Name.Contains(this.OpenPersona.Name + "_" + "Release_"))
+                {
+                    file.MoveTo(ReleaseDir + @"\" + file.Name);
+                }
+            }
         }
 
         private void assembleDirectory(DirectoryInfo dir)
