@@ -58,7 +58,6 @@
     <Compile Include="mainFrm.Designer.cs">
       <DependentUpon>mainFrm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GotoStyle.cs" />
     <Compile Include="Hotkeys.cs">
       <SubType>Form</SubType>
     </Compile>
