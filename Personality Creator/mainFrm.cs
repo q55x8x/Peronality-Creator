@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using FarsiLibrary.Win;
 using System.IO;
+using System.IO.Compression;
 
 namespace Personality_Creator
 {
@@ -392,10 +393,18 @@ namespace Personality_Creator
             }
 
             assembleDirectory(this.OpenPersona.Path);
+            
+            Directory.Delete(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + @"\Fragments", true);
 
-            //TODO: zip release
-            Directory.Delete(this.OpenPersona.Path + @"\Release\Fragments");
+            string timestamp = DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
+            timestamp = timestamp.Replace(":", "_");
+            timestamp = timestamp.Replace(".", "_");
+            string sourceFolder = this.OpenPersona.Path + @"\Release\";
+            string tempdest = this.OpenPersona.Path + @"\" + timestamp + ".zip";
+            string destFileName = this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + "_" + "Release_" + timestamp + ".zip";
 
+            ZipFile.CreateFromDirectory(sourceFolder, tempdest, CompressionLevel.Optimal, false);
+            File.Move(tempdest, destFileName); //workaround as ZipFile class doesn't allow do pack a directory into itself
         }
 
         private void assembleDirectory(DirectoryInfo dir)
@@ -429,7 +438,7 @@ namespace Personality_Creator
                 else
                 {
                     string relPath = file.FullName.Replace(this.OpenPersona.Path.FullName, "");
-                    File.Copy(file.FullName, this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath);
+                    File.Copy(file.FullName, this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath, true);
                 }
             }
         }
