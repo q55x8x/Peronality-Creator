@@ -124,19 +124,19 @@ namespace Personality_Creator
             }
 
             e.ChangedRange.ClearStyle(KeywordStyle);
-            e.ChangedRange.SetStyle(KeywordStyle, @"(?<![A-z_0-9öäüáéíóú+])\#[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
+            e.ChangedRange.SetStyle(KeywordStyle, @"\#[A-z_0-9öäü+]+", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(CommandStyle);
-            e.ChangedRange.SetStyle(CommandStyle, @"(?<![A-z_0-9öäüáéíóú+])\@[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
+            e.ChangedRange.SetStyle(CommandStyle, @"\@[A-z_0-9öäü+]+", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(ResponseStyle);
-            e.ChangedRange.SetStyle(ResponseStyle, @"\[.+\]", RegexOptions.None);
+            e.ChangedRange.SetStyle(ResponseStyle, @"\(.+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(InterruptStyle);
-            e.ChangedRange.SetStyle(InterruptStyle, @"\(.+\)", RegexOptions.None);
+            e.ChangedRange.SetStyle(InterruptStyle, @"\[.+\]", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(Gotostyle);
-            e.ChangedRange.SetStyle(Gotostyle, @"(?i)(\@goto|then)\([A-z_0-9öäüáéíóú+]+\)", RegexOptions.None);
+            e.ChangedRange.SetStyle(Gotostyle, @"(?i)\@goto\(.+\)", RegexOptions.None);
         }
         private void Editor_MouseMove(object sender, MouseEventArgs e)
         {
@@ -156,7 +156,7 @@ namespace Personality_Creator
             var p = this.CurrentEditor.PointToPlace(e.Location);
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
-                string gotoName = Regex.Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto|then)\([A-z_0-9öäüáéíóú+]+\)").Value.Trim("()".ToCharArray()); //sadly there is currently no better way of 
+                string gotoName = Regex.Match(this.CurrentEditor.GetLineText(p.iLine), @"\(.+\)").Value.Trim("()".ToCharArray()); //sadly there is currently no better way of 
                 int index = Regex.Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
                 Range range = this.CurrentEditor.GetRange(index, index + 1); //getting its range
                 this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
