@@ -393,8 +393,8 @@ namespace Personality_Creator
 
             assembleDirectory(this.OpenPersona.Path);
 
-            //TODO: cleanup (delete fragments from release; zip release
-
+            //TODO: zip release
+            Directory.Delete(this.OpenPersona.Path + @"\Release\Fragments");
 
         }
 
@@ -419,7 +419,7 @@ namespace Personality_Creator
 
             foreach (FileInfo file in dir.GetFiles())
             {
-                if (dir.Name.ToLower() == "fragments") //needed fragments will recursive assemble themselves while a file is assembled that needs a fragment
+                if (dir.Name == "Fragments") //needed fragments will recursive assemble themselves while a file is assembled that needs a fragment
                 { break; }
 
                 if (file.Extension == ".txt")
@@ -443,8 +443,8 @@ namespace Personality_Creator
             foreach(Match regexMatch in Regex.Matches(content, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)"))
             {
                 string fragmentName = Regex.Match(content.Substring(regexMatch.Index, regexMatch.Length), @"(?i)(?<=\$\$frag\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value;
-                assembleFile(new FileInfo(this.OpenPersona.Path + @"\fragments\" + fragmentName + @".txt")); //recursive fragment assembly
-                replaceFragment = File.ReadAllText(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + @"\fragments\" + fragmentName + @".txt"); //loaded already assembled fragments from the release
+                assembleFile(new FileInfo(this.OpenPersona.Path + @"\Fragments\" + fragmentName + @".txt")); //recursive fragment assembly
+                replaceFragment = File.ReadAllText(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + @"\Fragments\" + fragmentName + @".txt"); //loaded already assembled fragments from the release
                 content = content.Remove(regexMatch.Index, regexMatch.Length);
                 content = content.Insert(regexMatch.Index, replaceFragment);
             }
