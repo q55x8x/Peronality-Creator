@@ -377,5 +377,86 @@ namespace Personality_Creator
             Hotkeys hotkeys = new Hotkeys();
             hotkeys.Show();
         }
+
+        #region assembling
+
+        private void assembleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(this.OpenPersona.Path + @"\Release\"))
+            {
+                Directory.CreateDirectory(this.OpenPersona.Path + @"\Release\");
+            }
+            if (!Directory.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name))
+            {
+                Directory.CreateDirectory(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name);
+            }
+
+            assembleDirectory(this.OpenPersona.Path);
+
+            //TODO: cleanup (delete fragments from release; zip release
+
+
+        }
+
+        private void assembleDirectory(DirectoryInfo dir)
+        {
+            DirectoryInfo releasePath = new DirectoryInfo(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name);
+
+            foreach (DirectoryInfo subDir in dir.GetDirectories())
+            {
+                if (subDir.Name == "Release")
+                { continue; }
+
+                string relPath = subDir.FullName.Replace(this.OpenPersona.Path.FullName, "");
+
+                if (!Directory.Exists(releasePath + @"\" + relPath))
+                {
+                    Directory.CreateDirectory(releasePath + @"\" + relPath);
+                }
+
+                assembleDirectory(subDir);
+            }
+
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                if (dir.Name.ToLower() == "fragments") //needed fragments will recursive assemble themselves while a file is assembled that needs a fragment
+                { break; }
+
+                if (file.Extension == ".txt")
+                {
+                    assembleFile(file);
+                }
+                else
+                {
+                    string relPath = file.FullName.Replace(this.OpenPersona.Path.FullName, "");
+                    File.Copy(file.FullName, this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath);
+                }
+            }
+        }
+
+        private void assembleFile(FileInfo file)
+        {
+            string relPath = file.FullName.Replace(this.OpenPersona.Path.FullName, "");
+            string content = File.ReadAllText(file.FullName);
+            string replaceFragment = "";
+
+            foreach(Match regexMatch in Regex.Matches(content, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)"))
+            {
+                string fragmentName = Regex.Match(content.Substring(regexMatch.Index, regexMatch.Length), @"(?i)(?<=\$\$frag\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value;
+                assembleFile(new FileInfo(this.OpenPersona.Path + @"\fragments\" + fragmentName + @".txt")); //recursive fragment assembly
+                replaceFragment = File.ReadAllText(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + @"\fragments\" + fragmentName + @".txt"); //loaded already assembled fragments from the release
+                content = content.Remove(regexMatch.Index, regexMatch.Length);
+                content = content.Insert(regexMatch.Index, replaceFragment);
+            }
+
+            if (File.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath))
+            {
+                File.Delete(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath);
+            }
+
+            File.WriteAllText(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath, content);
+        }
+
+        #endregion 
     }
 }
