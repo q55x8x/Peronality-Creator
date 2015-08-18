@@ -28,7 +28,7 @@ namespace Personality_Creator
                                 "Ctrl + (C, V, X) -standard clipboard operations\r\n" +
                                 "Ctrl + A - selects all text\r\n" +
                                 "Ctrl + Z, Alt + Backspace, Ctrl + R - Undo / Redo opertions\r\n" +
-                                "Ctrl + Click on @Goto statement jumps to the goto-section\r\n" +
+                                "Ctrl + Click on @Goto or Then statement jumps to the goto-section\r\n" +
                                 "Tab, Shift + Tab - increase / decrease left indent of selected range\r\n" +
                                 "Ctrl + Home, Ctrl + End - go to first/ last char of the text\r\n" +
                                 "Shift + Ctrl + Home, Shift + Ctrl + End - go to first/ last char of the text with selection\r\n" +
