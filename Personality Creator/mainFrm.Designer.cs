@@ -129,6 +129,7 @@
             this.projectView.Name = "projectView";
             this.projectView.Size = new System.Drawing.Size(233, 439);
             this.projectView.TabIndex = 3;
+            this.projectView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.projectView_NodeMouseClick);
             this.projectView.DoubleClick += new System.EventHandler(this.projectView_DoubleClick);
             // 
             // splitContainer

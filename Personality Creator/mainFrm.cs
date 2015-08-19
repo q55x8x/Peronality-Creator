@@ -157,6 +157,27 @@ namespace Personality_Creator
             }
         }
 
+        private void projectView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            this.projectView.SelectedNode = e.Node;
+
+            if (this.projectView.SelectedNode.Tag.GetType() == typeof(Folder) || this.projectView.SelectedNode.Tag.GetType() == typeof(Personality))
+            {
+                this.newScriptToolStripMenuItem.Enabled = true;
+                this.newFolderToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                this.newScriptToolStripMenuItem.Enabled = false;
+                this.newFolderToolStripMenuItem.Enabled = false;
+            }
+
+            if (e.Button == MouseButtons.Right)
+            {
+                this.contextMenuStripProjectView.Show(Cursor.Position);
+            }
+        }
+
         #endregion
 
         #region tabStripLogic
