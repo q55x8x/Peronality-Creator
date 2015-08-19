@@ -494,23 +494,27 @@ namespace Personality_Creator
             string content = File.ReadAllText(file.FullName);
             string replaceFragment = "";
 
+            MatchCollection Matches = Regex.Matches(content, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)"); //Matches need to be refrshed after every replacment because the index would be off
             //including fragements
-            foreach(Match regexMatch in Regex.Matches(content, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)"))
+            while(Matches.Count >= 1) //foreach sadly not possible here as it doesn't allow to alter the collection from inside of it
             {
-                string fragmentName = Regex.Match(content.Substring(regexMatch.Index, regexMatch.Length), @"(?i)(?<=\$\$frag\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value;
+                string fragmentName = Regex.Match(content.Substring(Matches[0].Index, Matches[0].Length), @"(?i)(?<=\$\$frag\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value;
                 assembleFile(new FileInfo(this.OpenPersona.Path + @"\Fragments\" + fragmentName + @".txt")); //recursive fragment assembly
                 replaceFragment = File.ReadAllText(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + @"\Fragments\" + fragmentName + @".txt"); //loaded already assembled fragments from the release
-                content = content.Remove(regexMatch.Index, regexMatch.Length);
-                content = content.Insert(regexMatch.Index, replaceFragment);
+                content = content.Remove(Matches[0].Index, Matches[0].Length);
+                content = content.Insert(Matches[0].Index, replaceFragment);
+                Matches = Regex.Matches(content, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)");
             }
 
+            Matches = Regex.Matches(content, @"(?i)(?<=\n)\-.+\n");
             //removing comments and regions
-            foreach (Match regexMatch in Regex.Matches(content, @"(?i)(?<=\n)\-.+\n"))
+            while (Matches.Count >= 1)
             {
-                content = content.Remove(regexMatch.Index, regexMatch.Length);
+                content = content.Remove(Matches[0].Index, Matches[0].Length);
+                Matches = Regex.Matches(content, @"(?i)(?<=\n)\-.+\n");
             }
 
-                if (File.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath))
+            if (File.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath))
             {
                 File.Delete(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath);
             }
