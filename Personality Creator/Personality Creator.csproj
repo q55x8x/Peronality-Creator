@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCompleteItemManager.cs" />
     <Compile Include="mainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +107,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="stuff\icons\file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data\commands.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="data\keywords.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

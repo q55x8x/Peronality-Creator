@@ -17,6 +17,9 @@ namespace Personality_Creator
 {
     public partial class mainFrm : Form
     {
+        public static string AppPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+        AutocompleteMenu autoMenu; //sadly you can't pass the menu into the textbox so we have to keep and instance for each textbox OR we could try to construct a new one at each tab change...
         ImageList iconList = new ImageList();
         public Personality OpenPersona
         {
@@ -94,10 +97,24 @@ namespace Personality_Creator
             this.CurrentTab = this.tbStrip.SelectedItem;
         }
 
+        private FastColoredTextBox _CurrentEditor;
         public FastColoredTextBox CurrentEditor
         {
-            get;
-            set;
+            get
+            {
+                return this._CurrentEditor;
+            }
+            set
+            {
+                this._CurrentEditor = value;
+
+                this.autoMenu = new AutocompleteMenu(this.CurrentEditor);
+                this.autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
+                this.autoMenu.MinFragmentLength = 1;
+                this.autoMenu.TopLevel = true;
+                this.autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);
+                this.autoMenu.Items.Width = 200;
+            }
         }
 
         public mainFrm()
@@ -107,6 +124,8 @@ namespace Personality_Creator
             iconList.Images.Add(Personality_Creator.Properties.Resources.file);
 
             this.projectView.ImageList = iconList;
+
+            AutoCompleteItemManager.load();
         }
 
         #region style processing
@@ -203,6 +222,13 @@ namespace Personality_Creator
             if(e.KeyCode == Keys.S && ModifierKeys == Keys.Control)
             {
                 saveCurrentFile();
+            }
+
+            if (e.KeyData == (Keys.K | Keys.Control))
+            {
+                //forced show (MinFragmentLength will be ignored)
+                this.autoMenu.Show(true);
+                e.Handled = true;
             }
         }
 
