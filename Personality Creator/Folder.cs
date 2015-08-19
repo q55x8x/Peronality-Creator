@@ -11,6 +11,7 @@ namespace Personality_Creator
     {
         #region capsuled fields
         private Dictionary<string, Folder> folders;
+        private Dictionary<string, PersonaFile> files;
         private DirectoryInfo directory;
         #endregion
 
@@ -25,6 +26,19 @@ namespace Personality_Creator
             set
             {
                 folders = value;
+            }
+        }
+
+        public Dictionary<string, PersonaFile> Files
+        {
+            get
+            {
+                return files;
+            }
+
+            set
+            {
+                files = value;
             }
         }
 
@@ -45,6 +59,39 @@ namespace Personality_Creator
         public Folder(DirectoryInfo dir)
         {
             this.Directory = dir;
+
+            foreach(DirectoryInfo subDir in this.Directory.GetDirectories())
+            {
+                this.Folders.Add(subDir.Name, new Folder(subDir));
+            }
+
+            foreach(FileInfo file in this.Directory.GetFiles())
+            {
+                if (this.Directory.Name == "Fragments")
+                {
+                    PersonaFile newFile = new PersonaFile(file, PersonaFileType.Fragment);
+                    this.Files.Add(file.Name, newFile);
+                    continue;
+                }
+
+                if(file.Extension == ".frag")
+                {
+                    PersonaFile newFIle = new PersonaFile(file, PersonaFileType.FragmentedScript);
+                    this.Files.Add(file.Name, newFIle);
+                    continue;
+                }
+                
+                if(file.Extension == ".txt")
+                {
+                    PersonaFile newFile = new PersonaFile(file, PersonaFileType.Script);
+                    this.Files.Add(file.Name, newFile);
+                    continue;
+                }
+
+                //default case
+                PersonaFile defaultFile = new PersonaFile(file, PersonaFileType.Other);
+                this.Files.Add(file.Name, defaultFile);
+            }
         }
 
         public override string ToString()

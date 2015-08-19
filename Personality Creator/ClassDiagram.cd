@@ -10,7 +10,7 @@
   <Class Name="Personality_Creator.Personality">
     <Position X="8.25" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAIAAAACAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Personality.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -24,7 +24,7 @@
   <Class Name="Personality_Creator.PersonaFile">
     <Position X="3.75" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAIAAAAEAAAAAAAAAAAEAAAAQAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAgAAAAIAAAAEAAAAAAAAAAAEAAAABAAAAAAAAAA=</HashCode>
       <FileName>PersonaFile.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -33,10 +33,22 @@
   </Class>
   <Class Name="Personality_Creator.Folder">
     <Position X="6" Y="3" Width="1.5" />
+    <AssociationLine Name="folders" Type="Personality_Creator.Folder" ManuallyRouted="true">
+      <Path>
+        <Point X="6.532" Y="5.713" />
+        <Point X="6.532" Y="6.442" />
+        <Point X="6.978" Y="6.442" />
+        <Point X="6.978" Y="5.713" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAgBAAAIAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgBAAAIAQAAAEAAAAAAAAAAAAAAAAAAAAgAAAAIA=</HashCode>
       <FileName>Folder.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="files" />
+      <Field Name="folders" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Personality_Creator.Script">
     <Position X="1.5" Y="3" Width="1.5" />
@@ -51,7 +63,7 @@
   <Enum Name="Personality_Creator.PersonaFileType">
     <Position X="3.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAgAAQ=</HashCode>
+      <HashCode>BAAAAAAAEQAAAAAAAAAAAACAEAAAAAAAAAAAAAAgAAQ=</HashCode>
       <FileName>PersonaFile.cs</FileName>
     </TypeIdentifier>
   </Enum>

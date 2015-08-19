@@ -10,7 +10,7 @@ namespace Personality_Creator
     public class PersonaFile : PersonaItem
     {
         #region capsuled fields
-        private FileInfo info;
+        private FileInfo file;
         private PersonaFileType fileType;
         #endregion
 
@@ -19,12 +19,12 @@ namespace Personality_Creator
         {
             get
             {
-                return info;
+                return file;
             }
 
             set
             {
-                info = value;
+                file = value;
             }
         }
 
@@ -57,7 +57,13 @@ namespace Personality_Creator
     public enum PersonaFileType
     {
         Script,
+        FragmentedScript,
+        Fragment,
         Media,
-        Flag
+        Flag,
+        App,
+        Plalist,
+        Vocabulary,
+        Other
     }
 }
