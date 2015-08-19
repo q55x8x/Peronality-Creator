@@ -30,7 +30,5 @@ namespace Personality_Creator
                 return instance;
             }
         }
-
-        public void 
     }
 }
