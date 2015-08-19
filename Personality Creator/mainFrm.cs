@@ -119,6 +119,14 @@ namespace Personality_Creator
                     openPersona(personaDir);
                 }
             }
+
+            foreach(string tabFile in this.settings.openedTabs)
+            {
+                if(!tabFile.Equals(""))
+                {
+                    openFile(tabFile);
+                }
+            }
         }
 
         #region style processing
@@ -227,6 +235,8 @@ namespace Personality_Creator
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 openFile(ofd.FileName);
+                this.settings.openedTabs.Add(ofd.FileName);
+                this.settings.save();
             }
         }
         private void projectView_DoubleClick(object sender, EventArgs e)
@@ -234,6 +244,8 @@ namespace Personality_Creator
             if (!SelectedItemIsFolder)
             {
                 openFile(this.SelectedItem);
+                this.settings.openedTabs.Add(this.SelectedItem);
+                this.settings.save();
             }
         }
 
@@ -411,8 +423,12 @@ namespace Personality_Creator
                 {
                     case DialogResult.Yes:
                         saveCurrentFile();
+                        this.settings.openedTabs.Remove(this.CurrentTab.ToString());
+                        this.settings.save();
                         break;
                     case DialogResult.No:
+                        this.settings.openedTabs.Remove(this.CurrentTab.ToString());
+                        this.settings.save();
                         break;
                     case DialogResult.Cancel:
                         e.Cancel = true;

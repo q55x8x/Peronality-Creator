@@ -8,6 +8,10 @@ namespace Personality_Creator
         {
             get;
         }
+        public List<string> openedTabs
+        {
+            get;
+        }
         public string lastDir {
             get;
             set;
@@ -15,8 +19,8 @@ namespace Personality_Creator
 
         public Settings()
         {
-            string openedPersonas = Properties.Settings.Default.openedPersonas;
-            this.openedPersonas = new List<string>(openedPersonas.Split(','));
+            this.openedPersonas = new List<string>(Properties.Settings.Default.openedPersonas.Split(','));
+            this.openedTabs = new List<string>(Properties.Settings.Default.openedFiles.Split(','));
 
             this.lastDir = Properties.Settings.Default.lastDir;
         }
@@ -24,6 +28,7 @@ namespace Personality_Creator
         public void save()
         {
             Properties.Settings.Default.openedPersonas = string.Join(",", this.openedPersonas.ToArray());
+            Properties.Settings.Default.openedFiles = string.Join(",", this.openedTabs.ToArray());
             Properties.Settings.Default.lastDir = this.lastDir;
             Properties.Settings.Default.Save();
         }
