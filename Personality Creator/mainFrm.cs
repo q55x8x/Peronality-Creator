@@ -415,7 +415,7 @@ namespace Personality_Creator
             }
             if (!Directory.Exists(ReleaseDir + this.OpenPersona.Name))
             {
-                Directory.CreateDirectory(ReleaseDir + this.OpenPersona.Name);
+                Directory.CreateDirectory(ReleaseDir + @"\" + this.OpenPersona.Name);
             }
 
             assembleDirectory(this.OpenPersona.Path);
