@@ -301,7 +301,13 @@ namespace Personality_Creator
                 FileInfo file = new FileInfo(sfd.FileName);
                 FileStream fs = new FileStream(file.FullName, FileMode.Create);
                 fs.Close();
-                this.projectView.SelectedNode.Nodes.Add(file.Name);
+
+                TreeNode fileNode = new TreeNode(file.Name);
+                fileNode.ImageIndex = 1;
+                fileNode.SelectedImageIndex = 1;
+
+                this.projectView.SelectedNode.Nodes.Add(fileNode);
+
                 openFile(file.FullName);
             }
         }
