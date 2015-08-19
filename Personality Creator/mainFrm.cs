@@ -116,15 +116,18 @@ namespace Personality_Creator
         Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
         Style InterruptStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style FragmentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
+        Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
+        Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
 
         private void Editor_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
         {
+            //set unsaved changes
             if (!this.CurrentTab.Title.StartsWith("*"))
             {
                 this.CurrentTab.Title = this.CurrentTab.Title.Insert(0, "*");
             }
 
+            //colorization
             e.ChangedRange.ClearStyle(KeywordStyle);
             e.ChangedRange.SetStyle(KeywordStyle, @"(?<![A-z_0-9öäüáéíóú+])\#[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
 
@@ -143,6 +146,12 @@ namespace Personality_Creator
 
             e.ChangedRange.ClearStyle(FragmentStyle);
             e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.Multiline);
+
+            e.ChangedRange.ClearStyle(CommentStyle);
+            e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<=\n)\-.+", RegexOptions.Multiline);
+
+            //code folding
+            e.ChangedRange.SetFoldingMarkers(@"-region", @"-endregion");
         }
         private void Editor_MouseMove(object sender, MouseEventArgs e)
         {
@@ -485,6 +494,7 @@ namespace Personality_Creator
             string content = File.ReadAllText(file.FullName);
             string replaceFragment = "";
 
+            //including fragements
             foreach(Match regexMatch in Regex.Matches(content, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)"))
             {
                 string fragmentName = Regex.Match(content.Substring(regexMatch.Index, regexMatch.Length), @"(?i)(?<=\$\$frag\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value;
@@ -494,7 +504,13 @@ namespace Personality_Creator
                 content = content.Insert(regexMatch.Index, replaceFragment);
             }
 
-            if (File.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath))
+            //removing comments and regions
+            foreach (Match regexMatch in Regex.Matches(content, @"(?i)(?<=\n)\-.+\n"))
+            {
+                content = content.Remove(regexMatch.Index, regexMatch.Length);
+            }
+
+                if (File.Exists(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath))
             {
                 File.Delete(this.OpenPersona.Path + @"\Release\" + this.OpenPersona.Name + relPath);
             }
