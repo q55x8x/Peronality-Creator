@@ -83,21 +83,18 @@
             this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
             this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.openScriptToolStripMenuItem.Text = "Open Script";
-            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveScriptToolStripMenuItem
             // 
             this.saveScriptToolStripMenuItem.Name = "saveScriptToolStripMenuItem";
             this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.saveScriptToolStripMenuItem.Text = "Save Script";
-            this.saveScriptToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // openPersonalityToolStripMenuItem
             // 
             this.openPersonalityToolStripMenuItem.Name = "openPersonalityToolStripMenuItem";
             this.openPersonalityToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.openPersonalityToolStripMenuItem.Text = "Open Personality";
-            this.openPersonalityToolStripMenuItem.Click += new System.EventHandler(this.openPersonalityToolStripMenuItem_Click);
             // 
             // hotkeysToolStripMenuItem
             // 
@@ -115,8 +112,6 @@
             this.tbStrip.Size = new System.Drawing.Size(891, 464);
             this.tbStrip.TabIndex = 2;
             this.tbStrip.Text = "faTabStrip1";
-            this.tbStrip.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.tbStrip_TabStripItemClosing);
-            this.tbStrip.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tbStrip_TabStripItemSelectionChanged);
             // 
             // projectView
             // 
@@ -125,9 +120,6 @@
             this.projectView.Name = "projectView";
             this.projectView.Size = new System.Drawing.Size(233, 464);
             this.projectView.TabIndex = 3;
-            this.projectView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.projectView_AfterSelect);
-            this.projectView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.projectView_NodeMouseClick);
-            this.projectView.DoubleClick += new System.EventHandler(this.projectView_DoubleClick);
             // 
             // splitContainer
             // 
@@ -159,14 +151,12 @@
             this.newScriptToolStripMenuItem.Name = "newScriptToolStripMenuItem";
             this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.newScriptToolStripMenuItem.Text = "New Script";
-            this.newScriptToolStripMenuItem.Click += new System.EventHandler(this.newScriptToolStripMenuItem_Click);
             // 
             // newFolderToolStripMenuItem
             // 
             this.newFolderToolStripMenuItem.Name = "newFolderToolStripMenuItem";
             this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.newFolderToolStripMenuItem.Text = "New Folder";
-            this.newFolderToolStripMenuItem.Click += new System.EventHandler(this.newFolderToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -200,7 +190,6 @@
             this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
             this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.assembleToolStripMenuItem.Text = "Assemble";
-            this.assembleToolStripMenuItem.Click += new System.EventHandler(this.assembleToolStripMenuItem_Click);
             // 
             // mainFrm
             // 
@@ -212,7 +201,6 @@
             this.MainMenuStrip = this.mnuStrip;
             this.Name = "mainFrm";
             this.Text = "Personality Creator";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainFrm_FormClosing);
             this.mnuStrip.ResumeLayout(false);
             this.mnuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).EndInit();
