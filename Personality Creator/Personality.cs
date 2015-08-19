@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Personality_Creator
 {
@@ -40,7 +41,7 @@ namespace Personality_Creator
             this.Name = dirInfo.Name;
         }
 
-        public void getRootNode()
+        public TreeNode getRootNode()
         {
 
         }
