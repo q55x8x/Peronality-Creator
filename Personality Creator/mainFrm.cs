@@ -217,6 +217,15 @@ namespace Personality_Creator
 
         private void openFile(string Path)
         {
+            foreach(FATabStripItem aTab in this.tbStrip.Items)
+            {
+                if(aTab.Tag.ToString() == Path)
+                {
+                    tbStrip.SelectedItem = aTab;
+                    return;
+                }
+            }
+
             FileInfo file = new FileInfo(Path);
 
             StreamReader sr = new StreamReader(Path);
