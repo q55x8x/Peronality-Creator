@@ -17,6 +17,7 @@ namespace Personality_Creator
 {
     public partial class mainFrm : Form
     {
+        Settings settings = new Settings();
         ImageList iconList = new ImageList();
         public Personality OpenPersona
         {
@@ -49,8 +50,11 @@ namespace Personality_Creator
             get;
             set;
         }
+        private TreeNode SelectedNode;
+
         private void projectView_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            this.SelectedNode = e.Node;
             this.SelectedItem = this.OpenPersona.Path.Parent.FullName + @"\" + this.projectView.SelectedNode.FullPath;
         }
         private void projectView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -107,6 +111,14 @@ namespace Personality_Creator
             iconList.Images.Add(Personality_Creator.Properties.Resources.file);
 
             this.projectView.ImageList = iconList;
+
+            foreach(string personaDir in this.settings.openedPersonas)
+            {
+                if (!personaDir.Equals(""))
+                {
+                    openPersona(personaDir);
+                }
+            }
         }
 
         #region style processing
@@ -278,12 +290,22 @@ namespace Personality_Creator
         private void openPersonalityToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = this.settings.lastDir;
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                this.OpenPersona = new Personality(fbd.SelectedPath);
-                this.projectView.Nodes.Add(addNode(new DirectoryInfo(fbd.SelectedPath)));
+                openPersona(fbd.SelectedPath);
+
+                this.settings.openedPersonas.Add(fbd.SelectedPath);
+                this.settings.lastDir = fbd.SelectedPath;
+                this.settings.save();
             }
+        }
+
+        private void openPersona(string directory)
+        {
+            this.OpenPersona = new Personality(directory);
+            this.projectView.Nodes.Add(addNode(new DirectoryInfo(directory)));
         }
 
         private TreeNode addNode(DirectoryInfo dir)
@@ -338,6 +360,45 @@ namespace Personality_Creator
             {
                 Directory.CreateDirectory(this.SelectedItem + @"\" + nfd.NewFolderName);
                 this.projectView.SelectedNode.Nodes.Add(nfd.NewFolderName);
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(this.SelectedNode.Parent == null)
+            {
+                if (MessageBox.Show(
+                    "This will only remove the persona from here. It will NOT delete the files. Do you want to continue?", 
+                    "Delete Persona", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    this.SelectedNode.Remove();
+                    this.settings.openedPersonas.Remove(this.SelectedItem);
+                    this.settings.save();
+                }
+            } else if (this.SelectedItemIsFolder)
+            {
+                if (MessageBox.Show(
+                    "This will delete this folder and ALL its content. Are you sure?",
+                    "Delete Folder",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Directory.Delete(this.SelectedItem, true);
+                    this.SelectedNode.Remove();
+                }
+            } else
+            {
+                if (MessageBox.Show(
+                    "This will delete this file. Are you sure?",
+                    "Delete Script",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    File.Delete(this.SelectedItem);
+                    this.SelectedNode.Remove();
+                }
             }
         }
 

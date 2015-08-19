@@ -41,6 +41,7 @@
             this.contextMenuStripProjectView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -150,7 +151,8 @@
             // 
             this.contextMenuStripProjectView.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newScriptToolStripMenuItem,
-            this.newFolderToolStripMenuItem});
+            this.newFolderToolStripMenuItem,
+            this.deleteToolStripMenuItem});
             this.contextMenuStripProjectView.Name = "contextMenuStripProjectView";
             this.contextMenuStripProjectView.Size = new System.Drawing.Size(135, 48);
             // 
@@ -167,6 +169,13 @@
             this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.newFolderToolStripMenuItem.Text = "New Folder";
             this.newFolderToolStripMenuItem.Click += new System.EventHandler(this.newFolderToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -243,6 +252,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStripProjectView;
         private System.Windows.Forms.ToolStripMenuItem newScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hotkeysToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripContainer toolStripContainer;
