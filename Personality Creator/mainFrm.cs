@@ -223,6 +223,7 @@ namespace Personality_Creator
         private  void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = this.settings.lastDir;
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 openFile(ofd.FileName);
