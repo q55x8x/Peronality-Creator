@@ -276,12 +276,24 @@ namespace Personality_Creator
             editor.MouseDown += Editor_MouseDown;
             editor.KeyDown += Editor_KeyDown;
             editor.KeyUp += Editor_KeyUp;
+            editor.DragDrop += Editor_DragDrop;
+            editor.DragEnter += Editor_DragEnter;
 
             editor.Text = sr.ReadToEnd();
 
             sr.Close();
 
             saveCurrentFile(); //TODO: just a workaround to remove asterisk after loading a file
+        }
+
+        private void Editor_DragEnter(object sender, DragEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Editor_DragDrop(object sender, DragEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
