@@ -17,17 +17,46 @@ namespace Personality_Creator
 {
     public partial class mainFrm : Form
     {
-        public static string AppPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
+        public Dictionary<string, Personality> OpenPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
         public mainFrm()
         {
             InitializeComponent();
+            this.projectView.ImageList = DataManager.iconList;
         }
 
         private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hotkeys hotkeys = new Hotkeys();
             hotkeys.Show();
+        }
+
+        private void openPersonalityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = DataManager.settings.lastOpenedPersonaPath;
+
+            if(fbd.ShowDialog() == DialogResult.OK)
+            {
+                DataManager.settings.lastOpenedPersonaPath = fbd.SelectedPath;
+                OpenPersona(fbd.SelectedPath);
+            }
+        }
+
+        private void OpenPersona(string path)
+        {
+            Personality persona = new Personality(path);
+            this.OpenPersonas.Add(persona.Name, persona);
+            this.projectView.Nodes.Add(persona.getRootNode());
+        }
+
+        private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.save();
+        }
+
+        private void mainFrm_Load(object sender, EventArgs e)
+        {
+            DataManager.initDataManager();
         }
 
         //#region assembling
@@ -46,7 +75,7 @@ namespace Personality_Creator
         //    }
 
         //    assembleDirectory(this.OpenPersona.Directory);
-            
+
         //    Directory.Delete(ReleaseDir + @"\" + this.OpenPersona.Name + @"\Fragments", true);
 
         //    string timestamp = DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToShortTimeString();
@@ -59,7 +88,7 @@ namespace Personality_Creator
 
         //    string tempdest = this.OpenPersona.Directory + @"\" + zipName; //workaround as zipping a directory into it self is not supported by ZipFile class
         //    string destFileName = ReleaseDir + @"\" + zipName;
-            
+
         //    foreach(FileInfo file in ReleaseDir.GetFiles()) //workaround so zips do not accumulate in themselfes
         //    {
         //        if(file.Name.Contains(this.OpenPersona.Name + "_" + "Release_"))

@@ -4,31 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using Personality_Creator.Tools;
 
 namespace Personality_Creator
 {
-    public class DataManager //dunno if the singleton pattern will come to use later or if I downgrade to static
+    public static class DataManager //dunno if the singleton pattern will come to use later or if I downgrade to static
     {
-        public ImageList iconList = new ImageList();
+        public static ImageList iconList = new ImageList();
+        public static Settings settings = new Settings();
+        public static string AppPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        public static string settingsPath = DataManager.AppPath + @"settings.bin";
 
-        private DataManager instance;
 
-        private DataManager()
+        public static void initDataManager()
         {
-            this.iconList.Images.Add(Personality_Creator.Properties.Resources.folder);
-            this.iconList.Images.Add(Personality_Creator.Properties.Resources.file);
-        }
-
-        public DataManager Instance
-        {
-            get
-            {
-                if(this.instance == null)
-                {
-                    this.instance = new DataManager();
-                }
-                return instance;
-            }
+            iconList.Images.Add(Personality_Creator.Properties.Resources.folder);
+            iconList.Images.Add(Personality_Creator.Properties.Resources.file);
+            Settings.load();
         }
     }
 }

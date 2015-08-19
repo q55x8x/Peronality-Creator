@@ -11,8 +11,8 @@ namespace Personality_Creator
     public class Folder
     {
         #region capsuled fields
-        private Dictionary<string, Folder> folders;
-        private Dictionary<string, PersonaFile> files;
+        private Dictionary<string, Folder> folders = new Dictionary<string, Folder>();
+        private Dictionary<string, PersonaFile> files = new Dictionary<string, PersonaFile>();
         private DirectoryInfo directory;
         #endregion
 
@@ -110,7 +110,8 @@ namespace Personality_Creator
             }
             foreach(string file in folder.Files.Keys)
             {
-                TreeNode child = new TreeNode(folder.Files[file].File.Name, 1, 1, null);
+                TreeNode[] empty = new TreeNode[0];
+                TreeNode child = new TreeNode(folder.Files[file].File.Name, 1, 1, empty);
                 child.Tag = folder.Files[file];
                 children.Add(child);
             }

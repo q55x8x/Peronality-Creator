@@ -35,6 +35,7 @@
             this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbStrip = new FarsiLibrary.Win.FATabStrip();
             this.projectView = new System.Windows.Forms.TreeView();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -43,7 +44,6 @@
             this.newFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -95,6 +95,7 @@
             this.openPersonalityToolStripMenuItem.Name = "openPersonalityToolStripMenuItem";
             this.openPersonalityToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.openPersonalityToolStripMenuItem.Text = "Open Personality";
+            this.openPersonalityToolStripMenuItem.Click += new System.EventHandler(this.openPersonalityToolStripMenuItem_Click);
             // 
             // hotkeysToolStripMenuItem
             // 
@@ -103,13 +104,19 @@
             this.hotkeysToolStripMenuItem.Text = "Hotkeys";
             this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
             // 
+            // assembleToolStripMenuItem
+            // 
+            this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
+            this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.assembleToolStripMenuItem.Text = "Assemble";
+            // 
             // tbStrip
             // 
             this.tbStrip.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbStrip.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tbStrip.Location = new System.Drawing.Point(0, 0);
             this.tbStrip.Name = "tbStrip";
-            this.tbStrip.Size = new System.Drawing.Size(891, 464);
+            this.tbStrip.Size = new System.Drawing.Size(891, 439);
             this.tbStrip.TabIndex = 2;
             this.tbStrip.Text = "faTabStrip1";
             // 
@@ -118,7 +125,7 @@
             this.projectView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.projectView.Location = new System.Drawing.Point(0, 0);
             this.projectView.Name = "projectView";
-            this.projectView.Size = new System.Drawing.Size(233, 464);
+            this.projectView.Size = new System.Drawing.Size(233, 439);
             this.projectView.TabIndex = 3;
             // 
             // splitContainer
@@ -134,7 +141,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.projectView);
-            this.splitContainer.Size = new System.Drawing.Size(1128, 464);
+            this.splitContainer.Size = new System.Drawing.Size(1128, 439);
             this.splitContainer.SplitterDistance = 891;
             this.splitContainer.TabIndex = 4;
             // 
@@ -177,19 +184,13 @@
             // toolStripContainer.ContentPanel
             // 
             this.toolStripContainer.ContentPanel.Controls.Add(this.splitContainer);
-            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(1128, 464);
+            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(1128, 439);
             this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer.Location = new System.Drawing.Point(0, 24);
             this.toolStripContainer.Name = "toolStripContainer";
             this.toolStripContainer.Size = new System.Drawing.Size(1128, 486);
             this.toolStripContainer.TabIndex = 7;
             this.toolStripContainer.Text = "toolStripContainer";
-            // 
-            // assembleToolStripMenuItem
-            // 
-            this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
-            this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
-            this.assembleToolStripMenuItem.Text = "Assemble";
             // 
             // mainFrm
             // 
@@ -201,6 +202,8 @@
             this.MainMenuStrip = this.mnuStrip;
             this.Name = "mainFrm";
             this.Text = "Personality Creator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainFrm_FormClosing);
+            this.Load += new System.EventHandler(this.mainFrm_Load);
             this.mnuStrip.ResumeLayout(false);
             this.mnuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).EndInit();

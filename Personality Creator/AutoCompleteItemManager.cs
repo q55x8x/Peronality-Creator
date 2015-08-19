@@ -13,9 +13,9 @@ namespace Personality_Creator
         public static List<string> Items = new List<string>();
         public static void load()
         {
-            Items.AddRange(File.ReadAllLines(mainFrm.AppPath + @"\data\commands.txt"));
+            Items.AddRange(File.ReadAllLines(DataManager.AppPath + @"\data\commands.txt"));
 
-            Items.AddRange(File.ReadAllLines(mainFrm.AppPath + @"\data\keywords.txt"));
+            Items.AddRange(File.ReadAllLines(DataManager.AppPath + @"\data\keywords.txt"));
 
             Items.Add("testItem");
         }

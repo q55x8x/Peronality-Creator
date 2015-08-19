@@ -43,7 +43,9 @@ namespace Personality_Creator
 
         public TreeNode getRootNode()
         {
-            return getNode(this);
+            TreeNode node = getNode(this);
+            node.Tag = this;
+            return node;
         }
     }
 }
