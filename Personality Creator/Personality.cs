@@ -7,26 +7,47 @@ using System.IO;
 
 namespace Personality_Creator
 {
-    public class Personality
+    public class Personality : Folder
     {
+        #region capsuled fields
+        private string name;
+        private DirectoryInfo path;
+        #endregion
+
+        #region properties
         public string Name
         {
-            get;
-            private set;
+            get
+            {
+                return name;
+            }
+
+            internal set
+            {
+                name = value;
+            }
         }
 
         public DirectoryInfo Path
         {
-            get;
-            set;
+            get
+            {
+                return path;
+            }
+
+            internal set
+            {
+                path = value;
+            }
         }
-        
-        public Personality(DirectoryInfo rootPath)
+        #endregion
+
+        public Personality(DirectoryInfo rootPath) : base (rootPath)
         {
             this.Path = rootPath;
             this.Name = rootPath.Name;
         }
-        public Personality(string rootPath)
+        public Personality(string rootPath) : base (new DirectoryInfo(rootPath))
         {
             DirectoryInfo dirInfo = new DirectoryInfo(rootPath);
             this.Path = dirInfo;

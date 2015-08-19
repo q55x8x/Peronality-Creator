@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Personality_Creator.Program" Collapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Personality_Creator.Personality">
+    <Position X="8.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAACAAQAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Personality.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Personality_Creator.PersonaItem">
+    <Position X="5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PersonaItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Personality_Creator.PersonaFile">
+    <Position X="3.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAIAAAAEAAAAAAAAAAAEAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>PersonaFile.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="fileType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Personality_Creator.Folder">
+    <Position X="6" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgBAAAIAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Folder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Personality_Creator.Script">
+    <Position X="1.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Script.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="scriptDeclension" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Personality_Creator.PersonaFileType">
+    <Position X="3.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAgAAQ=</HashCode>
+      <FileName>PersonaFile.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Personality_Creator.ScriptDeclensionType">
+    <Position X="1.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAQAAAAAACAAAAAAAAAEAA=</HashCode>
+      <FileName>Script.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

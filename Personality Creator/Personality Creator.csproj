@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCompleteItemManager.cs" />
+    <Compile Include="Folder.cs" />
     <Compile Include="mainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,9 +68,12 @@
       <DependentUpon>Hotkeys.cs</DependentUpon>
     </Compile>
     <Compile Include="NewFolderDialog.cs" />
+    <Compile Include="PersonaFile.cs" />
+    <Compile Include="PersonaItem.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Script.cs" />
     <EmbeddedResource Include="mainFrm.resx">
       <DependentUpon>mainFrm.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +90,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
