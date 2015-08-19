@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Personality_Creator
 {
-    public class Folder : PersonaItem
+    public class Folder
     {
         #region capsuled fields
         private Dictionary<string, Folder> folders;
@@ -97,6 +98,26 @@ namespace Personality_Creator
         public override string ToString()
         {
             return Directory.Name;
+        }
+
+        public static TreeNode getNode(Folder folder)
+        {
+            List<TreeNode> children = new List<TreeNode>();
+
+            foreach(string subFolder in folder.Folders.Keys)
+            {
+                children.Add(getNode(folder.Folders[subFolder]));
+            }
+            foreach(string file in folder.Files.Keys)
+            {
+                TreeNode child = new TreeNode(folder.Files[file].File.Name, 1, 1, null);
+                child.Tag = folder.Files[file];
+                children.Add(child);
+            }
+            TreeNode node = new TreeNode(folder.Directory.Name, 0, 0, children.ToArray());
+            node.Tag = folder;
+
+            return node;
         }
     }
 }

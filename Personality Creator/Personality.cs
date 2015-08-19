@@ -43,8 +43,7 @@ namespace Personality_Creator
 
         public TreeNode getRootNode()
         {
-            throw new NotImplementedException();
-            return null;
+            return getNode(this);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Personality_Creator
 {
-    public class PersonaFile : PersonaItem
+    public class PersonaFile
     {
         #region capsuled fields
         private FileInfo file;

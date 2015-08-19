@@ -69,7 +69,6 @@
     </Compile>
     <Compile Include="NewFolderDialog.cs" />
     <Compile Include="PersonaFile.cs" />
-    <Compile Include="PersonaItem.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
