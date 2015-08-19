@@ -111,9 +111,6 @@ namespace Personality_Creator
                 this.autoMenu = new AutocompleteMenu(this.CurrentEditor);
                 this.autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
                 this.autoMenu.MinFragmentLength = 1;
-                this.autoMenu.TopLevel = true;
-                this.autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);
-                this.autoMenu.Items.Width = 200;
             }
         }
 
@@ -158,16 +155,16 @@ namespace Personality_Creator
 
             e.ChangedRange.ClearStyle(InterruptStyle);
             e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<![A-z_0-9öäüáéíóú+\n])\@[A-z_0-9öäüáéíóú+]+\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-            e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<!\$\$frag)\(.+\)", RegexOptions.None);
+            e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<!.)\([A-z_0-9öäüáéíóú+]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(GotoStyle);
             e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(FragmentStyle);
-            e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(CommentStyle);
-            e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<=\n)\-.+", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<!.)-.*", RegexOptions.None);
 
             //code folding
             e.ChangedRange.SetFoldingMarkers(@"-region", @"-endregion");
