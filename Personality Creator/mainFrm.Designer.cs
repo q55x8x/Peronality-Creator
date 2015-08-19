@@ -119,6 +119,8 @@
             this.tbStrip.Size = new System.Drawing.Size(891, 439);
             this.tbStrip.TabIndex = 2;
             this.tbStrip.Text = "faTabStrip1";
+            this.tbStrip.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.tbStrip_TabStripItemClosing);
+            this.tbStrip.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tbStrip_TabStripItemSelectionChanged);
             // 
             // projectView
             // 
@@ -127,6 +129,7 @@
             this.projectView.Name = "projectView";
             this.projectView.Size = new System.Drawing.Size(233, 439);
             this.projectView.TabIndex = 3;
+            this.projectView.DoubleClick += new System.EventHandler(this.projectView_DoubleClick);
             // 
             // splitContainer
             // 

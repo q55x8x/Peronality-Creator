@@ -32,6 +32,16 @@ namespace Personality_Creator
         {
             this.File = file;
         }
+
+        public void Save(string content)
+        {
+            System.IO.File.WriteAllText(this.File.FullName, content);
+        }
+
+        public string Read()
+        {
+            return System.IO.File.ReadAllText(this.File.FullName);
+        }
     }
 
     public enum ScriptDeclensionType

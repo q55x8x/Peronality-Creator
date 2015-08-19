@@ -84,7 +84,7 @@ namespace Personality_Creator
                 
                 if(file.Extension == ".txt")
                 {
-                    PersonaFile newFile = new PersonaFile(file, PersonaFileType.Script);
+                    Script newFile = new Script(file);
                     this.Files.Add(file.Name, newFile);
                     continue;
                 }
