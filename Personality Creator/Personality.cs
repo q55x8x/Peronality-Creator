@@ -19,7 +19,7 @@ namespace Personality_Creator
         {
             get
             {
-                return name;
+                return this.Directory.Name;
             }
 
             internal set
@@ -32,12 +32,10 @@ namespace Personality_Creator
         public Personality(DirectoryInfo rootPath) : base (rootPath)
         {
             this.Directory = rootPath;
-            this.Name = rootPath.Name;
         }
         public Personality(string rootPath) : base (new DirectoryInfo(rootPath))
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(rootPath);
-            this.Directory = dirInfo;
+            this.Directory = new DirectoryInfo(rootPath);
         }
 
         public TreeNode getRootNode()
