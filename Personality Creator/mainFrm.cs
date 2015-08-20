@@ -383,6 +383,7 @@ namespace Personality_Creator
             newEditor.Focus();
 
             newEditor.TextChanged += this.Editor_TextChanged;
+            newEditor.KeyDown += Editor_KeyDown;
 
             this.tbStrip.AddTab(newTab);
 
@@ -430,7 +431,7 @@ namespace Personality_Creator
 
         #endregion
 
-        #region style processing
+        #region editor logic
 
         Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
