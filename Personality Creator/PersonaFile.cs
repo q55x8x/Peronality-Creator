@@ -12,6 +12,7 @@ namespace Personality_Creator
         #region capsuled fields
         private FileInfo file;
         private PersonaFileType fileType;
+        private Folder parentFolder;
         #endregion
 
         #region properties
@@ -40,12 +41,26 @@ namespace Personality_Creator
                 fileType = value;
             }
         }
+
+        public Folder ParentFolder
+        {
+            get
+            {
+                return parentFolder;
+            }
+
+            set
+            {
+                parentFolder = value;
+            }
+        }
         #endregion
 
-        public PersonaFile(FileInfo file, PersonaFileType type)
+        public PersonaFile(FileInfo file, Folder parentFolder, PersonaFileType type)
         {
             this.File = file;
             this.FileType = type;
+            this.ParentFolder = parentFolder;
         }
 
         public override string ToString()

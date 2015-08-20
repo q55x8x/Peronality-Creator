@@ -28,10 +28,8 @@ namespace Personality_Creator
         }
         #endregion
 
-        public Script(FileInfo file) : base (file, PersonaFileType.Script)
-        {
-            this.File = file;
-        }
+        public Script(FileInfo file, Folder parentFolder) : base (file, parentFolder, PersonaFileType.Script)
+        { }
 
         public void Save(string content)
         {

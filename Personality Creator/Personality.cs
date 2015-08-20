@@ -38,7 +38,6 @@ namespace Personality_Creator
         {
             DirectoryInfo dirInfo = new DirectoryInfo(rootPath);
             this.Directory = dirInfo;
-            this.Name = dirInfo.Name;
         }
 
         public TreeNode getRootNode()

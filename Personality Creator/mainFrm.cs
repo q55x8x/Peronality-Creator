@@ -70,14 +70,8 @@ namespace Personality_Creator
         {
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
-        }
-
-        private void OpenPersona(string path)
-        {
-            Personality persona = new Personality(path);
-            this.OpenPersonas.Add(persona.Name, persona);
-            this.projectView.Nodes.Add(persona.getRootNode());
-        }
+            this.projectView.LabelEdit = true; //TODO for testing here if it works it should be set in designer
+    }
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -147,11 +141,7 @@ namespace Personality_Creator
 
         private void projectView_DoubleClick(object sender, EventArgs e)
         {
-            if (projectView.SelectedNode.Tag.GetType() == typeof(Script))
-            {
-                openFile((PersonaFile)projectView.SelectedNode.Tag);
-            }
-            if (projectView.SelectedNode.Tag.GetType() == typeof(PersonaFile))
+            if (isPersonaFileOrScript(projectView.SelectedNode.Tag))
             {
                 openFile((PersonaFile)projectView.SelectedNode.Tag);
             }
@@ -165,16 +155,62 @@ namespace Personality_Creator
             {
                 this.newScriptToolStripMenuItem.Enabled = true;
                 this.newFolderToolStripMenuItem.Enabled = true;
+                this.renameToolStripMenuItem.Enabled = false; //TODO just for savety reseaons as renaming dirs is not handled right now
             }
             else
             {
                 this.newScriptToolStripMenuItem.Enabled = false;
                 this.newFolderToolStripMenuItem.Enabled = false;
+                this.renameToolStripMenuItem.Enabled = true;
             }
 
             if (e.Button == MouseButtons.Right)
             {
                 this.contextMenuStripProjectView.Show(Cursor.Position);
+            }
+        }
+        private void projectView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2)
+            {
+                BeginEditNode();
+            }
+        }
+
+        private void projectView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            if(isPersonaFileOrScript(e.Node.Tag))
+            {
+                PersonaFile renamendFile = (PersonaFile)e.Node.Tag;
+                string newFullName = renamendFile.ParentFolder.Directory.FullName + @"\" + e.Label;
+                File.Move(renamendFile.File.FullName, newFullName);
+                renamendFile.File = new FileInfo(newFullName);
+            }
+        }
+
+        #region context menu
+
+        private void newScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.BeginEditNode();
+        }
+
+        #endregion
+
+        private void BeginEditNode()
+        {
+            if (isPersonaFileOrScript(this.projectView.SelectedNode.Tag))
+            {
+                this.projectView.SelectedNode.BeginEdit();
             }
         }
 
@@ -211,6 +247,13 @@ namespace Personality_Creator
         #endregion
 
         #region opening
+        
+        private void OpenPersona(string path)
+        {
+            Personality persona = new Personality(path);
+            this.OpenPersonas.Add(persona.Name, persona);
+            this.projectView.Nodes.Add(persona.getRootNode());
+        }
 
         private void openFile(PersonaFile file)
         {
@@ -377,6 +420,40 @@ namespace Personality_Creator
             {
                 saveCurrentFile();
             }
+        }
+
+        #endregion
+
+        #region helper
+
+        private bool isPersonaFileOrScript(object obj)
+        {
+            return obj.GetType() == typeof(PersonaFile) || obj.GetType() == typeof(Script);
+        }
+
+        private bool isPersonaFIle(object obj)
+        {
+            return obj.GetType() == typeof(PersonaFile);
+        }
+
+        private bool isScript(object obj)
+        {
+            return obj.GetType() == typeof(PersonaFile);
+        }
+
+        private bool isFolderOrPersona(object obj)
+        {
+            return obj.GetType() == typeof(PersonaFile);
+        }
+
+        private bool isFolder(object obj)
+        {
+            return obj.GetType() == typeof(PersonaFile);
+        }
+
+        private bool isPersona(object obj)
+        {
+            return obj.GetType() == typeof(PersonaFile);
         }
 
         #endregion

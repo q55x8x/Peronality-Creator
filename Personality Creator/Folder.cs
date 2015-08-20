@@ -70,27 +70,27 @@ namespace Personality_Creator
             {
                 if (this.Directory.Name == "Fragments")
                 {
-                    PersonaFile newFile = new PersonaFile(file, PersonaFileType.Fragment);
+                    PersonaFile newFile = new PersonaFile(file, this, PersonaFileType.Fragment);
                     this.Files.Add(file.Name, newFile);
                     continue;
                 }
 
                 if(file.Extension == ".frag")
                 {
-                    PersonaFile newFIle = new PersonaFile(file, PersonaFileType.FragmentedScript);
+                    PersonaFile newFIle = new PersonaFile(file, this, PersonaFileType.FragmentedScript);
                     this.Files.Add(file.Name, newFIle);
                     continue;
                 }
                 
                 if(file.Extension == ".txt")
                 {
-                    Script newFile = new Script(file);
+                    Script newFile = new Script(file, this);
                     this.Files.Add(file.Name, newFile);
                     continue;
                 }
 
                 //default case
-                PersonaFile defaultFile = new PersonaFile(file, PersonaFileType.Other);
+                PersonaFile defaultFile = new PersonaFile(file, this, PersonaFileType.Other);
                 this.Files.Add(file.Name, defaultFile);
             }
         }
