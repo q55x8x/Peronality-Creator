@@ -197,6 +197,8 @@ namespace Personality_Creator
                 int index = Regex.Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
                 Range range = this.CurrentEditor.GetRange(index, index + 1); //getting its range
                 this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
+                this.CurrentEditor.Selection = new Range(this.CurrentEditor, 12);
+                this.CurrentEditor.Invalidate();
             }
         }
 
@@ -225,6 +227,18 @@ namespace Personality_Creator
             if(e.KeyCode == Keys.S && ModifierKeys == Keys.Control)
             {
                 saveCurrentFile();
+            } else if(e.KeyCode == Keys.B && ModifierKeys == Keys.Control)
+            {
+                var p = this.CurrentEditor.Selection.Start;
+                if (CharIsGoto(p))
+                {
+                    string gotoName = Regex.Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)").Value.Trim("()".ToCharArray()); //sadly there is currently no better way of  
+                    int index = Regex.Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
+                    Range range = this.CurrentEditor.GetRange(index, index + 1); //getting its range
+                    this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
+                    this.CurrentEditor.Selection = new Range(this.CurrentEditor, range.ToLine);
+                    this.CurrentEditor.Invalidate();
+                }
             }
         }
 
