@@ -95,6 +95,20 @@ namespace Personality_Creator
             }
         }
 
+        public Folder(string path) : this(new DirectoryInfo(path))
+        { }
+
+        public List<PersonaFile> GetAllFilesAndFilesInSubDirs()
+        {
+            List<PersonaFile> files = new List<PersonaFile>();
+            files.AddRange(this.Files.Values);
+            foreach(Folder subDir in this.Folders.Values)
+            {
+                files.AddRange(subDir.GetAllFilesAndFilesInSubDirs());
+            }
+            return files;
+        }
+
         public override string ToString()
         {
             return Directory.Name;

@@ -29,14 +29,13 @@ namespace Personality_Creator
         }
         #endregion
 
-        public Personality(DirectoryInfo rootPath) : base (rootPath)
+        public Personality(DirectoryInfo rootPath) : base(rootPath)
         {
             this.Directory = rootPath;
         }
-        public Personality(string rootPath) : base (new DirectoryInfo(rootPath))
-        {
-            this.Directory = new DirectoryInfo(rootPath);
-        }
+
+        public Personality(string rootPath) : this(new DirectoryInfo(rootPath))
+        { }
 
         public TreeNode getRootNode()
         {

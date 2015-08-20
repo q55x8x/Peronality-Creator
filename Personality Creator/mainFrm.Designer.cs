@@ -33,6 +33,7 @@
             this.tollStripMenuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,11 +43,10 @@
             this.contextMenuStripProjectView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -94,6 +94,11 @@
             this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.saveScriptToolStripMenuItem.Text = "Save Script";
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 6);
+            // 
             // openPersonalityToolStripMenuItem
             // 
             this.openPersonalityToolStripMenuItem.Name = "openPersonalityToolStripMenuItem";
@@ -129,6 +134,7 @@
             // projectView
             // 
             this.projectView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectView.LabelEdit = true;
             this.projectView.Location = new System.Drawing.Point(0, 0);
             this.projectView.Name = "projectView";
             this.projectView.Size = new System.Drawing.Size(233, 439);
@@ -163,21 +169,33 @@
             this.toolStripMenuItem1,
             this.renameToolStripMenuItem});
             this.contextMenuStripProjectView.Name = "contextMenuStripProjectView";
-            this.contextMenuStripProjectView.Size = new System.Drawing.Size(153, 98);
+            this.contextMenuStripProjectView.Size = new System.Drawing.Size(135, 76);
             // 
             // newScriptToolStripMenuItem
             // 
             this.newScriptToolStripMenuItem.Name = "newScriptToolStripMenuItem";
-            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.newScriptToolStripMenuItem.Text = "New Script";
             this.newScriptToolStripMenuItem.Click += new System.EventHandler(this.newScriptToolStripMenuItem_Click);
             // 
             // newFolderToolStripMenuItem
             // 
             this.newFolderToolStripMenuItem.Name = "newFolderToolStripMenuItem";
-            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.newFolderToolStripMenuItem.Text = "New Folder";
             this.newFolderToolStripMenuItem.Click += new System.EventHandler(this.newFolderToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(131, 6);
+            // 
+            // renameToolStripMenuItem
+            // 
+            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.renameToolStripMenuItem.Text = "Rename";
+            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -205,23 +223,6 @@
             this.toolStripContainer.Size = new System.Drawing.Size(1128, 486);
             this.toolStripContainer.TabIndex = 7;
             this.toolStripContainer.Text = "toolStripContainer";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(131, 6);
-            // 
-            // renameToolStripMenuItem
-            // 
-            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.renameToolStripMenuItem.Text = "Rename";
-            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 6);
             // 
             // mainFrm
             // 

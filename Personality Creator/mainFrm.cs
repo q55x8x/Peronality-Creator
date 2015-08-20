@@ -70,7 +70,7 @@ namespace Personality_Creator
         {
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
-            this.projectView.LabelEdit = true; //TODO for testing here if it works it should be set in designer
+            this.renameToolStripMenuItem.Enabled = false;
     }
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
@@ -155,13 +155,11 @@ namespace Personality_Creator
             {
                 this.newScriptToolStripMenuItem.Enabled = true;
                 this.newFolderToolStripMenuItem.Enabled = true;
-                this.renameToolStripMenuItem.Enabled = false; //TODO just for savety reseaons as renaming dirs is not handled right now
             }
             else
             {
                 this.newScriptToolStripMenuItem.Enabled = false;
                 this.newFolderToolStripMenuItem.Enabled = false;
-                this.renameToolStripMenuItem.Enabled = true;
             }
 
             if (e.Button == MouseButtons.Right)
@@ -179,6 +177,11 @@ namespace Personality_Creator
 
         private void projectView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
+            if(e.Label == null) //no rename occured
+            {
+                return;
+            }
+
             if(isPersonaFileOrScript(e.Node.Tag))
             {
                 PersonaFile renamendFile = (PersonaFile)e.Node.Tag;
@@ -186,6 +189,26 @@ namespace Personality_Creator
                 File.Move(renamendFile.File.FullName, newFullName);
                 renamendFile.File = new FileInfo(newFullName);
             }
+
+            if (isFolder(this.projectView.SelectedNode.Tag))
+            {
+                TreeNode parentNode = e.Node.Parent;
+                Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
+
+                string parentDir = ((Folder)e.Node.Parent.Tag).Directory.FullName;
+                string newFolderPath = parentDir + @"\" + e.Label;
+
+                renamedFolder.Directory.MoveTo(newFolderPath);
+                renamedFolder = new Folder(newFolderPath); //refresh files inside dir, this is easier than doing all files manually
+
+                TreeNode replacementNode = Folder.getNode(renamedFolder);
+
+                this.projectView.Nodes.Remove(e.Node);
+
+                parentNode.Nodes.Add(replacementNode);
+            }
+
+            this.projectView.Invalidate();
         }
 
         #region context menu
@@ -201,6 +224,8 @@ namespace Personality_Creator
         }
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Sry but this feature is currently bugged :(");
+            throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
             this.BeginEditNode();
         }
 
@@ -211,6 +236,48 @@ namespace Personality_Creator
             if (isPersonaFileOrScript(this.projectView.SelectedNode.Tag))
             {
                 this.projectView.SelectedNode.BeginEdit();
+            }
+
+            if (isFolder(this.projectView.SelectedNode.Tag))
+            {
+                Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
+                List<FATabStripItem> tabsWithOpenFIles = new List<FATabStripItem>();
+
+                foreach (PersonaFile file in renamedFolder.GetAllFilesAndFilesInSubDirs())
+                {
+                    foreach (FATabStripItem tab in this.tbStrip.Items)
+                    {
+                        if (tab.Tag == file)
+                        {
+                            tabsWithOpenFIles.Add(tab);
+                        }
+                    }
+                }
+
+                if(tabsWithOpenFIles.Count > 0)
+                {
+                    DialogResult result = MessageBox.Show("One or more files need to close before renaming can be done. Save all files before closing?", "Included files still open!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+
+                    switch(result)
+                    {
+                        case DialogResult.Yes:
+                            foreach (FATabStripItem tab in tabsWithOpenFIles)
+                            {
+                                closeTab(tab, true);
+                            }
+                            break;
+                        case DialogResult.No:
+                            foreach (FATabStripItem tab in tabsWithOpenFIles)
+                            {
+                                closeTab(tab, false);
+                            }
+                            break;
+                        case DialogResult.Cancel:
+                            return;
+                    }
+
+                    this.projectView.SelectedNode.BeginEdit();
+                }
             }
         }
 
@@ -300,6 +367,16 @@ namespace Personality_Creator
                     this.CurrentTab.Title = this.CurrentTab.Title.Remove(0, 1);
                 }
             }
+        }
+
+        public void closeTab(FATabStripItem tab, bool save)
+        {
+            if (tab.Title.StartsWith("*") && save)
+            {
+                ((Script)tab.Tag).Save(((FastColoredTextBox)tab.Controls[0]).Text);
+                tab.Title = tab.Title.Remove(0, 1);
+            }
+            this.tbStrip.Items.Remove(tab);
         }
 
         #endregion
@@ -438,22 +515,22 @@ namespace Personality_Creator
 
         private bool isScript(object obj)
         {
-            return obj.GetType() == typeof(PersonaFile);
+            return obj.GetType() == typeof(Script);
         }
 
         private bool isFolderOrPersona(object obj)
         {
-            return obj.GetType() == typeof(PersonaFile);
+            return obj.GetType() == typeof(Folder) || obj.GetType() == typeof(Personality);
         }
 
         private bool isFolder(object obj)
         {
-            return obj.GetType() == typeof(PersonaFile);
+            return obj.GetType() == typeof(Folder);
         }
 
         private bool isPersona(object obj)
         {
-            return obj.GetType() == typeof(PersonaFile);
+            return obj.GetType() == typeof(Personality);
         }
 
         #endregion
