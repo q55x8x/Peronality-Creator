@@ -136,7 +136,7 @@ namespace Personality_Creator
         Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
-        Style InterruptStyle = new TextStyle(Brushes.DeepPink, Brushes.White, FontStyle.Regular);
+        Style InterruptStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
@@ -273,9 +273,8 @@ namespace Personality_Creator
             //load the spellchecker extension for FastColoredTextBox
             SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
             ControlExtensions.LoadSingleControlExtension(editor, spellCheckerTextBox);
-            spellCheckerTextBox.SpellCheckMatch = "(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
-
-            editor.EnableSpellCheck();
+            //spellCheckerTextBox.SpellCheckMatch = @"(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
+            spellCheckerTextBox.SpellCheckMatch = @"^([\w']+)| ([\w']+)|>([\w']+)"; // Only process words starting a line, following a space or a tag
 
             FATabStripItem tab = new FATabStripItem(file.Name, editor);
             tab.Tag = Path;
