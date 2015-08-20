@@ -211,15 +211,7 @@ namespace Personality_Creator
                 return;
             }
 
-            if(isPersonaFileOrScript(e.Node.Tag))
-            {
-                Module renamendFile = (Module)e.Node.Tag;
-                string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
-                File.Move(renamendFile.File.FullName, newFullName);
-                renamendFile.File = new FileInfo(newFullName);
-            }
-
-            if (isFolder(this.projectView.SelectedNode.Tag))
+            if(e.Node.Tag.GetType() == typeof(Folder))
             {
                 TreeNode parentNode = e.Node.Parent;
                 Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
@@ -235,6 +227,13 @@ namespace Personality_Creator
                 this.projectView.Nodes.Remove(e.Node);
 
                 parentNode.Nodes.Add(replacementNode);
+            }
+            else if (e.Node.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
+            {
+                PersonaFile renamendFile = (PersonaFile)e.Node.Tag;
+                string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
+                File.Move(renamendFile.File.FullName, newFullName);
+                renamendFile.File = new FileInfo(newFullName);
             }
 
             this.projectView.Invalidate();
@@ -287,12 +286,12 @@ namespace Personality_Creator
 
         private void BeginEditNode()
         {
-            if (isPersonaFileOrScript(this.projectView.SelectedNode.Tag))
+            if (this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
             {
                 this.projectView.SelectedNode.BeginEdit();
             }
 
-            if (isFolder(this.projectView.SelectedNode.Tag))
+            if (this.projectView.SelectedNode.Tag.GetType() == typeof(Folder))
             {
                 Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
                 List<FATabStripItem> tabsWithOpenFIles = new List<FATabStripItem>();
