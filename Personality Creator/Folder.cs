@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
+using Personality_Creator.PersonaFiles;
+using Personality_Creator.PersonaFiles.Scripts;
 
 namespace Personality_Creator
 {
@@ -68,30 +70,9 @@ namespace Personality_Creator
 
             foreach(FileInfo file in this.Directory.GetFiles())
             {
-                if (this.Directory.Name == "Fragments")
-                {
-                    PersonaFile newFile = new PersonaFile(file, this, PersonaFileType.Fragment);
-                    this.Files.Add(file.Name, newFile);
-                    continue;
-                }
+                PersonaFile newFile = PersonaFile.CreateInstance(file);
 
-                if(file.Extension == ".frag")
-                {
-                    PersonaFile newFIle = new PersonaFile(file, this, PersonaFileType.FragmentedScript);
-                    this.Files.Add(file.Name, newFIle);
-                    continue;
-                }
-                
-                if(file.Extension == ".txt")
-                {
-                    Script newFile = new Script(file, this);
-                    this.Files.Add(file.Name, newFile);
-                    continue;
-                }
-
-                //default case
-                PersonaFile defaultFile = new PersonaFile(file, this, PersonaFileType.Other);
-                this.Files.Add(file.Name, defaultFile);
+                this.Files.Add(file.Name, newFile);
             }
         }
 

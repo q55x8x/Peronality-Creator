@@ -12,6 +12,8 @@ using FastColoredTextBoxNS;
 using FarsiLibrary.Win;
 using System.IO;
 using System.IO.Compression;
+using Personality_Creator.PersonaFiles;
+using Personality_Creator.PersonaFiles.Scripts;
 
 namespace Personality_Creator
 {
@@ -65,7 +67,8 @@ namespace Personality_Creator
             }
         }
 
-        public Dictionary<string, Personality> OpenPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
+        public Dictionary<string, Personality> OpenedPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
+        public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
         public mainFrm()
         {
             InitializeComponent();
@@ -126,18 +129,38 @@ namespace Personality_Creator
         private void openPersonalityToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = DataManager.settings.lastOpenedPersonaPath;
+            fbd.SelectedPath = DataManager.settings.lastOpenedPersonaDirectory;
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                DataManager.settings.lastOpenedPersonaPath = fbd.SelectedPath;
+                DataManager.settings.lastOpenedPersonaDirectory = fbd.SelectedPath;
                 OpenPersona(fbd.SelectedPath);
+            }
+        }
+
+        private void openScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = DataManager.settings.lastOpenedSingleFileDirectory;
+
+            
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                PersonaFile newFile = new PersonaFile(ofd.FileName);
+                this.addUnAssociatedFile(newFile);
+                openFile(newFile);
             }
         }
 
         #endregion
 
         #region project view logic
+
+        private void addUnAssociatedFile(PersonaFile file)
+        {
+            TreeNode node = new TreeNode(file.File.Name, 1, 1) { Tag = file };
+            this.projectView.Nodes.Add(node);
+        }
 
         private void projectView_DoubleClick(object sender, EventArgs e)
         {
@@ -184,8 +207,8 @@ namespace Personality_Creator
 
             if(isPersonaFileOrScript(e.Node.Tag))
             {
-                PersonaFile renamendFile = (PersonaFile)e.Node.Tag;
-                string newFullName = renamendFile.ParentFolder.Directory.FullName + @"\" + e.Label;
+                Module renamendFile = (Module)e.Node.Tag;
+                string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
                 File.Move(renamendFile.File.FullName, newFullName);
                 renamendFile.File = new FileInfo(newFullName);
             }
@@ -318,19 +341,35 @@ namespace Personality_Creator
         private void OpenPersona(string path)
         {
             Personality persona = new Personality(path);
-            this.OpenPersonas.Add(persona.Name, persona);
+            this.OpenedPersonas.Add(persona.Name, persona);
             this.projectView.Nodes.Add(persona.getRootNode());
         }
 
         private void openFile(PersonaFile file)
         {
-            if(file.FileType == PersonaFileType.Script)
+            if(file.GetType().BaseType == typeof(Script))
             {
                 openScript((Script)file);
             }
         }
 
         private void openScript(Script script)
+        {
+            if(script.GetType() == typeof(Module))
+            {
+                openModule((Module)script);
+            }
+            else if(script.GetType() == typeof(Fragment))
+            {
+                openFragment((Fragment)script);
+            }
+            else if(script.GetType() == typeof(FragmentedScript))
+            {
+                openFragmentedScript((FragmentedScript)script);
+            }
+        }
+
+        private void openModule(Module script)
         {
             FastColoredTextBox newEditor = new FastColoredTextBox();
 
@@ -352,13 +391,23 @@ namespace Personality_Creator
             this.ApplyStyle();
         }
 
+        private void openFragment(Fragment script)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void openFragmentedScript(FragmentedScript script)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region saving
 
         public void saveCurrentFile()
         {
-            if(this.CurrentFile.FileType == PersonaFileType.Script)
+            if(this.CurrentFile.GetType().BaseType == typeof(Script))
             {
                 ((Script)this.CurrentFile).Save(this.CurrentEditor.Text);
 

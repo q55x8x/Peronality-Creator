@@ -87,6 +87,7 @@
             this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
             this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.openScriptToolStripMenuItem.Text = "Open Script";
+            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
             // 
             // saveScriptToolStripMenuItem
             // 
@@ -115,6 +116,7 @@
             // 
             // assembleToolStripMenuItem
             // 
+            this.assembleToolStripMenuItem.Enabled = false;
             this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
             this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.assembleToolStripMenuItem.Text = "Assemble";

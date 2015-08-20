@@ -10,7 +10,8 @@ namespace Personality_Creator
     [Serializable]
     public class Settings
     {
-        public string lastOpenedPersonaPath = @"C:\";
+        public string lastOpenedPersonaDirectory = @"C:\";
+        public string lastOpenedSingleFileDirectory = @"C:\";
 
         public static void save()
         {

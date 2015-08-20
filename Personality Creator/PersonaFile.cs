@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Personality_Creator.PersonaFiles;
+using Personality_Creator.PersonaFiles.Scripts;
 
 namespace Personality_Creator
 {
@@ -11,8 +13,6 @@ namespace Personality_Creator
     {
         #region capsuled fields
         private FileInfo file;
-        private PersonaFileType fileType;
-        private Folder parentFolder;
         #endregion
 
         #region properties
@@ -28,57 +28,34 @@ namespace Personality_Creator
                 file = value;
             }
         }
-
-        public PersonaFileType FileType
-        {
-            get
-            {
-                return fileType;
-            }
-
-            set
-            {
-                fileType = value;
-            }
-        }
-
-        public Folder ParentFolder
-        {
-            get
-            {
-                return parentFolder;
-            }
-
-            set
-            {
-                parentFolder = value;
-            }
-        }
         #endregion
 
-        public PersonaFile(FileInfo file, Folder parentFolder, PersonaFileType type)
+        internal PersonaFile(FileInfo file)
         {
-            this.File = file;
-            this.FileType = type;
-            this.ParentFolder = parentFolder;
+            this.File = file;;
         }
+
+        internal PersonaFile(string path) : this(new FileInfo(path))
+        { }
 
         public override string ToString()
         {
             return File.Name;
         }
-    }
 
-    public enum PersonaFileType
-    {
-        Script,
-        FragmentedScript,
-        Fragment,
-        Media,
-        Flag,
-        App,
-        Plalist,
-        Vocabulary,
-        Other
+        public static PersonaFile CreateInstance(FileInfo file)
+        {
+            if(file.Extension == ".txt")
+            {
+                return new Module(file);
+            }
+
+            return new PersonaFile(file);
+        }
+
+        public static PersonaFile CreateInstance(string path)
+        {
+            return PersonaFile.CreateInstance(new FileInfo(path));
+        }
     }
 }

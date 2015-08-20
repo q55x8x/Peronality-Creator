@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace Personality_Creator
+namespace Personality_Creator.PersonaFiles
 {
     public class Script : PersonaFile
     {
@@ -28,7 +28,7 @@ namespace Personality_Creator
         }
         #endregion
 
-        public Script(FileInfo file, Folder parentFolder) : base (file, parentFolder, PersonaFileType.Script)
+        public Script(FileInfo file) : base (file)
         { }
 
         public void Save(string content)

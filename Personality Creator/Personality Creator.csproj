@@ -67,12 +67,15 @@
     <Compile Include="Hotkeys.Designer.cs">
       <DependentUpon>Hotkeys.cs</DependentUpon>
     </Compile>
+    <Compile Include="PersonaFiles\Scripts\Fragment.cs" />
+    <Compile Include="PersonaFiles\Scripts\FragmentedScript.cs" />
+    <Compile Include="PersonaFiles\Scripts\Module.cs" />
     <Compile Include="NewFolderDialog.cs" />
     <Compile Include="PersonaFile.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Script.cs" />
+    <Compile Include="PersonaFiles\Script.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools\BinarySerializer.cs" />
