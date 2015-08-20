@@ -162,6 +162,12 @@ namespace Personality_Creator
             this.projectView.Nodes.Add(node);
         }
 
+        private void addAssociatedFile(PersonaFile file, TreeNode parentNode)
+        {
+            TreeNode node = new TreeNode(file.File.Name, 1, 1) { Tag = file };
+            parentNode.Nodes.Add(node);
+        }
+
         private void projectView_DoubleClick(object sender, EventArgs e)
         {
             if(this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
@@ -238,13 +244,38 @@ namespace Personality_Creator
 
         private void newScriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SaveFileDialog sfd = new SaveFileDialog();
 
+            sfd.InitialDirectory = ((Folder)this.projectView.SelectedNode.Tag).Directory.FullName;
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                PersonaFile file = PersonaFile.CreateInstance(sfd.FileName);
+
+                FileStream fs = new FileStream(file.File.FullName, FileMode.Create);
+                fs.Close();
+
+                this.addAssociatedFile(file, this.projectView.SelectedNode);
+
+                openFile(file);
+            }
         }
 
         private void newFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            NewFolderDialog nfd = new NewFolderDialog();
 
+            if (nfd.Show() == DialogResult.OK)
+            {
+                string newFolderPath = ((Folder)this.projectView.SelectedNode.Tag).Directory.FullName + @"\" + nfd.NewFolderName;
+                Directory.CreateDirectory(newFolderPath);
+
+                Folder newFolder = new Folder(newFolderPath);
+                
+                this.projectView.SelectedNode.Nodes.Add(Folder.getNode(newFolder));
+            }
         }
+
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Sry but this feature is currently bugged :(");
@@ -547,40 +578,6 @@ namespace Personality_Creator
             {
                 saveCurrentFile();
             }
-        }
-
-        #endregion
-
-        #region helper
-
-        private bool isPersonaFileOrScript(object obj)
-        {
-            return obj.GetType() == typeof(PersonaFile) || obj.GetType() == typeof(Script);
-        }
-
-        private bool isPersonaFIle(object obj)
-        {
-            return obj.GetType() == typeof(PersonaFile);
-        }
-
-        private bool isScript(object obj)
-        {
-            return obj.GetType() == typeof(Script);
-        }
-
-        private bool isFolderOrPersona(object obj)
-        {
-            return obj.GetType() == typeof(Folder) || obj.GetType() == typeof(Personality);
-        }
-
-        private bool isFolder(object obj)
-        {
-            return obj.GetType() == typeof(Folder);
-        }
-
-        private bool isPersona(object obj)
-        {
-            return obj.GetType() == typeof(Personality);
         }
 
         #endregion
