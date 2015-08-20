@@ -90,11 +90,6 @@ namespace Personality_Creator
             return files;
         }
 
-        public override string ToString()
-        {
-            return Directory.Name;
-        }
-
         public static TreeNode getNode(Folder folder)
         {
             List<TreeNode> children = new List<TreeNode>();

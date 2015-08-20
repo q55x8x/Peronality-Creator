@@ -38,11 +38,6 @@ namespace Personality_Creator
         internal PersonaFile(string path) : this(new FileInfo(path))
         { }
 
-        public override string ToString()
-        {
-            return File.Name;
-        }
-
         public static PersonaFile CreateInstance(FileInfo file)
         {
             if(file.Extension == ".txt")

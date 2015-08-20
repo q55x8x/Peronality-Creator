@@ -164,8 +164,8 @@ namespace Personality_Creator
 
         private void projectView_DoubleClick(object sender, EventArgs e)
         {
-            if (isPersonaFileOrScript(projectView.SelectedNode.Tag))
-            {
+            if(this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
+            { 
                 openFile((PersonaFile)projectView.SelectedNode.Tag);
             }
         }
