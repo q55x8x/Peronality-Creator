@@ -108,6 +108,16 @@
   <ItemGroup>
     <None Include="stuff\icons\file.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="SpellChecker\i00SpellCheck\i00SpellCheck.vbproj">
+      <Project>{27d0d9b3-719c-46b7-9f03-3f91e82e7436}</Project>
+      <Name>i00SpellCheck</Name>
+    </ProjectReference>
+    <ProjectReference Include="SpellChecker\Plugins\3rd Party\FastColoredTextBoxPlugin\FastColoredTextBoxPlugin.vbproj">
+      <Project>{d640fbfd-a239-4e43-9818-ecbb9f7a09f3}</Project>
+      <Name>FastColoredTextBoxPlugin</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
