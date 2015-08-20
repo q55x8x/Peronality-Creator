@@ -152,6 +152,11 @@ namespace Personality_Creator
             }
         }
 
+        private void saveScriptToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.saveCurrentFile();
+        }
+
         #endregion
 
         #region project view logic
