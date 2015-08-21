@@ -499,8 +499,7 @@ namespace Personality_Creator
             e.ChangedRange.SetStyle(ResponseStyle, @"\[.+\]", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(InterruptStyle);
-            e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<![A-z_0-9öäüáéíóú+\n])\@[A-z_0-9öäüáéíóú+]+\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-            e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<!.)\([A-z_0-9öäüáéíóú+]+\)", RegexOptions.None);
+            e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(GotoStyle);
             e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
@@ -553,12 +552,10 @@ namespace Personality_Creator
 
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
-                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //sadly there is currently no better way of  
-                int index = Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
-                Range range = this.CurrentEditor.GetRange(index, index + 1); //getting its range
-                //this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
-                Place line = new Place(gotoName.Length + 2, range.ToLine);
-                this.currentEditor.Selection.Start = line;
+                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
+                int index = Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //finding the goto destination
+                Range range = this.CurrentEditor.GetRange(index, index + gotoName.Length + 2);
+                this.currentEditor.Selection = range;
                 this.currentEditor.DoCaretVisible();
             }
         }
