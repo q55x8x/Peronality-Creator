@@ -553,13 +553,13 @@ namespace Personality_Creator
 
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
-                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)").Value.Trim("()".ToCharArray()); //sadly there is currently no better way of  
+                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //sadly there is currently no better way of  
                 int index = Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
                 Range range = this.CurrentEditor.GetRange(index, index + 1); //getting its range
-                this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
-                //Place line = new Place(gotoName.Length + 2, range.ToLine);
-                //this.currentEditor.Selection.Start = line;
-                //this.currentEditor.DoCaretVisible();
+                //this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
+                Place line = new Place(gotoName.Length + 2, range.ToLine);
+                this.currentEditor.Selection.Start = line;
+                this.currentEditor.DoCaretVisible();
             }
         }
 
