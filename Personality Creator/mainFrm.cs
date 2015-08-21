@@ -474,7 +474,7 @@ namespace Personality_Creator
         Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
-        Style InterruptStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
+        Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
@@ -498,8 +498,8 @@ namespace Personality_Creator
             e.ChangedRange.ClearStyle(ResponseStyle);
             e.ChangedRange.SetStyle(ResponseStyle, @"\[.+\]", RegexOptions.None);
 
-            e.ChangedRange.ClearStyle(InterruptStyle);
-            e.ChangedRange.SetStyle(InterruptStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
+            e.ChangedRange.ClearStyle(ParanthesisStyle);
+            e.ChangedRange.SetStyle(ParanthesisStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(GotoStyle);
             e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
