@@ -14,6 +14,7 @@ using System.IO;
 using System.IO.Compression;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
+using static System.Text.RegularExpressions.Regex;
 
 namespace Personality_Creator
 {
@@ -419,6 +420,8 @@ namespace Personality_Creator
 
             newEditor.TextChanged += this.Editor_TextChanged;
             newEditor.KeyDown += Editor_KeyDown;
+            newEditor.MouseMove += Editor_MouseMove;
+            newEditor.MouseDown += Editor_MouseDown;
 
             this.tbStrip.AddTab(newTab);
 
@@ -533,7 +536,7 @@ namespace Personality_Creator
 
         private void Editor_MouseMove(object sender, MouseEventArgs e)
         {
-            var p = this.CurrentEditor.PointToPlace(e.Location);
+            Place p = this.CurrentEditor.PointToPlace(e.Location);
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
                 this.CurrentEditor.Cursor = Cursors.Hand;
@@ -546,26 +549,25 @@ namespace Personality_Creator
 
         private void Editor_MouseDown(object sender, MouseEventArgs e)
         {
-            var p = this.CurrentEditor.PointToPlace(e.Location);
+            Place p = this.CurrentEditor.PointToPlace(e.Location);
+
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
-                string gotoName = Regex.Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)").Value.Trim("()".ToCharArray()); //sadly there is currently no better way of  
-                int index = Regex.Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
+                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)").Value.Trim("()".ToCharArray()); //sadly there is currently no better way of  
+                int index = Match(this.CurrentEditor.Text, @"(?<=\n)\(" + gotoName + @"\)").Index; //jumping to a match :( then extract the index and
                 Range range = this.CurrentEditor.GetRange(index, index + 1); //getting its range
                 this.CurrentEditor.Navigate(range.ToLine); //to navigate to its line
+                //Place line = new Place(gotoName.Length + 2, range.ToLine);
+                //this.currentEditor.Selection.Start = line;
+                //this.currentEditor.DoCaretVisible();
             }
         }
 
         private bool CharIsGoto(Place place)
         {
-            var mask = this.CurrentEditor.GetStyleIndexMask(new Style[] { GotoStyle });
-
-            if (place.iChar < this.CurrentEditor.GetLineLength(place.iLine))
+            if(this.currentEditor.GetStylesOfChar(place).Contains(GotoStyle))
             {
-                if ((this.CurrentEditor[place].style & mask) != 0)
-                {
-                    return true;
-                }
+                return true;
             }
             return false;
         }

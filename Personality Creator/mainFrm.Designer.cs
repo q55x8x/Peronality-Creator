@@ -36,7 +36,6 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbStrip = new FarsiLibrary.Win.FATabStrip();
             this.projectView = new System.Windows.Forms.TreeView();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -47,6 +46,7 @@
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
+            this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -114,13 +114,6 @@
             this.hotkeysToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.hotkeysToolStripMenuItem.Text = "Hotkeys";
             this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
-            // 
-            // assembleToolStripMenuItem
-            // 
-            this.assembleToolStripMenuItem.Enabled = false;
-            this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
-            this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
-            this.assembleToolStripMenuItem.Text = "Assemble";
             // 
             // tbStrip
             // 
@@ -227,6 +220,13 @@
             this.toolStripContainer.TabIndex = 7;
             this.toolStripContainer.Text = "toolStripContainer";
             // 
+            // assembleToolStripMenuItem
+            // 
+            this.assembleToolStripMenuItem.Enabled = false;
+            this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
+            this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.assembleToolStripMenuItem.Text = "Assemble";
+            // 
             // mainFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,10 +272,10 @@
         private System.Windows.Forms.ToolStripMenuItem hotkeysToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripContainer toolStripContainer;
-        private System.Windows.Forms.ToolStripMenuItem assembleToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem assembleToolStripMenuItem;
     }
 }
 
