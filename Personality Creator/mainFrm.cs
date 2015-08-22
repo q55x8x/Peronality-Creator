@@ -477,7 +477,7 @@ namespace Personality_Creator
         Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
+        //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
 
 
         private void Editor_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
@@ -507,11 +507,11 @@ namespace Personality_Creator
             e.ChangedRange.ClearStyle(FragmentStyle);
             e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
-            e.ChangedRange.ClearStyle(CommentStyle);
-            e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<!.)-.*", RegexOptions.None);
+            //e.ChangedRange.ClearStyle(CommentStyle);
+            //e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<!.)-.*", RegexOptions.None);
 
-            //code folding
-            e.ChangedRange.SetFoldingMarkers(@"-region", @"-endregion");
+            ////code folding
+            //e.ChangedRange.SetFoldingMarkers(@"-region", @"-endregion");
         }
 
         private void ApplyStyle()
