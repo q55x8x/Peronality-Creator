@@ -418,7 +418,7 @@ namespace Personality_Creator
             newEditor.TextChanged += this.Editor_TextChanged;
             newEditor.KeyDown += Editor_KeyDown;
             newEditor.MouseMove += Editor_MouseMove;
-            newEditor.MouseDown += Editor_MouseDown;
+            newEditor.MouseUp += Editor_MouseUp;
 
             this.tbStrip.AddTab(newTab);
 
@@ -582,7 +582,7 @@ namespace Personality_Creator
             }
         }
 
-        private void Editor_MouseDown(object sender, MouseEventArgs e)
+        private void Editor_MouseUp(object sender, MouseEventArgs e)
         {
             Place p = this.CurrentEditor.PointToPlace(e.Location);
 
@@ -590,7 +590,7 @@ namespace Personality_Creator
             {
                 string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
                 int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
-                Range range = this.CurrentEditor.GetRange(index, index + gotoName.Length + 2);
+                Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
                 this.currentEditor.Selection = range;
                 this.currentEditor.DoCaretVisible();
             }
