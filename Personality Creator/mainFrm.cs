@@ -34,6 +34,13 @@ namespace Personality_Creator
             set
             {
                 currentEditor = value;
+
+                this.autoMenu = new AutocompleteMenu(this.CurrentEditor);
+                this.autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
+                this.autoMenu.MinFragmentLength = 1;
+                this.autoMenu.TopLevel = true;
+                this.autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);
+                this.autoMenu.Items.Width = 200;
             }
         }
 
@@ -70,6 +77,8 @@ namespace Personality_Creator
 
         public Dictionary<string, Personality> OpenedPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
         public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
+
+        public AutocompleteMenu autoMenu;
         public mainFrm()
         {
             InitializeComponent();
@@ -117,6 +126,7 @@ namespace Personality_Creator
         private void mainFrm_Load(object sender, EventArgs e)
         {
             DataManager.initDataManager();
+            AutoCompleteItemManager.load();
         }
 
         #region toolstripMenu logic
