@@ -18,7 +18,7 @@ using static System.Text.RegularExpressions.Regex;
 
 namespace Personality_Creator
 {
-    public partial class mainFrm : Form
+    public partial class frmMain : Form
     {
         private FastColoredTextBox currentEditor;
         private FATabStripItem currentTab;
@@ -79,7 +79,7 @@ namespace Personality_Creator
         public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
 
         public AutocompleteMenu autoMenu;
-        public mainFrm()
+        public frmMain()
         {
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
@@ -88,30 +88,16 @@ namespace Personality_Creator
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.save();
-
-            bool unsavedChanges = false;
-            foreach (FATabStripItem tab in this.tbStrip.Items)
+            if (unsavedChanges())
             {
-                if (tab.Title.StartsWith("*"))
-                {
-                    unsavedChanges = true;
-                    break;
-                }
-            }
-
-            if (unsavedChanges)
-            {
-                switch (MessageBox.Show("Save all changed files?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning))
+                DialogResult result = MessageBox.Show("Save all changed files?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                switch (result)
                 {
                     case DialogResult.Yes:
-                        foreach (FATabStripItem tab in this.tbStrip.Items)
-                        {
-                            this.CurrentTab = tab;
-                            saveCurrentFile();
-                        }
+                        closeAllTabs(true);
                         break;
                     case DialogResult.No:
+                        closeAllTabs(false);
                         break;
                     case DialogResult.Cancel:
                         e.Cancel = true;
@@ -121,6 +107,8 @@ namespace Personality_Creator
                         break;
                 }
             }
+
+            Settings.save();
         }
 
         private void mainFrm_Load(object sender, EventArgs e)
@@ -267,8 +255,7 @@ namespace Personality_Creator
             {
                 PersonaFile file = PersonaFile.CreateInstance(sfd.FileName);
 
-                FileStream fs = new FileStream(file.File.FullName, FileMode.Create);
-                fs.Close();
+                File.Create(file.File.FullName).Close();
 
                 this.addAssociatedFile(file, this.projectView.SelectedNode);
 
@@ -383,7 +370,7 @@ namespace Personality_Creator
         #endregion
 
         #region opening
-        
+
         private void OpenPersona(string path)
         {
             Personality persona = new Personality(path);
@@ -452,6 +439,43 @@ namespace Personality_Creator
 
         #endregion
 
+        #region closing
+
+        public void closeTab(FATabStripItem tab, bool save)
+        {
+            if (tab.Title.StartsWith("*") && save)
+            {
+                ((Script)tab.Tag).Save(((FastColoredTextBox)tab.Controls[0]).Text);
+                tab.Title = tab.Title.Remove(0, 1);
+            }
+            this.tbStrip.Items.Remove(tab);
+        }
+
+        public void closeAllTabs(bool save)
+        {
+            foreach (FATabStripItem tab in this.tbStrip.Items)
+            {
+                closeTab(tab, save);
+            }
+        }
+
+        public bool unsavedChanges()
+        {
+            bool unsaved = false;
+            foreach (FATabStripItem tab in this.tbStrip.Items)
+            {
+                if (tab.Title.StartsWith("*"))
+                {
+                    unsaved = true;
+                    break;
+                }
+            }
+
+            return unsaved;
+        }
+
+        #endregion
+
         #region saving
 
         public void saveCurrentFile()
@@ -467,14 +491,16 @@ namespace Personality_Creator
             }
         }
 
-        public void closeTab(FATabStripItem tab, bool save)
+        public void saveAllFiles()
         {
-            if (tab.Title.StartsWith("*") && save)
+            foreach (FATabStripItem tab in this.tbStrip.Items)
             {
-                ((Script)tab.Tag).Save(((FastColoredTextBox)tab.Controls[0]).Text);
-                tab.Title = tab.Title.Remove(0, 1);
+                if (tab.Title.StartsWith("*"))
+                {
+                    ((Script)tab.Tag).Save(tab.Controls?[0].Text);
+                    tab.Title = this.CurrentTab.Title.Remove(0, 1);
+                }
             }
-            this.tbStrip.Items.Remove(tab);
         }
 
         #endregion

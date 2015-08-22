@@ -16,7 +16,7 @@ namespace Personality_Creator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new mainFrm());
+            Application.Run(new frmMain());
         }
     }
 }

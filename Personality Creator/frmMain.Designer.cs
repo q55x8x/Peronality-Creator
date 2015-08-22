@@ -1,6 +1,6 @@
 ﻿namespace Personality_Creator
 {
-    partial class mainFrm
+    partial class frmMain
     {
         /// <summary>
         /// Erforderliche Designervariable.
