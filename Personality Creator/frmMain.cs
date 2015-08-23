@@ -453,7 +453,14 @@ namespace Personality_Creator
 
         public void closeAllTabs(bool save)
         {
+            List<FATabStripItem> tabsToClose = new List<FATabStripItem>(); //closeing a tab would change the tbStrip.Items collection which is an invalid operation during foreach
+
             foreach (FATabStripItem tab in this.tbStrip.Items)
+            {
+                tabsToClose.Add(tab);
+            }
+
+            foreach (FATabStripItem tab in tabsToClose)
             {
                 closeTab(tab, save);
             }
