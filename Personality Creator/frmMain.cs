@@ -88,25 +88,7 @@ namespace Personality_Creator
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (unsavedChanges())
-            {
-                DialogResult result = MessageBox.Show("Save all changed files?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                switch (result)
-                {
-                    case DialogResult.Yes:
-                        closeAllTabs(true);
-                        break;
-                    case DialogResult.No:
-                        closeAllTabs(false);
-                        break;
-                    case DialogResult.Cancel:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        e.Cancel = true;
-                        break;
-                }
-            }
+            e.Cancel = !tryCloseAllTabs();
 
             Settings.save();
         }
@@ -348,24 +330,47 @@ namespace Personality_Creator
 
         private void tbStrip_TabStripItemClosing(TabStripItemClosingEventArgs e)
         {
-            if (this.CurrentTab.Title.StartsWith("*"))
+            e.Cancel = !tryCloseTab(e.Item); //cancel if tryClose did NOT succeed
+        }
+
+        private void tbStrip_MouseUp(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
             {
-                switch (MessageBox.Show("Save changes?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning))
-                {
-                    case DialogResult.Yes:
-                        saveCurrentFile();
-                        break;
-                    case DialogResult.No:
-                        break;
-                    case DialogResult.Cancel:
-                        e.Cancel = true;
-                        break;
-                    default:
-                        e.Cancel = true;
-                        break;
-                }
+                this.contextMenuStripTabContainer.Show(Cursor.Position);
             }
         }
+
+        #region contextMenu
+
+        private void closeCurrentTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tryCloseTab(this.CurrentTab);
+        }
+
+        private void closeAllTabsExceptCurrentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<FATabStripItem> tabsToClose = new List<FATabStripItem>(); //need to make a copy because working with ref will point to the actual ItemCollection
+
+            foreach(FATabStripItem tab in this.tbStrip.Items)
+            {
+                tabsToClose.Add(tab);
+            }
+
+            tabsToClose.Remove(this.CurrentTab);
+
+            FATabStripItemCollection collection = new FATabStripItemCollection();
+            collection.AddRange(tabsToClose.ToArray());
+
+            tryCloseTabs(collection);
+        }
+
+        private void closeAllTabsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tryCloseAllTabs();
+        }
+
+        #endregion
 
         #endregion
 
@@ -441,9 +446,77 @@ namespace Personality_Creator
 
         #region closing
 
+        private bool tryCloseAllTabs()
+        {
+            return tryCloseTabs(this.tbStrip.Items);
+        }
+
+        private bool tryCloseTabs(FATabStripItemCollection tabs)
+        {
+            bool success = true;
+            bool save = false;
+
+            if (unsavedChanges(tabs))
+            {
+                DialogResult result = MessageBox.Show("Save all changed files?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        save = true;
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                        success = false;
+                        break;
+                    default:
+                        success = false;
+                        break;
+                }
+            }
+
+            if (success)
+            {
+                closeTabs(tabs, save);
+            }
+
+            return success;
+        }
+
+        private bool tryCloseTab(FATabStripItem tab)
+        {
+            bool success = true;
+            bool save = false;
+
+            if (tabHasUnsavedChanges(tab))
+            {
+                switch (MessageBox.Show("Save changes?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning))
+                {
+                    case DialogResult.Yes:
+                        save = true;
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                        success = false;
+                        break;
+                    default:
+                        success = false;
+                        break;
+                }
+            }
+
+            if(success)
+            {
+                closeTab(tab, save);
+            }
+
+            return success;
+        }
+
         public void closeTab(FATabStripItem tab, bool save)
         {
-            if (tab.Title.StartsWith("*") && save)
+            if (tabHasUnsavedChanges(tab) && save)
             {
                 ((Script)tab.Tag).Save(((FastColoredTextBox)tab.Controls[0]).Text);
                 tab.Title = tab.Title.Remove(0, 1);
@@ -451,11 +524,11 @@ namespace Personality_Creator
             this.tbStrip.Items.Remove(tab);
         }
 
-        public void closeAllTabs(bool save)
+        private void closeTabs(FATabStripItemCollection tabs, bool save) //again the collection points directly to the original collection so we have to make a copy to not mess up deletion
         {
-            List<FATabStripItem> tabsToClose = new List<FATabStripItem>(); //closeing a tab would change the tbStrip.Items collection which is an invalid operation during foreach
+            List<FATabStripItem> tabsToClose = new List<FATabStripItem>();
 
-            foreach (FATabStripItem tab in this.tbStrip.Items)
+            foreach(FATabStripItem tab in tabs)
             {
                 tabsToClose.Add(tab);
             }
@@ -464,14 +537,21 @@ namespace Personality_Creator
             {
                 closeTab(tab, save);
             }
+
+            tabsToClose = null;
         }
 
-        public bool unsavedChanges()
+        public void closeAllTabs(bool save)
+        {
+            closeTabs(this.tbStrip.Items, save);
+        }
+
+        private bool unsavedChanges(FATabStripItemCollection items)
         {
             bool unsaved = false;
-            foreach (FATabStripItem tab in this.tbStrip.Items)
+            foreach (FATabStripItem tab in items)
             {
-                if (tab.Title.StartsWith("*"))
+                if (tabHasUnsavedChanges(tab))
                 {
                     unsaved = true;
                     break;
@@ -479,6 +559,16 @@ namespace Personality_Creator
             }
 
             return unsaved;
+        }
+
+        public bool unsavedChanges() //overload currently unused but kept due to later features may be benefitting from it
+        {
+            return unsavedChanges(this.tbStrip.Items);
+        }
+
+        public bool tabHasUnsavedChanges(FATabStripItem tab)
+        {
+            return tab.Title.StartsWith("*");
         }
 
         #endregion
@@ -526,7 +616,7 @@ namespace Personality_Creator
         private void Editor_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
         {
             //set unsaved changes
-            if (!this.CurrentTab.Title.StartsWith("*"))
+            if (!tabHasUnsavedChanges(this.CurrentTab))
             {
                 this.CurrentTab.Title = this.CurrentTab.Title.Insert(0, "*");
             }
@@ -560,7 +650,7 @@ namespace Personality_Creator
         private void ApplyStyle()
         {
             bool unsavedChangesBefore = false;
-            if(this.CurrentTab.Title.StartsWith("*"))
+            if(tabHasUnsavedChanges(this.CurrentTab))
             {
                 unsavedChangesBefore = true;
             }

@@ -36,6 +36,7 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbStrip = new FarsiLibrary.Win.FATabStrip();
             this.projectView = new System.Windows.Forms.TreeView();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -46,7 +47,10 @@
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.assembleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripTabContainer = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.closeCurrentTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllTabsExceptCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -57,6 +61,7 @@
             this.toolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.SuspendLayout();
+            this.contextMenuStripTabContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // mnuStrip
@@ -115,6 +120,13 @@
             this.hotkeysToolStripMenuItem.Text = "Hotkeys";
             this.hotkeysToolStripMenuItem.Click += new System.EventHandler(this.hotkeysToolStripMenuItem_Click);
             // 
+            // assembleToolStripMenuItem
+            // 
+            this.assembleToolStripMenuItem.Enabled = false;
+            this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
+            this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.assembleToolStripMenuItem.Text = "Assemble";
+            // 
             // tbStrip
             // 
             this.tbStrip.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -126,6 +138,7 @@
             this.tbStrip.Text = "faTabStrip1";
             this.tbStrip.TabStripItemClosing += new FarsiLibrary.Win.TabStripItemClosingHandler(this.tbStrip_TabStripItemClosing);
             this.tbStrip.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tbStrip_TabStripItemSelectionChanged);
+            this.tbStrip.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbStrip_MouseUp);
             // 
             // projectView
             // 
@@ -220,14 +233,37 @@
             this.toolStripContainer.TabIndex = 7;
             this.toolStripContainer.Text = "toolStripContainer";
             // 
-            // assembleToolStripMenuItem
+            // contextMenuStripTabContainer
             // 
-            this.assembleToolStripMenuItem.Enabled = false;
-            this.assembleToolStripMenuItem.Name = "assembleToolStripMenuItem";
-            this.assembleToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
-            this.assembleToolStripMenuItem.Text = "Assemble";
+            this.contextMenuStripTabContainer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.closeCurrentTabToolStripMenuItem,
+            this.closeAllTabsExceptCurrentToolStripMenuItem,
+            this.closeAllTabsToolStripMenuItem});
+            this.contextMenuStripTabContainer.Name = "contextMenuStripTabContainer";
+            this.contextMenuStripTabContainer.Size = new System.Drawing.Size(222, 70);
             // 
-            // mainFrm
+            // closeCurrentTabToolStripMenuItem
+            // 
+            this.closeCurrentTabToolStripMenuItem.Name = "closeCurrentTabToolStripMenuItem";
+            this.closeCurrentTabToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.closeCurrentTabToolStripMenuItem.Text = "Close current tab";
+            this.closeCurrentTabToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentTabToolStripMenuItem_Click);
+            // 
+            // closeAllTabsExceptCurrentToolStripMenuItem
+            // 
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Name = "closeAllTabsExceptCurrentToolStripMenuItem";
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Text = "Close all tabs except current";
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsExceptCurrentToolStripMenuItem_Click);
+            // 
+            // closeAllTabsToolStripMenuItem
+            // 
+            this.closeAllTabsToolStripMenuItem.Name = "closeAllTabsToolStripMenuItem";
+            this.closeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.closeAllTabsToolStripMenuItem.Text = "Close all tabs";
+            this.closeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsToolStripMenuItem_Click);
+            // 
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -235,7 +271,7 @@
             this.Controls.Add(this.toolStripContainer);
             this.Controls.Add(this.mnuStrip);
             this.MainMenuStrip = this.mnuStrip;
-            this.Name = "mainFrm";
+            this.Name = "frmMain";
             this.Text = "Personality Creator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainFrm_FormClosing);
             this.Load += new System.EventHandler(this.mainFrm_Load);
@@ -252,6 +288,7 @@
             this.toolStripContainer.ContentPanel.ResumeLayout(false);
             this.toolStripContainer.ResumeLayout(false);
             this.toolStripContainer.PerformLayout();
+            this.contextMenuStripTabContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -276,6 +313,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem assembleToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripTabContainer;
+        private System.Windows.Forms.ToolStripMenuItem closeCurrentTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeAllTabsExceptCurrentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeAllTabsToolStripMenuItem;
     }
 }
 
