@@ -119,10 +119,15 @@
     <None Include="stuff\icons\file.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\commandfilters.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\commands.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="data\keywords.txt" />
+    <Content Include="data\keywords.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\Index.html" />
   </ItemGroup>
   <ItemGroup />

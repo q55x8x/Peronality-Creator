@@ -15,6 +15,8 @@ namespace Personality_Creator
         {
             Items.AddRange(File.ReadAllLines(DataManager.AppPath + @"\data\commands.txt"));
 
+            Items.AddRange(File.ReadAllLines(DataManager.AppPath + @"\data\commandfilters.txt"));
+
             Items.AddRange(File.ReadAllLines(DataManager.AppPath + @"\data\keywords.txt"));
 
             Items.Add("testItem");
