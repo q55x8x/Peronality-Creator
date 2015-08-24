@@ -35,7 +35,22 @@ namespace Personality_Creator.PersonaFiles.Scripts
         {
             get
             {
-                return this.File.Name.Replace(this.File.Extension, ""); 
+                if (this.ScriptDeclension == ScriptDeclensionType.Edging)
+                {
+                    return this.File.Name.Replace(this.File.Extension, "").Replace($"_{nameof(ScriptDeclensionType.Edging).ToUpper()}", "");
+                }
+                else if (this.ScriptDeclension == ScriptDeclensionType.Chastity)
+                {
+                    return this.File.Name.Replace(this.File.Extension, "").Replace($"_{nameof(ScriptDeclensionType.Chastity).ToUpper()}", "");
+                }
+                else if (this.ScriptDeclension == ScriptDeclensionType.Begging)
+                {
+                    return this.File.Name.Replace(this.File.Extension, "").Replace($"_{nameof(ScriptDeclensionType.Begging).ToUpper()}", "");
+                }
+                else
+                {
+                    return this.File.Name.Replace(this.File.Extension, "");
+                }
             }
         }
 
@@ -43,9 +58,9 @@ namespace Personality_Creator.PersonaFiles.Scripts
 
         public Module(FileInfo file) : base (file)
         {
-            string declensionString = Match(file.Name, @"(?i)(?<=._)[\w]+(?=\.)").Value;
+            string declensionString = Match(this.File.Name, @"(?i)(?<=._)[\w]+(?=\.)").Value;
 
-            if(declensionString == nameof(ScriptDeclensionType.Edging).ToUpper()) //sadly switch case only works with constants; used the new c#6 nameof() so changes in ScriptDeclensionType will not mess up this function too much
+            if(declensionString == nameof(ScriptDeclensionType.Edging).ToUpper()) //sadly switch case only works with constants
             {
                 this.ScriptDeclension = ScriptDeclensionType.Edging;
             }
@@ -74,18 +89,18 @@ namespace Personality_Creator.PersonaFiles.Scripts
             switch(declension)
             {
                 case ScriptDeclensionType.Edging:
-                    newFullName = $@"{this.File.DirectoryName}\{this.ModuleName}_EDGING{this.File.Extension}";
-                    break;
-                case ScriptDeclensionType.Begging:
-                    newFullName = $@"{ this.File.DirectoryName}\{this.ModuleName}_BEGGING{this.File.Extension}";
+                    newFullName = $@"{this.File.DirectoryName}\{this.ModuleName}_{nameof(ScriptDeclensionType.Edging).ToUpper()}{this.File.Extension}";
                     break;
                 case ScriptDeclensionType.Chastity:
-                    newFullName = $@"{this.File.DirectoryName}\{this.ModuleName}_CHASTITY{this.File.Extension}";
+                    newFullName = $@"{this.File.DirectoryName}\{this.ModuleName}_{nameof(ScriptDeclensionType.Chastity).ToUpper()}{this.File.Extension}";
+                    break;
+                case ScriptDeclensionType.Begging:
+                    newFullName = $@"{ this.File.DirectoryName}\{this.ModuleName}_{nameof(ScriptDeclensionType.Begging).ToUpper()}{this.File.Extension}";
                     break;
                 default:
-                    return null;
+                    throw new InvalidOperationException("None or no valid declension type specified to clone into!");
             }
-
+            
             this.File.CopyTo(newFullName);
 
             return new Module(newFullName);
