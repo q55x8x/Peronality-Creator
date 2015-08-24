@@ -260,11 +260,30 @@ namespace Personality_Creator
             }
         }
 
+        //-------------------
+
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Sry but this feature is currently bugged :(");
             throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
             this.BeginEditNode();
+        }
+
+        //-------------------
+
+        private void asEdgingDeclensionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode parentNode = this.projectView.SelectedNode.Parent;
+        }
+
+        private void asChastityDeclensionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void asBeggingDeclensionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion

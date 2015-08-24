@@ -51,6 +51,11 @@
             this.closeCurrentTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllTabsExceptCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.cloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.asEdgingDeclensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.asChastityDeclensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.asBeggingDeclensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -176,33 +181,35 @@
             this.newScriptToolStripMenuItem,
             this.newFolderToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.renameToolStripMenuItem});
+            this.renameToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.cloneToolStripMenuItem});
             this.contextMenuStripProjectView.Name = "contextMenuStripProjectView";
-            this.contextMenuStripProjectView.Size = new System.Drawing.Size(135, 76);
+            this.contextMenuStripProjectView.Size = new System.Drawing.Size(153, 126);
             // 
             // newScriptToolStripMenuItem
             // 
             this.newScriptToolStripMenuItem.Name = "newScriptToolStripMenuItem";
-            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.newScriptToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newScriptToolStripMenuItem.Text = "New Script";
             this.newScriptToolStripMenuItem.Click += new System.EventHandler(this.newScriptToolStripMenuItem_Click);
             // 
             // newFolderToolStripMenuItem
             // 
             this.newFolderToolStripMenuItem.Name = "newFolderToolStripMenuItem";
-            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newFolderToolStripMenuItem.Text = "New Folder";
             this.newFolderToolStripMenuItem.Click += new System.EventHandler(this.newFolderToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(131, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // renameToolStripMenuItem
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.renameToolStripMenuItem.Text = "Rename";
             this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             // 
@@ -263,6 +270,42 @@
             this.closeAllTabsToolStripMenuItem.Text = "Close all tabs";
             this.closeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+            // 
+            // cloneToolStripMenuItem
+            // 
+            this.cloneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.asEdgingDeclensionToolStripMenuItem,
+            this.asChastityDeclensionToolStripMenuItem,
+            this.asBeggingDeclensionToolStripMenuItem});
+            this.cloneToolStripMenuItem.Name = "cloneToolStripMenuItem";
+            this.cloneToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cloneToolStripMenuItem.Text = "Clone";
+            // 
+            // asEdgingDeclensionToolStripMenuItem
+            // 
+            this.asEdgingDeclensionToolStripMenuItem.Name = "asEdgingDeclensionToolStripMenuItem";
+            this.asEdgingDeclensionToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.asEdgingDeclensionToolStripMenuItem.Text = "as edging declension";
+            this.asEdgingDeclensionToolStripMenuItem.Click += new System.EventHandler(this.asEdgingDeclensionToolStripMenuItem_Click);
+            // 
+            // asChastityDeclensionToolStripMenuItem
+            // 
+            this.asChastityDeclensionToolStripMenuItem.Name = "asChastityDeclensionToolStripMenuItem";
+            this.asChastityDeclensionToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.asChastityDeclensionToolStripMenuItem.Text = "as chastity declension";
+            this.asChastityDeclensionToolStripMenuItem.Click += new System.EventHandler(this.asChastityDeclensionToolStripMenuItem_Click);
+            // 
+            // asBeggingDeclensionToolStripMenuItem
+            // 
+            this.asBeggingDeclensionToolStripMenuItem.Name = "asBeggingDeclensionToolStripMenuItem";
+            this.asBeggingDeclensionToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.asBeggingDeclensionToolStripMenuItem.Text = "as begging declension";
+            this.asBeggingDeclensionToolStripMenuItem.Click += new System.EventHandler(this.asBeggingDeclensionToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -317,6 +360,11 @@
         private System.Windows.Forms.ToolStripMenuItem closeCurrentTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeAllTabsExceptCurrentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeAllTabsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem cloneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem asEdgingDeclensionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem asChastityDeclensionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem asBeggingDeclensionToolStripMenuItem;
     }
 }
 
