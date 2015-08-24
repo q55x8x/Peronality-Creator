@@ -72,6 +72,7 @@
     <Compile Include="PersonaFiles\Scripts\Module.cs" />
     <Compile Include="NewFolderDialog.cs" />
     <Compile Include="PersonaFile.cs" />
+    <Compile Include="PersonaFiles\Scripts\Vocabfile.cs" />
     <Compile Include="Personality.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
