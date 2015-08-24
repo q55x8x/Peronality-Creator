@@ -177,6 +177,15 @@ namespace Personality_Creator
                 this.newFolderToolStripMenuItem.Enabled = false;
             }
 
+            if (this.projectView.SelectedNode.Tag.GetType() == typeof(Module))
+            {
+                this.cloneToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                this.cloneToolStripMenuItem.Enabled = false;
+            }
+
             if (e.Button == MouseButtons.Right)
             {
                 this.contextMenuStripProjectView.Show(Cursor.Position);
@@ -273,17 +282,38 @@ namespace Personality_Creator
 
         private void asEdgingDeclensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TreeNode parentNode = this.projectView.SelectedNode.Parent;
+            cloneSelectedModule(ScriptDeclensionType.Edging);
         }
 
         private void asChastityDeclensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            cloneSelectedModule(ScriptDeclensionType.Chastity);
         }
 
         private void asBeggingDeclensionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            cloneSelectedModule(ScriptDeclensionType.Begging);
+        }
 
+        private void cloneSelectedModule(ScriptDeclensionType declensionType)
+        {
+            TreeNode parentNode = this.projectView.SelectedNode.Parent;
+            Module moduleToClone;
+            Module moduleClone = null;
+
+            if (this.projectView.SelectedNode.Tag.GetType() == typeof(Module))
+            {
+                moduleToClone = (Module)this.projectView.SelectedNode.Tag;
+                moduleClone = moduleToClone.clone(declensionType);
+            }
+
+            if(moduleClone != null)
+            {
+                TreeNode newNode = new TreeNode(moduleClone.File.Name, 1, 1);
+                newNode.Tag = moduleClone;
+                int index = this.projectView.SelectedNode.Index + 1;
+                parentNode.Nodes.Insert(index, newNode);
+            }
         }
 
         #endregion
