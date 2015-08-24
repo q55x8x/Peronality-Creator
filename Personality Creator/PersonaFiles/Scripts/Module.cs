@@ -45,7 +45,7 @@ namespace Personality_Creator.PersonaFiles.Scripts
         {
             string declensionString = Match(file.Name, @"(?i)(?<=._)[\w]+(?=\.)").Value;
 
-            if(declensionString == nameof(ScriptDeclensionType.Edging).ToUpper()) //sadly switch case only works with constants
+            if(declensionString == nameof(ScriptDeclensionType.Edging).ToUpper()) //sadly switch case only works with constants; used the new c#6 nameof() so changes in ScriptDeclensionType will not mess up this function too much
             {
                 this.ScriptDeclension = ScriptDeclensionType.Edging;
             }
