@@ -5,7 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Personality Creator", "Personality Creator\Personality Creator.csproj", "{935D2D29-990E-474E-A52D-0695CA46F1DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "simpleRegexMatcher", "simpleRegexMatcher\simpleRegexMatcher.csproj", "{4C94345E-887D-42BA-B3DA-A188ED99FE69}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "i00SpellCheck", "SpellChecker\i00SpellCheck\i00SpellCheck.vbproj", "{27D0D9B3-719C-46B7-9F03-3F91E82E7436}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "FastColoredTextBoxPlugin", "SpellChecker\FastColoredTextBoxPlugin\FastColoredTextBoxPlugin.vbproj", "{D640FBFD-A239-4E43-9818-ECBB9F7A09F3}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "i00BindingList", "SpellChecker\Components\i00BindingList\i00BindingList.vbproj", "{1A3066D9-B48C-4EC1-AC93-4B0BBE5AA812}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,18 @@ Global
 		{935D2D29-990E-474E-A52D-0695CA46F1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{935D2D29-990E-474E-A52D-0695CA46F1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{935D2D29-990E-474E-A52D-0695CA46F1DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C94345E-887D-42BA-B3DA-A188ED99FE69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C94345E-887D-42BA-B3DA-A188ED99FE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C94345E-887D-42BA-B3DA-A188ED99FE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C94345E-887D-42BA-B3DA-A188ED99FE69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27D0D9B3-719C-46B7-9F03-3F91E82E7436}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27D0D9B3-719C-46B7-9F03-3F91E82E7436}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27D0D9B3-719C-46B7-9F03-3F91E82E7436}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27D0D9B3-719C-46B7-9F03-3F91E82E7436}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D640FBFD-A239-4E43-9818-ECBB9F7A09F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D640FBFD-A239-4E43-9818-ECBB9F7A09F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D640FBFD-A239-4E43-9818-ECBB9F7A09F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D640FBFD-A239-4E43-9818-ECBB9F7A09F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A3066D9-B48C-4EC1-AC93-4B0BBE5AA812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A3066D9-B48C-4EC1-AC93-4B0BBE5AA812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A3066D9-B48C-4EC1-AC93-4B0BBE5AA812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A3066D9-B48C-4EC1-AC93-4B0BBE5AA812}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

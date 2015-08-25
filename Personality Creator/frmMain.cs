@@ -15,6 +15,8 @@ using System.IO.Compression;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
 using static System.Text.RegularExpressions.Regex;
+using i00SpellCheck;
+using FastColoredTextBoxPlugin;
 
 namespace Personality_Creator
 {
@@ -97,6 +99,14 @@ namespace Personality_Creator
         {
             DataManager.initDataManager();
             AutoCompleteItemManager.load();
+
+            if (DataManager.settings.openedPersonas.Count > 0)
+            {
+                foreach (string personaPath in DataManager.settings.openedPersonas)
+                {
+                    OpenPersonaIgnoreChecks(personaPath);
+                }
+            }
         }
 
         #region toolstripMenu logic
@@ -127,7 +137,7 @@ namespace Personality_Creator
             
             if(ofd.ShowDialog() == DialogResult.OK)
             {
-                PersonaFile newFile = new PersonaFile(ofd.FileName);
+                Module newFile = new Module(ofd.FileName);
                 this.addUnAssociatedFile(newFile);
                 openFile(newFile);
             }
@@ -427,6 +437,15 @@ namespace Personality_Creator
 
         private void OpenPersona(string path)
         {
+            if (!DataManager.settings.openedPersonas.Contains(path))
+            {
+                OpenPersonaIgnoreChecks(path);
+                DataManager.settings.openedPersonas.Add(path);
+            }
+        }
+
+        private void OpenPersonaIgnoreChecks(string path)
+        {
             Personality persona = new Personality(path);
             this.OpenedPersonas.Add(persona.Name, persona);
             this.projectView.Nodes.Add(persona.getRootNode());
@@ -442,7 +461,7 @@ namespace Personality_Creator
 
         private void openScript(Script script)
         {
-            if(script.GetType() == typeof(Module))
+            if (script.GetType() == typeof(Module))
             {
                 openModule((Module)script);
             }
@@ -463,6 +482,12 @@ namespace Personality_Creator
             FATabStripItem newTab = new FATabStripItem();
             newTab.Title = script.File.Name;
             newTab.Tag = script;
+
+            //load the spellchecker extension for FastColoredTextBox
+            SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
+            ControlExtensions.LoadSingleControlExtension(newEditor, spellCheckerTextBox);
+            //spellCheckerTextBox.SpellCheckMatch = @"(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
+            spellCheckerTextBox.SpellCheckMatch = @"^([\w']+)| ([\w']+)|>([\w']+)"; // Only process words starting a line, following a space or a tag
 
             newEditor.Parent = newTab;
             newEditor.Dock = DockStyle.Fill;
@@ -737,7 +762,7 @@ namespace Personality_Creator
                 string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
                 int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
                 Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
-                this.currentEditor.Selection = range;
+                this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
                 this.currentEditor.DoCaretVisible();
             }
         }
@@ -765,6 +790,50 @@ namespace Personality_Creator
             }
         }
 
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = this.projectView.SelectedNode;
+
+            if (selectedNode.Parent == null)
+            {
+                if (MessageBox.Show(
+                    "This will only remove the persona from here. It will NOT delete the files. Do you want to continue?",
+                    "Delete Persona",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Folder personaToDelete = (Folder)selectedNode.Tag;
+                    selectedNode.Remove();
+                    DataManager.settings.openedPersonas.Remove(personaToDelete.Directory.FullName);
+                }
+            }
+            else if (selectedNode.Tag.GetType() == typeof(Folder))
+            {
+                if (MessageBox.Show(
+                    "This will delete this folder and ALL its content. Are you sure?",
+                    "Delete Folder",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Folder folderToDelete = (Folder)selectedNode.Tag;
+                    folderToDelete.Directory.Delete(true);
+                    selectedNode.Remove();
+                }
+            }
+            else
+            {
+                if (MessageBox.Show(
+                    "This will delete this file. Are you sure?",
+                    "Delete Script",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Script fileToDelete = (Script)selectedNode.Tag;
+                    fileToDelete.File.Delete();
+                    selectedNode.Remove();
+                }
+            }
+        }
         #endregion
 
 

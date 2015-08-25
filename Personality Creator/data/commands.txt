@@ -71,6 +71,7 @@ PlayVideo[]
 RapidTextOff
 RapidTextOn
 ResumeAvoidTheEdge
+RoundVar
 SendDailyTasks
 SetFlag
 SetGroup
