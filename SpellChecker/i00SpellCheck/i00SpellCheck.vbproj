@@ -1003,7 +1003,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Components\i00BindingList\i00BindingList.vbproj">
-      <Project>{1A3066D9-B48C-4EC1-AC93-4B0BBE5AA812}</Project>
+      <Project>{1a3066d9-b48c-4ec1-ac93-4b0bbe5aa812}</Project>
       <Name>i00BindingList</Name>
     </ProjectReference>
   </ItemGroup>

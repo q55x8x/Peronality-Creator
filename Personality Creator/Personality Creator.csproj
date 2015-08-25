@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastColoredTextBox">
+    <Reference Include="FastColoredTextBox, Version=2.16.11.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\l00s3s\Downloads\FastColoredTextBox-master\FastColoredTextBox-master\Binary\FastColoredTextBox.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -132,6 +133,10 @@
     <Content Include="Help\Index.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SpellChecker\Components\i00BindingList\i00BindingList.vbproj">
+      <Project>{1a3066d9-b48c-4ec1-ac93-4b0bbe5aa812}</Project>
+      <Name>i00BindingList</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpellChecker\FastColoredTextBoxPlugin\FastColoredTextBoxPlugin.vbproj">
       <Project>{d640fbfd-a239-4e43-9818-ecbb9f7a09f3}</Project>
       <Name>FastColoredTextBoxPlugin</Name>
