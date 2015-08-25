@@ -40,7 +40,7 @@ namespace Personality_Creator
 
         public static PersonaFile CreateInstance(FileInfo file)
         {
-            if (file.Extension == ".txt" && file.DirectoryName == "Vocabulary")
+            if (file.Extension == ".txt" && file.Directory.Name == "Vocabulary")
             {
                 return new Vocabfile(file);
             }

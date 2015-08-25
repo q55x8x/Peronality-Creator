@@ -7,11 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Personality_Creator.PersonaFiles.Scripts;
+using System.IO;
 
 namespace Personality_Creator.UI
 {
     public partial class VocabFileEditor : UserControl
     {
+        public string[] VocabItems
+        {
+            get
+            {
+                string[] items = new string[this.lstVocabItems.Items.Count];
+                this.lstVocabItems.Items.CopyTo(items, 0);
+                return items;
+            }
+        }
+
         public delegate void VocabItemCollectionChangedEventHandler(object sender, VocabItemsChangedEventArgs eventArgs);
         public event VocabItemCollectionChangedEventHandler VocabItemCollectionChanged;
         public VocabFileEditor()
@@ -76,8 +88,12 @@ namespace Personality_Creator.UI
                 if (this.lstVocabItems.Items.Contains(item))
                 {
                     removedItems.Add(item);
-                    this.lstVocabItems.Items.Remove(item);
                 }
+            }
+
+            foreach(string item in removedItems) //again we can't change the collection inside a foreach that is looping through it
+            {
+                this.lstVocabItems.Items.Remove(item);
             }
 
             this.VocabItemCollectionChanged(this, new VocabItemsChangedEventArgs()
@@ -163,6 +179,12 @@ namespace Personality_Creator.UI
                                                         RemovedItems = new string[] { },
                                                         Operation = VocabItemsChangedEventArgs.OperationType.Added
                                                     });
+        }
+
+        public void loadVocabfile(Vocabfile vocabfile)
+        {
+            addItems(File.ReadAllLines(vocabfile.File.FullName));
+            this.lblVocabKexword.Text = vocabfile.Keyword;
         }
 
         #endregion

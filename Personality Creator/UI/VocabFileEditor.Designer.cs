@@ -61,9 +61,9 @@
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(614, 519);
+            this.btnAdd.Location = new System.Drawing.Point(601, 493);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.Size = new System.Drawing.Size(89, 23);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "add";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -72,11 +72,11 @@
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(614, 490);
+            this.btnDelete.Location = new System.Drawing.Point(604, 464);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.Size = new System.Drawing.Size(89, 23);
             this.btnDelete.TabIndex = 3;
-            this.btnDelete.Text = "delete";
+            this.btnDelete.Text = "delete selected";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
@@ -84,9 +84,9 @@
             // 
             this.txtNewVocabItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNewVocabItem.Location = new System.Drawing.Point(216, 521);
+            this.txtNewVocabItem.Location = new System.Drawing.Point(216, 522);
             this.txtNewVocabItem.Name = "txtNewVocabItem";
-            this.txtNewVocabItem.Size = new System.Drawing.Size(392, 20);
+            this.txtNewVocabItem.Size = new System.Drawing.Size(474, 20);
             this.txtNewVocabItem.TabIndex = 4;
             this.txtNewVocabItem.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNewVocabItem_KeyDown);
             // 

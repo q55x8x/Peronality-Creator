@@ -17,6 +17,7 @@ using Personality_Creator.PersonaFiles.Scripts;
 using static System.Text.RegularExpressions.Regex;
 using i00SpellCheck;
 using FastColoredTextBoxPlugin;
+using Personality_Creator.UI;
 
 namespace Personality_Creator
 {
@@ -56,10 +57,17 @@ namespace Personality_Creator
             set
             {
                 currentTab = value;
-                if (value != null)
+                if (value != null) //TODO: maybe we have to think about to refactor the currentEditor property to match the differentiation pattern
                 {
-                    this.CurrentEditor = (FastColoredTextBox)this.CurrentTab.Controls[0];
-                    this.CurrentFile = (PersonaFile)this.CurrentTab.Tag;
+                    if (this.CurrentTab.Tag.GetType() == typeof(Module))
+                    {
+                        this.CurrentEditor = (FastColoredTextBox)this.CurrentTab.Controls[0];
+                        this.CurrentFile = (PersonaFile)this.CurrentTab.Tag;
+                    }
+                    else if (this.CurrentTab.Tag.GetType() == typeof(Vocabfile))
+                    {
+                        this.CurrentFile = (PersonaFile)this.CurrentTab.Tag;
+                    }
                 }
             }
         }
@@ -468,7 +476,11 @@ namespace Personality_Creator
             {
                 openModule((Module)script);
             }
-            else if(script.GetType() == typeof(Fragment))
+            else if (script.GetType() == typeof(Vocabfile))
+            {
+                openVocab((Vocabfile)script);
+            }
+            else if (script.GetType() == typeof(Fragment))
             {
                 openFragment((Fragment)script);
             }
@@ -478,13 +490,13 @@ namespace Personality_Creator
             }
         }
 
-        private void openModule(Module script)
+        private void openModule(Module module)
         {
             FastColoredTextBox newEditor = new FastColoredTextBox();
 
             FATabStripItem newTab = new FATabStripItem();
-            newTab.Title = script.File.Name;
-            newTab.Tag = script;
+            newTab.Title = module.File.Name;
+            newTab.Tag = module;
 
             //load the spellchecker extension for FastColoredTextBox
             SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
@@ -494,7 +506,7 @@ namespace Personality_Creator
 
             newEditor.Parent = newTab;
             newEditor.Dock = DockStyle.Fill;
-            newEditor.Text = script.Read();
+            newEditor.Text = module.Read();
             newEditor.Focus();
 
             newEditor.TextChanged += this.Editor_TextChanged;
@@ -507,6 +519,27 @@ namespace Personality_Creator
             this.tbStrip.SelectedItem = newTab;
 
             this.ApplyStyle();
+        }
+
+        private void openVocab(Vocabfile vocabfile)
+        {
+            VocabFileEditor vocabEditor = new VocabFileEditor();
+
+            FATabStripItem newTab = new FATabStripItem();
+            newTab.Title = vocabfile.Keyword;
+            newTab.Tag = vocabfile;
+
+            vocabEditor.Parent = newTab;
+            vocabEditor.Dock = DockStyle.Fill;
+            vocabEditor.loadVocabfile(vocabfile);
+            vocabEditor.Focus();
+
+            vocabEditor.VocabItemCollectionChanged += VocabEditor_VocabItemCollectionChanged;
+            vocabEditor.KeyDown += VocabEditor_KeyDown;
+
+            this.tbStrip.AddTab(newTab);
+
+            this.tbStrip.SelectedItem = newTab;
         }
 
         private void openFragment(Fragment script)
@@ -595,7 +628,7 @@ namespace Personality_Creator
         {
             if (tabHasUnsavedChanges(tab) && save)
             {
-                ((Script)tab.Tag).Save(((FastColoredTextBox)tab.Controls[0]).Text);
+                saveFile((PersonaFile)tab.Tag, tab.TabIndex);
                 tab.Title = tab.Title.Remove(0, 1);
             }
             this.tbStrip.Items.Remove(tab);
@@ -652,26 +685,43 @@ namespace Personality_Creator
 
         #region saving
 
-        public void saveCurrentFile()
+        public void saveFile(PersonaFile file, int tabIndex)
         {
-            if(this.CurrentFile.GetType().BaseType == typeof(Script))
+            if (file.GetType().BaseType == typeof(Script))
             {
-                ((Script)this.CurrentFile).Save(this.CurrentEditor.Text);
-
-                if(this.CurrentTab.Title.StartsWith("*"))
+                if (file.GetType() == typeof(Module))
                 {
-                    this.CurrentTab.Title = this.CurrentTab.Title.Remove(0, 1);
+                    ((Module)file).Save(((FastColoredTextBox)this.tbStrip.Items[tabIndex].Controls?[0]).Text);
+
+                    if (this.tbStrip.Items[tabIndex].Title.StartsWith("*"))
+                    {
+                        this.tbStrip.Items[tabIndex].Title = this.tbStrip.Items[tabIndex].Title.Remove(0, 1);
+                    }
+                }
+                else if (file.GetType() == typeof(Vocabfile))
+                {
+                    ((Vocabfile)file).Save(((VocabFileEditor)this.tbStrip.Items[tabIndex].Controls?[0]).VocabItems);
+
+                    if (this.tbStrip.Items[tabIndex].Title.StartsWith("*"))
+                    {
+                        this.tbStrip.Items[tabIndex].Title = this.tbStrip.Items[tabIndex].Title.Remove(0, 1);
+                    }
                 }
             }
         }
 
-        public void saveAllFiles()
+        public void saveCurrentFile() //TODO: in the future type recognition has to be tweaked accordingly to the file type
+        {
+            saveFile(this.CurrentFile, this.CurrentTab.TabIndex);
+        }
+
+        public void saveAllFiles() //TODO: in the future type recognition has to be tweaked accordingly to the file type
         {
             foreach (FATabStripItem tab in this.tbStrip.Items)
             {
                 if (tab.Title.StartsWith("*"))
                 {
-                    ((Script)tab.Tag).Save(tab.Controls?[0].Text);
+                    saveFile((PersonaFile)tab.Tag, tab.TabIndex);
                     tab.Title = this.CurrentTab.Title.Remove(0, 1);
                 }
             }
@@ -679,7 +729,7 @@ namespace Personality_Creator
 
         #endregion
 
-        #region editor logic
+        #region text editor logic
 
         Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
@@ -837,6 +887,26 @@ namespace Personality_Creator
                 }
             }
         }
+        #endregion
+
+        #region vocab editor logic
+
+        private void VocabEditor_VocabItemCollectionChanged(object sender, VocabFileEditor.VocabItemsChangedEventArgs eventArgs)
+        {
+            if (!tabHasUnsavedChanges(this.CurrentTab))
+            {
+                this.CurrentTab.Title = this.CurrentTab.Title.Insert(0, "*");
+            }
+        }
+
+        private void VocabEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.S && ModifierKeys == Keys.Control)
+            {
+                saveCurrentFile();
+            }
+        }
+
         #endregion
 
 
