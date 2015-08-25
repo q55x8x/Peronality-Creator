@@ -124,8 +124,9 @@ namespace Personality_Creator
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                DataManager.settings.lastOpenedPersonaDirectory = fbd.SelectedPath;
                 OpenPersona(fbd.SelectedPath);
+
+                DataManager.settings.lastOpenedPersonaDirectory = fbd.SelectedPath;
             }
         }
 
@@ -137,9 +138,11 @@ namespace Personality_Creator
             
             if(ofd.ShowDialog() == DialogResult.OK)
             {
-                Module newFile = new Module(ofd.FileName);
+                PersonaFile newFile = PersonaFile.CreateInstance(ofd.FileName);
                 this.addUnAssociatedFile(newFile);
                 openFile(newFile);
+
+                DataManager.settings.lastOpenedSingleFileDirectory = newFile.File.Directory.FullName;
             }
         }
 
