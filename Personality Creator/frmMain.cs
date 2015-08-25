@@ -12,7 +12,6 @@ namespace Personality_Creator
     {
         private FATabStripItem CurrentTab;
 
-        public Dictionary<string, Personality> OpenedPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
         public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
 
         public frmMain()
@@ -384,7 +383,6 @@ namespace Personality_Creator
         private void OpenPersonaIgnoreChecks(string path)
         {
             Personality persona = new Personality(path);
-            this.OpenedPersonas.Add(persona.Name, persona);
             this.projectView.Nodes.Add(persona.getRootNode());
         }
 
