@@ -786,6 +786,50 @@ namespace Personality_Creator
             }
         }
 
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = this.projectView.SelectedNode;
+
+            if (selectedNode.Parent == null)
+            {
+                if (MessageBox.Show(
+                    "This will only remove the persona from here. It will NOT delete the files. Do you want to continue?",
+                    "Delete Persona",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Folder personaToDelete = (Folder)selectedNode.Tag;
+                    selectedNode.Remove();
+                    DataManager.settings.openedPersona.Remove(personaToDelete.Directory.FullName);
+                }
+            }
+            else if (selectedNode.Tag.GetType() == typeof(Folder))
+            {
+                if (MessageBox.Show(
+                    "This will delete this folder and ALL its content. Are you sure?",
+                    "Delete Folder",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Folder folderToDelete = (Folder)selectedNode.Tag;
+                    folderToDelete.Directory.Delete(true);
+                    selectedNode.Remove();
+                }
+            }
+            else
+            {
+                if (MessageBox.Show(
+                    "This will delete this file. Are you sure?",
+                    "Delete Script",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Script fileToDelete = (Script)selectedNode.Tag;
+                    fileToDelete.File.Delete();
+                    selectedNode.Remove();
+                }
+            }
+        }
         #endregion
 
 
