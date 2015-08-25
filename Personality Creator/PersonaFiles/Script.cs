@@ -25,7 +25,6 @@ namespace Personality_Creator.PersonaFiles
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style CheckFlagStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        MarkerStyle GreenStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(180, Color.LightGreen)));
         //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
 
         private List<Range> highlightedText = new List<Range>();
@@ -69,7 +68,6 @@ namespace Personality_Creator.PersonaFiles
             //load the spellchecker extension for FastColoredTextBox
             SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
             ControlExtensions.LoadSingleControlExtension(editor, spellCheckerTextBox);
-            //spellCheckerTextBox.SpellCheckMatch = @"(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
             spellCheckerTextBox.SpellCheckMatch = @"^([\w']+)| ([\w']+)|>([\w']+)"; // Only process words starting a line, following a space or a tag
 
             this.editor.Parent = this.tab;
@@ -139,8 +137,8 @@ namespace Personality_Creator.PersonaFiles
         private void Editor_MouseMove(object sender, MouseEventArgs e)
         {
             Place p = this.editor.PointToPlace(e.Location);
-            if (CharIsGoto(p) && Control.ModifierKeys == Keys.Control
-            || CharIsCheckFlag(p) && Control.ModifierKeys == Keys.Control)
+            if (FastColoredEditorUtils.cursorIsOnTextOfStyle(p, GotoStyle, this.editor) && Control.ModifierKeys == Keys.Control
+            || FastColoredEditorUtils.cursorIsOnTextOfStyle(p, CheckFlagStyle, this.editor) && Control.ModifierKeys == Keys.Control)
             {
                 this.editor.Cursor = Cursors.Hand;
             }
@@ -154,48 +152,56 @@ namespace Personality_Creator.PersonaFiles
         {
             Place p = this.editor.PointToPlace(e.Location);
 
-            if (CharIsGoto(p) && Control.ModifierKeys == Keys.Control)
+            if (FastColoredEditorUtils.cursorIsOnTextOfStyle(p, GotoStyle, this.editor) && Control.ModifierKeys == Keys.Control)
             {
-                MatchCollection matches = Matches(this.editor.GetLineText(p.iLine), @"(?i)(?<=(\@goto\(|then\(|chance[0-9]{2}\())[A-z_0-9öäüáéíóú+\s]+(?=\))"); //extracting the goto specifier
-
-                for (int i = matches.Count - 1; i >= 0; i--)
+                string gotoName = findGotoClickTarget(p);
+                if (gotoName != null)
                 {
-                    if (matches[i].Groups[1].Index <= p.iChar)
-                    {
-                        string gotoName = matches[i].Groups[0].Value;
-                        highlightTarget(gotoName);
-                        break;
-                    }
+                    FastColoredEditorUtils.SelectText(gotoName, this.editor);
                 }
             }
-            else if (CharIsCheckFlag(p) && Control.ModifierKeys == Keys.Control)
+            else if (FastColoredEditorUtils.cursorIsOnTextOfStyle(p, GotoStyle, this.editor) && Control.ModifierKeys == Keys.Control)
             {
-                Match checkflagTargetsMatch = Match(this.editor.GetLineText(p.iLine), @"(?i)(?<=\@checkflag\()([A-z_0-9öäüáéíóú+\s]+)(,([A-z_0-9öäüáéíóú+\s]+))*(?=\))"); //extracting the checkflag specifier
-
-                string foundTarget = null;
-                for (int i = checkflagTargetsMatch.Groups[3].Captures.Count - 1; i >= 0 && foundTarget == null; i--)
-                {
-                    if (checkflagTargetsMatch.Groups[3].Captures[i].Index <= p.iChar)
-                    {
-                        foundTarget = checkflagTargetsMatch.Groups[3].Captures[i].Value;
-                    }
-                }
-
-                if (foundTarget == null)
-                {
-                    foundTarget = checkflagTargetsMatch.Groups[1].Value;
-                }
-                highlightTarget(foundTarget.Trim());
+                string foundTarget = findCheckFlagClickedTarget(p);
+                FastColoredEditorUtils.SelectText(foundTarget.Trim(), this.editor);
             }
         }
 
-        private bool CharIsGoto(Place place)
+        private string findGotoClickTarget(Place p)
         {
-            if (this.editor.GetStylesOfChar(place).Contains(GotoStyle))
+            MatchCollection matches = Matches(this.editor.GetLineText(p.iLine), @"(?i)(?<=(\@goto\(|then\(|chance[0-9]{2}\())[A-z_0-9öäüáéíóú+\s]+(?=\))"); //extracting the goto specifier
+
+            string gotoName = null;
+            for (int i = matches.Count - 1; i >= 0 && gotoName == null; i--)
             {
-                return true;
+                if (matches[i].Groups[1].Index <= p.iChar)
+                {
+                    gotoName = matches[i].Groups[0].Value;
+                }
             }
-            return false;
+
+            return gotoName;
+        }
+
+        private string findCheckFlagClickedTarget(Place p)
+        {
+            Match checkflagTargetsMatch = Match(this.editor.GetLineText(p.iLine), @"(?i)(?<=\@checkflag\()([A-z_0-9öäüáéíóú+\s]+)(,([A-z_0-9öäüáéíóú+\s]+))*(?=\))"); //extracting the checkflag specifier
+
+            string foundTarget = null;
+            for (int i = checkflagTargetsMatch.Groups[3].Captures.Count - 1; i >= 0 && foundTarget == null; i--)
+            {
+                if (checkflagTargetsMatch.Groups[3].Captures[i].Index <= p.iChar)
+                {
+                    foundTarget = checkflagTargetsMatch.Groups[3].Captures[i].Value;
+                }
+            }
+
+            if (foundTarget == null)
+            {
+                foundTarget = checkflagTargetsMatch.Groups[1].Value;
+            }
+
+            return foundTarget;
         }
 
         private void Editor_KeyUp(object sender, KeyEventArgs e)
@@ -205,46 +211,12 @@ namespace Personality_Creator.PersonaFiles
 
         private void Editor_MouseDown(Object sender, MouseEventArgs e)
         {
-            foreach (Range range in highlightedText)
-            {
-                range.ClearStyle(GreenStyle);
-            }
-            highlightedText.Clear();
+            FastColoredEditorUtils.clearHighlightedText(highlightedText);
         }
 
         private void Editor_DblClick(object sender, EventArgs e)
         {
-            string selectedText = this.editor.SelectedText;
-
-            int lineNb = -1;
-            foreach (string line in this.editor.Lines)
-            {
-                lineNb++;
-                MatchCollection matches = Matches(line, $@"{selectedText}\b");
-                foreach (Match match in matches)
-                {
-                    Range range = new Range(this.editor, match.Index, lineNb, (match.Index + selectedText.Length), lineNb);
-                    range.SetStyle(GreenStyle);
-                    highlightedText.Add(range);
-                }
-            }
-        }
-
-        private bool CharIsCheckFlag(Place place)
-        {
-            if (this.editor.GetStylesOfChar(place).Contains(CheckFlagStyle))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private void highlightTarget(string target)
-        {
-            int index = Match(this.editor.Text, $@"(?<=\n)\({target}\)").Index; //finding the goto destination
-            Range range = this.editor.GetRange(index + target.Length + 2, index + target.Length + 2);
-            this.editor.Selection = new Range(this.editor, range.Start.iLine);
-            this.editor.DoCaretVisible();
+            this.highlightedText = FastColoredEditorUtils.highlightText(this.editor.SelectedText, this.editor);
         }
     }
 
