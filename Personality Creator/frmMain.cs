@@ -97,6 +97,11 @@ namespace Personality_Creator
         {
             DataManager.initDataManager();
             AutoCompleteItemManager.load();
+
+            foreach (string personaPath in DataManager.settings.openedPersona)
+            {
+                OpenPersonaIgnoreChecks(personaPath);
+            }
         }
 
         #region toolstripMenu logic
@@ -427,6 +432,14 @@ namespace Personality_Creator
 
         private void OpenPersona(string path)
         {
+            if (!DataManager.settings.openedPersona.Contains(path))
+            {
+                OpenPersonaIgnoreChecks(path);
+                DataManager.settings.openedPersona.Add(path);
+            }
+        }
+        private void OpenPersonaIgnoreChecks(string path)
+        {
             Personality persona = new Personality(path);
             this.OpenedPersonas.Add(persona.Name, persona);
             this.projectView.Nodes.Add(persona.getRootNode());
@@ -442,7 +455,7 @@ namespace Personality_Creator
 
         private void openScript(Script script)
         {
-            if(script.GetType() == typeof(Module))
+            if (script.GetType() == typeof(Module))
             {
                 openModule((Module)script);
             }
