@@ -339,7 +339,7 @@ namespace Personality_Creator
 
         private void tbStrip_TabStripItemClosing(TabStripItemClosingEventArgs e)
         {
-            e.Cancel = !tryCloseTab(e.Item); //cancel if tryClose did NOT succeed
+            e.Cancel = !tryCloseTab(e.Item);
         }
 
         private void tbStrip_MouseUp(object sender, MouseEventArgs e)
@@ -354,7 +354,16 @@ namespace Personality_Creator
 
         private void closeCurrentTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tryCloseTab(this.CurrentTab);
+            FATabStripItem tab = this.CurrentTab;
+            int index = this.tbStrip.Items.IndexOf(tab);
+            if (tryCloseTab(tab))
+            {
+                if (index >= this.tbStrip.Items.Count)
+                {
+                    index = this.tbStrip.Items.Count - 1;
+                }
+                this.tbStrip.SelectedItem = this.tbStrip.Items[index];
+            }
         }
 
         private void closeAllTabsExceptCurrentToolStripMenuItem_Click(object sender, EventArgs e)
