@@ -5,6 +5,8 @@ using FarsiLibrary.Win;
 using System.IO;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
+using System.Collections.ObjectModel;
+using System.Collections;
 
 namespace Personality_Creator
 {
@@ -23,7 +25,7 @@ namespace Personality_Creator
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = !tryCloseAllTabs();
+            e.Cancel = !trySaveTabs(copyTabCollectionAsList(this.tbStrip.Items));
 
             Settings.save();
         }
@@ -300,16 +302,11 @@ namespace Personality_Creator
                     switch(result)
                     {
                         case DialogResult.Yes:
-                            foreach (FATabStripItem tab in tabsWithOpenFIles)
-                            {
-                                closeTab(tab, true);
-                            }
+                            saveTabs(tabsWithOpenFIles);
+                            closeTabs(tabsWithOpenFIles);
                             break;
                         case DialogResult.No:
-                            foreach (FATabStripItem tab in tabsWithOpenFIles)
-                            {
-                                closeTab(tab, false);
-                            }
+                            closeTabs(tabsWithOpenFIles);
                             break;
                         case DialogResult.Cancel:
                             return;
@@ -323,6 +320,17 @@ namespace Personality_Creator
         #endregion
 
         #region tabStripLogic
+
+        private List<FATabStripItem> copyTabCollectionAsList(FATabStripItemCollection tabs)
+        {
+            List<FATabStripItem> list = new List<FATabStripItem>();
+            foreach(FATabStripItem tab in tabs)
+            {
+                list.Add(tab);
+            }
+
+            return list;
+        }
 
         private void tbStrip_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
@@ -360,10 +368,7 @@ namespace Personality_Creator
 
             tabsToClose.Remove(this.CurrentTab);
 
-            FATabStripItemCollection collection = new FATabStripItemCollection();
-            collection.AddRange(tabsToClose.ToArray());
-
-            tryCloseTabs(collection);
+            tryCloseTabs(tabsToClose);
         }
 
         private void closeAllTabsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -430,101 +435,75 @@ namespace Personality_Creator
 
         private bool tryCloseAllTabs()
         {
-            return tryCloseTabs(this.tbStrip.Items);
+            return tryCloseTabs(copyTabCollectionAsList(this.tbStrip.Items));
         }
 
-        private bool tryCloseTabs(FATabStripItemCollection tabs)
+        private bool tryCloseTabs(IList<FATabStripItem> tabs)
         {
-            bool success = true;
-            bool save = false;
+            if (trySaveTabs(tabs))
+            {
+                closeTabs(tabs);
+                return true;
+            }
+            return false;
+        }
 
+        private bool tryCloseTab(FATabStripItem tab)
+        {
+            if (tabHasUnsavedChanges(tab))
+            {
+                DialogResult result = MessageBox.Show("Save all changes to this file?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        saveTab(tab);
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                    default:
+                        return false;
+                }
+            }
+            closeTab(tab);
+            return true;
+        }
+
+        private bool trySaveTabs(IList<FATabStripItem> tabs)
+        {
             if (unsavedChanges(tabs))
             {
                 DialogResult result = MessageBox.Show("Save all changed files?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 switch (result)
                 {
                     case DialogResult.Yes:
-                        save = true;
+                        saveTabs(tabs);
                         break;
                     case DialogResult.No:
                         break;
                     case DialogResult.Cancel:
-                        success = false;
-                        break;
                     default:
-                        success = false;
-                        break;
+                        return false;
                 }
             }
-
-            if (success)
-            {
-                closeTabs(tabs, save);
-            }
-
-            return success;
+            return true;
         }
 
-        private bool tryCloseTab(FATabStripItem tab)
+        public void closeTab(FATabStripItem tab)
         {
-            bool success = true;
-            bool save = false;
-
-            if (tabHasUnsavedChanges(tab))
-            {
-                switch (MessageBox.Show("Save changes?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning))
-                {
-                    case DialogResult.Yes:
-                        save = true;
-                        break;
-                    case DialogResult.No:
-                        break;
-                    case DialogResult.Cancel:
-                        success = false;
-                        break;
-                    default:
-                        success = false;
-                        break;
-                }
-            }
-
-            if(success)
-            {
-                closeTab(tab, save);
-            }
-
-            return success;
-        }
-
-        public void closeTab(FATabStripItem tab, bool save)
-        {
-            this.saveTab(tab, save);
             this.tbStrip.Items.Remove(tab);
+            DataManager.settings.openedTabs.Remove(((OpenableFile)tab.Tag).File.FullName);
         }
 
-        private void closeTabs(FATabStripItemCollection tabs, bool save) //again the collection points directly to the original collection so we have to make a copy to not mess up deletion
+        private void closeTabs(IList<FATabStripItem> tabs)
         {
-            List<FATabStripItem> tabsToClose = new List<FATabStripItem>();
-
             foreach(FATabStripItem tab in tabs)
             {
-                tabsToClose.Add(tab);
+                closeTab(tab);
             }
-
-            foreach (FATabStripItem tab in tabsToClose)
-            {
-                closeTab(tab, save);
-            }
-
-            tabsToClose = null;
         }
 
-        public void closeAllTabs(bool save)
-        {
-            closeTabs(this.tbStrip.Items, save);
-        }
-
-        private bool unsavedChanges(FATabStripItemCollection items)
+        private bool unsavedChanges(IList<FATabStripItem> items)
         {
             bool unsaved = false;
             foreach (FATabStripItem tab in items)
@@ -541,7 +520,7 @@ namespace Personality_Creator
 
         public bool unsavedChanges() //overload currently unused but kept due to later features may be benefitting from it
         {
-            return unsavedChanges(this.tbStrip.Items);
+            return unsavedChanges(copyTabCollectionAsList(tbStrip.Items));
         }
 
         public bool tabHasUnsavedChanges(FATabStripItem tab)
@@ -555,12 +534,12 @@ namespace Personality_Creator
 
         public void saveCurrentFile()
         {
-            saveTab(this.CurrentTab, true);
+            saveTab(this.CurrentTab);
         }
 
-        private void saveTab(FATabStripItem tab, bool save)
+        private void saveTab(FATabStripItem tab)
         {
-            if (tabHasUnsavedChanges(tab) && save)
+            if (tabHasUnsavedChanges(tab))
             {
                 ((OpenableFile)tab.Tag).Save();
                 tab.Title = tab.Title.Remove(0, 1);
@@ -569,9 +548,14 @@ namespace Personality_Creator
 
         public void saveAllFiles()
         {
-            foreach (FATabStripItem tab in this.tbStrip.Items)
+            saveTabs((IList<FATabStripItem>)this.tbStrip.Items);
+        }
+
+        public void saveTabs(IList<FATabStripItem> tabs)
+        {
+            foreach (FATabStripItem tab in tabs)
             {
-                saveTab(tab, true);
+                saveTab(tab);
             }
         }
 
