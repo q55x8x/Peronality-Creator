@@ -44,6 +44,10 @@ namespace Personality_Creator.PersonaFiles
 
         public override void Save()
         {
+            if(this.tab.Title.StartsWith("*"))
+            {
+                this.tab.Title = this.tab.Title.Remove(0, 1);
+            }
             System.IO.File.WriteAllText(this.File.FullName, this.editor.Text);
         }
 
