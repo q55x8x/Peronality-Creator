@@ -9,7 +9,7 @@ using Personality_Creator.Tools;
 
 namespace Personality_Creator
 {
-    public static class DataManager //dunno if the singleton pattern will come to use later or if I downgrade to static
+    public static class DataManager
     {
         public static ImageList iconList = new ImageList();
         public static Settings settings = new Settings();
