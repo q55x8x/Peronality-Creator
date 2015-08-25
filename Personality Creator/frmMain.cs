@@ -403,6 +403,16 @@ namespace Personality_Creator
             {
                 openFileIgnoreChecks(file);
                 DataManager.settings.openedTabs.Add(file.File.FullName);
+            } else
+            {
+                foreach(FATabStripItem tab in this.tbStrip.Items)
+                {
+                    if(tab.Tag.Equals(file))
+                    {
+                        this.tbStrip.SelectedItem = tab;
+                        tab.Focus();
+                    }
+                }
             }
         }
 
