@@ -80,6 +80,12 @@
     <Compile Include="DataManager.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools\BinarySerializer.cs" />
+    <Compile Include="UI\VocabFileEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\VocabFileEditor.Designer.cs">
+      <DependentUpon>VocabFileEditor.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,6 +102,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\VocabFileEditor.resx">
+      <DependentUpon>VocabFileEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ClassDiagram_complete.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
