@@ -712,7 +712,7 @@ namespace Personality_Creator
             e.ChangedRange.SetStyle(ParanthesisStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(GotoStyle);
-            e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
+            e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then|chance[0-9]{2})\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(FragmentStyle);
             e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
@@ -762,7 +762,7 @@ namespace Personality_Creator
 
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
-                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
+                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\(|chance[0-9]{2}\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
                 int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
                 Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
                 this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
