@@ -15,6 +15,8 @@ using System.IO.Compression;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
 using static System.Text.RegularExpressions.Regex;
+using i00SpellCheck;
+using FastColoredTextBoxPlugin;
 
 namespace Personality_Creator
 {
@@ -476,6 +478,12 @@ namespace Personality_Creator
             FATabStripItem newTab = new FATabStripItem();
             newTab.Title = script.File.Name;
             newTab.Tag = script;
+
+            //load the spellchecker extension for FastColoredTextBox
+            SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
+            ControlExtensions.LoadSingleControlExtension(newEditor, spellCheckerTextBox);
+            //spellCheckerTextBox.SpellCheckMatch = @"(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
+            spellCheckerTextBox.SpellCheckMatch = @"^([\w']+)| ([\w']+)|>([\w']+)"; // Only process words starting a line, following a space or a tag
 
             newEditor.Parent = newTab;
             newEditor.Dock = DockStyle.Fill;
