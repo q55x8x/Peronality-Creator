@@ -1,5 +1,6 @@
 ﻿using FarsiLibrary.Win;
 using System;
+using System.IO;
 
 namespace Personality_Creator
 {
@@ -7,6 +8,20 @@ namespace Personality_Creator
 
     public abstract class OpenableFile
     {
+        private FileInfo file;
+        public FileInfo File
+        {
+            get
+            {
+                return file;
+            }
+
+            set
+            {
+                file = value;
+            }
+        }
+
         public event ChangedEventHandler ContentChanged;
         public FATabStripItem tab;
 

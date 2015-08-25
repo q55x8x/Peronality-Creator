@@ -40,6 +40,12 @@ namespace Personality_Creator
                     OpenPersonaIgnoreChecks(personaPath);
                 }
             }
+
+            foreach (string filePath in DataManager.settings.openedTabs)
+            {
+                PersonaFile file = PersonaFile.CreateInstance(filePath);
+                openFileIgnoreChecks(file);
+            }
         }
 
         #region toolstripMenu logic
@@ -387,6 +393,15 @@ namespace Personality_Creator
         }
 
         private void openFile(OpenableFile file)
+        {
+            if (!DataManager.settings.openedTabs.Contains(file.File.FullName))
+            {
+                openFileIgnoreChecks(file);
+                DataManager.settings.openedTabs.Add(file.File.FullName);
+            }
+        }
+
+        private void openFileIgnoreChecks(OpenableFile file)
         {
             FATabStripItem newTab = file.CreateTab();
 
