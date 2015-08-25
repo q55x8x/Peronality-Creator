@@ -12,22 +12,11 @@ namespace Personality_Creator
     public abstract class PersonaFile : OpenableFile
     {
         #region capsuled fields
-        private FileInfo file;
+        
         #endregion
 
         #region properties
-        public FileInfo File
-        {
-            get
-            {
-                return file;
-            }
-
-            set
-            {
-                file = value;
-            }
-        }
+        
         #endregion
 
         internal PersonaFile(FileInfo file)
