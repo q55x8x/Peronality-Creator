@@ -81,6 +81,15 @@ namespace Personality_Creator.PersonaFiles.Scripts
         public Module(string file) : this(new FileInfo(file))
         {
         }
+        public void Save(string content)
+        {
+            System.IO.File.WriteAllText(this.File.FullName, content);
+        }
+
+        public string Read()
+        {
+            return System.IO.File.ReadAllText(this.File.FullName);
+        }
 
         public Module clone(ScriptDeclensionType declension)
         {

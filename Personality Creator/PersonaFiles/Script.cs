@@ -19,16 +19,6 @@ namespace Personality_Creator.PersonaFiles
 
         public Script(FileInfo file) : base (file)
         { }
-
-        public void Save(string content)
-        {
-            System.IO.File.WriteAllText(this.File.FullName, content);
-        }
-
-        public string Read()
-        {
-            return System.IO.File.ReadAllText(this.File.FullName);
-        }
     }
 
     public enum ScriptDeclensionType

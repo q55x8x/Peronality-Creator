@@ -28,5 +28,15 @@ namespace Personality_Creator.PersonaFiles.Scripts
         {
             this.Keyword = file.Name.Replace(file.Extension, "");
         }
+
+        public void Save(string[] content)
+        {
+            System.IO.File.WriteAllLines(this.File.FullName, content);
+        }
+
+        public string[] Read()
+        {
+            return System.IO.File.ReadAllLines(this.File.FullName);
+        }
     }
 }
