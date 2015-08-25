@@ -686,6 +686,7 @@ namespace Personality_Creator
         Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
         Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
+        Style CheckFlagStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
 
@@ -709,10 +710,13 @@ namespace Personality_Creator
             e.ChangedRange.SetStyle(ResponseStyle, @"\[.+\]", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(ParanthesisStyle);
-            e.ChangedRange.SetStyle(ParanthesisStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
+            e.ChangedRange.SetStyle(ParanthesisStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú,+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(GotoStyle);
             e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then|chance[0-9]{2})\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
+
+            e.ChangedRange.ClearStyle(CheckFlagStyle);
+            e.ChangedRange.SetStyle(CheckFlagStyle, @"(?i)(\@checkflag)\([A-z_0-9öäüáéíóú,+\s]+\)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(FragmentStyle);
             e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
@@ -746,7 +750,8 @@ namespace Personality_Creator
         private void Editor_MouseMove(object sender, MouseEventArgs e)
         {
             Place p = this.CurrentEditor.PointToPlace(e.Location);
-            if (CharIsGoto(p) && ModifierKeys == Keys.Control)
+            if (CharIsGoto(p) && ModifierKeys == Keys.Control
+            ||  CharIsCheckFlag(p) && ModifierKeys == Keys.Control)
             {
                 this.CurrentEditor.Cursor = Cursors.Hand;
             }
@@ -769,14 +774,37 @@ namespace Personality_Creator
                     if(matches[i].Groups[1].Index <= p.iChar)
                     {
                         string gotoName = matches[i].Groups[0].Value;
-                        int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
-                        Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
-                        this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
-                        this.currentEditor.DoCaretVisible();
+                        highlightTarget(gotoName);
                         break;
                     }
                 }
+            } else if(CharIsCheckFlag(p) && ModifierKeys == Keys.Control)
+            {
+                Match checkflagTargetsMatch = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@checkflag\()([A-z_0-9öäüáéíóú+\s]+)(,([A-z_0-9öäüáéíóú+\s]+))*(?=\))"); //extracting the checkflag specifier
+
+                string foundTarget = null;
+                for(int i= checkflagTargetsMatch.Groups[3].Captures.Count-1; i >= 0 && foundTarget == null; i--)
+                {
+                    if(checkflagTargetsMatch.Groups[3].Captures[i].Index <= p.iChar)
+                    {
+                        foundTarget = checkflagTargetsMatch.Groups[3].Captures[i].Value;
+                    }
+                }
+
+                if(foundTarget == null)
+                {
+                    foundTarget = checkflagTargetsMatch.Groups[1].Value;
+                }
+                highlightTarget(foundTarget.Trim());
             }
+        }
+
+        private void highlightTarget(string target)
+        {
+            int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({target}\)").Index; //finding the goto destination
+            Range range = this.CurrentEditor.GetRange(index + target.Length + 2, index + target.Length + 2);
+            this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
+            this.currentEditor.DoCaretVisible();
         }
 
         private bool CharIsGoto(Place place)
@@ -788,9 +816,9 @@ namespace Personality_Creator
             return false;
         }
 
-        private bool CharIsCommand(Place place)
+        private bool CharIsCheckFlag(Place place)
         {
-            if (this.currentEditor.GetStylesOfChar(place).Contains(CommandStyle))
+            if (this.currentEditor.GetStylesOfChar(place).Contains(CheckFlagStyle))
             {
                 return true;
             }
