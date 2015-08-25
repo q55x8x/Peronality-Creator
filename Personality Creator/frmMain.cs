@@ -1,87 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using FastColoredTextBoxNS;
 using FarsiLibrary.Win;
 using System.IO;
-using System.IO.Compression;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
-using static System.Text.RegularExpressions.Regex;
-using i00SpellCheck;
-using FastColoredTextBoxPlugin;
 
 namespace Personality_Creator
 {
     public partial class frmMain : Form
     {
-        private FastColoredTextBox currentEditor;
-        private FATabStripItem currentTab;
-        private PersonaFile currentFile;
-        private List<Range> highlightedText = new List<Range>();
-
-        public FastColoredTextBox CurrentEditor
-        {
-            get
-            {
-                return currentEditor;
-            }
-
-            set
-            {
-                currentEditor = value;
-
-                this.autoMenu = new AutocompleteMenu(this.CurrentEditor);
-                this.autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
-                this.autoMenu.MinFragmentLength = 1;
-                this.autoMenu.TopLevel = true;
-                this.autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);
-                this.autoMenu.Items.Width = 200;
-            }
-        }
-
-        public FATabStripItem CurrentTab
-        {
-            get
-            {
-                return currentTab;
-            }
-
-            set
-            {
-                currentTab = value;
-                if (value != null)
-                {
-                    this.CurrentEditor = (FastColoredTextBox)this.CurrentTab.Controls[0];
-                    this.CurrentFile = (PersonaFile)this.CurrentTab.Tag;
-                }
-            }
-        }
-
-        public PersonaFile CurrentFile
-        {
-            get
-            {
-                return currentFile;
-            }
-
-            set
-            {
-                currentFile = value;
-            }
-        }
+        private FATabStripItem CurrentTab;
 
         public Dictionary<string, Personality> OpenedPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
         public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
 
-        public AutocompleteMenu autoMenu;
         public frmMain()
         {
             InitializeComponent();
@@ -170,9 +103,9 @@ namespace Personality_Creator
 
         private void projectView_DoubleClick(object sender, EventArgs e)
         {
-            if(this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
+            if(this.projectView.SelectedNode.Tag is OpenableFile)
             { 
-                openFile((PersonaFile)projectView.SelectedNode.Tag);
+                openFile((OpenableFile)projectView.SelectedNode.Tag);
             }
         }
 
@@ -455,55 +388,11 @@ namespace Personality_Creator
             this.projectView.Nodes.Add(persona.getRootNode());
         }
 
-        private void openFile(PersonaFile file)
+        private void openFile(OpenableFile file)
         {
-            if(file.GetType().BaseType == typeof(Script))
-            {
-                openScript((Script)file);
-            }
-        }
+            FATabStripItem newTab = file.CreateTab();
 
-        private void openScript(Script script)
-        {
-            if (script.GetType() == typeof(Module))
-            {
-                openModule((Module)script);
-            }
-            else if(script.GetType() == typeof(Fragment))
-            {
-                openFragment((Fragment)script);
-            }
-            else if(script.GetType() == typeof(FragmentedScript))
-            {
-                openFragmentedScript((FragmentedScript)script);
-            }
-        }
-
-        private void openModule(Module script)
-        {
-            FastColoredTextBox newEditor = new FastColoredTextBox();
-
-            FATabStripItem newTab = new FATabStripItem();
-            newTab.Title = script.File.Name;
-            newTab.Tag = script;
-
-            //load the spellchecker extension for FastColoredTextBox
-            SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
-            ControlExtensions.LoadSingleControlExtension(newEditor, spellCheckerTextBox);
-            //spellCheckerTextBox.SpellCheckMatch = @"(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
-            spellCheckerTextBox.SpellCheckMatch = @"^([\w']+)| ([\w']+)|>([\w']+)"; // Only process words starting a line, following a space or a tag
-
-            newEditor.Parent = newTab;
-            newEditor.Dock = DockStyle.Fill;
-            newEditor.Text = script.Read();
-            newEditor.Focus();
-
-            newEditor.TextChanged += this.Editor_TextChanged;
-            newEditor.KeyDown += Editor_KeyDown;
-            newEditor.MouseMove += Editor_MouseMove;
-            newEditor.MouseUp += Editor_MouseUp;
-            newEditor.MouseDown += Editor_MouseDown;
-            newEditor.DoubleClick += Editor_DblClick;
+            file.ContentChanged += new ChangedEventHandler(processTabChanges);
 
             this.tbStrip.AddTab(newTab);
 
@@ -512,14 +401,14 @@ namespace Personality_Creator
             this.ApplyStyle();
         }
 
-        private void openFragment(Fragment script)
+        private void processTabChanges(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        private void openFragmentedScript(FragmentedScript script)
-        {
-            throw new NotImplementedException();
+            FATabStripItem tab = (FATabStripItem)sender;
+            //set unsaved changes
+            if (!tab.Title.StartsWith("*"))
+            {
+                tab.Title = tab.Title.Insert(0, "*");
+            }
         }
 
         #endregion
@@ -596,11 +485,7 @@ namespace Personality_Creator
 
         public void closeTab(FATabStripItem tab, bool save)
         {
-            if (tabHasUnsavedChanges(tab) && save)
-            {
-                ((Script)tab.Tag).Save(((FastColoredTextBox)tab.Controls[0]).Text);
-                tab.Title = tab.Title.Remove(0, 1);
-            }
+            this.saveTab(tab, save);
             this.tbStrip.Items.Remove(tab);
         }
 
@@ -657,14 +542,15 @@ namespace Personality_Creator
 
         public void saveCurrentFile()
         {
-            if(this.CurrentFile.GetType().BaseType == typeof(Script))
-            {
-                ((Script)this.CurrentFile).Save(this.CurrentEditor.Text);
+            saveTab(this.CurrentTab, true);
+        }
 
-                if(this.CurrentTab.Title.StartsWith("*"))
-                {
-                    this.CurrentTab.Title = this.CurrentTab.Title.Remove(0, 1);
-                }
+        private void saveTab(FATabStripItem tab, bool save)
+        {
+            if (tabHasUnsavedChanges(tab) && save)
+            {
+                ((OpenableFile)tab.Tag).Save();
+                tab.Title = tab.Title.Remove(0, 1);
             }
         }
 
@@ -672,65 +558,13 @@ namespace Personality_Creator
         {
             foreach (FATabStripItem tab in this.tbStrip.Items)
             {
-                if (tab.Title.StartsWith("*"))
-                {
-                    ((Script)tab.Tag).Save(tab.Controls?[0].Text);
-                    tab.Title = this.CurrentTab.Title.Remove(0, 1);
-                }
+                saveTab(tab, true);
             }
         }
 
         #endregion
 
         #region editor logic
-
-        Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
-        Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
-        Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style CheckFlagStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        MarkerStyle GreenStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(180, Color.LightGreen)));
-        //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
-
-
-        private void Editor_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
-        {
-            //set unsaved changes
-            if (!tabHasUnsavedChanges(this.CurrentTab))
-            {
-                this.CurrentTab.Title = this.CurrentTab.Title.Insert(0, "*");
-            }
-
-            //colorization
-            e.ChangedRange.ClearStyle(KeywordStyle);
-            e.ChangedRange.SetStyle(KeywordStyle, @"(?<![A-z_0-9öäüáéíóú+])\#[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(CommandStyle);
-            e.ChangedRange.SetStyle(CommandStyle, @"(?<![A-z_0-9öäüáéíóú+])\@[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(ResponseStyle);
-            e.ChangedRange.SetStyle(ResponseStyle, @"\[.+\]", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(ParanthesisStyle);
-            e.ChangedRange.SetStyle(ParanthesisStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú,+\s]+\)", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(GotoStyle);
-            e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then|chance[0-9]{2})\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(CheckFlagStyle);
-            e.ChangedRange.SetStyle(CheckFlagStyle, @"(?i)(\@checkflag)\([A-z_0-9öäüáéíóú,+\s]+\)", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(FragmentStyle);
-            e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-
-            //e.ChangedRange.ClearStyle(CommentStyle);
-            //e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<!.)-.*", RegexOptions.None);
-
-            ////code folding
-            //e.ChangedRange.SetFoldingMarkers(@"-region", @"-endregion");
-        }
 
         private void ApplyStyle()
         {
@@ -740,7 +574,7 @@ namespace Personality_Creator
                 unsavedChangesBefore = true;
             }
 
-            this.CurrentEditor.OnTextChanged(); //redraws editor styles
+            ((OpenableFile)this.CurrentTab.Tag).Redraw();
 
             if(!unsavedChangesBefore)
             {
@@ -748,125 +582,6 @@ namespace Personality_Creator
                 //{
                 this.CurrentTab.Title = this.CurrentTab.Title.Remove(0, 1);
                 //}
-            }
-        }
-
-        private void Editor_MouseMove(object sender, MouseEventArgs e)
-        {
-            Place p = this.CurrentEditor.PointToPlace(e.Location);
-            if (CharIsGoto(p) && ModifierKeys == Keys.Control
-            ||  CharIsCheckFlag(p) && ModifierKeys == Keys.Control)
-            {
-                this.CurrentEditor.Cursor = Cursors.Hand;
-            }
-            else
-            {
-                this.CurrentEditor.Cursor = Cursors.IBeam;
-            }
-        }
-
-        private void Editor_MouseUp(object sender, MouseEventArgs e)
-        {
-            Place p = this.CurrentEditor.PointToPlace(e.Location);
-
-            if (CharIsGoto(p) && ModifierKeys == Keys.Control)
-            {
-                MatchCollection matches = Matches(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=(\@goto\(|then\(|chance[0-9]{2}\())[A-z_0-9öäüáéíóú+\s]+(?=\))"); //extracting the goto specifier
-
-                for(int i = matches.Count-1; i >= 0; i--)
-                {
-                    if(matches[i].Groups[1].Index <= p.iChar)
-                    {
-                        string gotoName = matches[i].Groups[0].Value;
-                        highlightTarget(gotoName);
-                        break;
-                    }
-                }
-            } else if(CharIsCheckFlag(p) && ModifierKeys == Keys.Control)
-            {
-                Match checkflagTargetsMatch = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@checkflag\()([A-z_0-9öäüáéíóú+\s]+)(,([A-z_0-9öäüáéíóú+\s]+))*(?=\))"); //extracting the checkflag specifier
-
-                string foundTarget = null;
-                for(int i= checkflagTargetsMatch.Groups[3].Captures.Count-1; i >= 0 && foundTarget == null; i--)
-                {
-                    if(checkflagTargetsMatch.Groups[3].Captures[i].Index <= p.iChar)
-                    {
-                        foundTarget = checkflagTargetsMatch.Groups[3].Captures[i].Value;
-                    }
-                }
-
-                if(foundTarget == null)
-                {
-                    foundTarget = checkflagTargetsMatch.Groups[1].Value;
-                }
-                highlightTarget(foundTarget.Trim());
-            } 
-        }
-
-        private void Editor_MouseDown(Object sender, MouseEventArgs e)
-        {
-            foreach (Range range in highlightedText)
-            {
-                range.ClearStyle(GreenStyle);
-            }
-            highlightedText.Clear();
-        }
-
-        private void Editor_DblClick(object sender, EventArgs e)
-        {
-            string selectedText = this.CurrentEditor.SelectedText;
-
-            int lineNb = -1;
-            foreach (string line in this.currentEditor.Lines)
-            {
-                lineNb++;
-                MatchCollection matches = Matches(line, $@"{selectedText}\b");
-                foreach (Match match in matches)
-                {
-                    Range range = new Range(this.currentEditor, match.Index, lineNb, (match.Index + selectedText.Length), lineNb);
-                    range.SetStyle(GreenStyle);
-                    highlightedText.Add(range);
-                }
-            }
-        }
-
-        private void highlightTarget(string target)
-        {
-            int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({target}\)").Index; //finding the goto destination
-            Range range = this.CurrentEditor.GetRange(index + target.Length + 2, index + target.Length + 2);
-            this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
-            this.currentEditor.DoCaretVisible();
-        }
-
-        private bool CharIsGoto(Place place)
-        {
-            if(this.currentEditor.GetStylesOfChar(place).Contains(GotoStyle))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private bool CharIsCheckFlag(Place place)
-        {
-            if (this.currentEditor.GetStylesOfChar(place).Contains(CheckFlagStyle))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private void Editor_KeyUp(object sender, KeyEventArgs e)
-        {
-            Cursor.Position = Cursor.Position; //force cursor redraw
-        }
-
-        private void Editor_KeyDown(object sender, KeyEventArgs e)
-        {
-            Cursor.Position = Cursor.Position; //force cursor redraw
-            if (e.KeyCode == Keys.S && ModifierKeys == Keys.Control)
-            {
-                saveCurrentFile();
             }
         }
 
