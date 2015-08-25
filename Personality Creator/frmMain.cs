@@ -25,6 +25,7 @@ namespace Personality_Creator
         private FastColoredTextBox currentEditor;
         private FATabStripItem currentTab;
         private PersonaFile currentFile;
+        private List<Range> highlightedText = new List<Range>();
 
         public FastColoredTextBox CurrentEditor
         {
@@ -501,6 +502,8 @@ namespace Personality_Creator
             newEditor.KeyDown += Editor_KeyDown;
             newEditor.MouseMove += Editor_MouseMove;
             newEditor.MouseUp += Editor_MouseUp;
+            newEditor.MouseDown += Editor_MouseDown;
+            newEditor.DoubleClick += Editor_DblClick;
 
             this.tbStrip.AddTab(newTab);
 
@@ -688,6 +691,7 @@ namespace Personality_Creator
         Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style CheckFlagStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
+        MarkerStyle GreenStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(180, Color.LightGreen)));
         //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
 
 
@@ -796,6 +800,33 @@ namespace Personality_Creator
                     foundTarget = checkflagTargetsMatch.Groups[1].Value;
                 }
                 highlightTarget(foundTarget.Trim());
+            } 
+        }
+
+        private void Editor_MouseDown(Object sender, MouseEventArgs e)
+        {
+            foreach (Range range in highlightedText)
+            {
+                range.ClearStyle(GreenStyle);
+            }
+            highlightedText.Clear();
+        }
+
+        private void Editor_DblClick(object sender, EventArgs e)
+        {
+            string selectedText = this.CurrentEditor.SelectedText;
+
+            int lineNb = -1;
+            foreach (string line in this.currentEditor.Lines)
+            {
+                lineNb++;
+                MatchCollection matches = Matches(line, $@"{selectedText}\b");
+                foreach (Match match in matches)
+                {
+                    Range range = new Range(this.currentEditor, match.Index, lineNb, (match.Index + selectedText.Length), lineNb);
+                    range.SetStyle(GreenStyle);
+                    highlightedText.Add(range);
+                }
             }
         }
 
