@@ -37,6 +37,42 @@ namespace Personality_Creator
                 handler(this.tab, e);
             }
         }
-        
+
+        public override bool Equals(System.Object obj)
+        {
+            // If parameter is null return false.
+            if (obj == null)
+            {
+                return false;
+            }
+
+            // If parameter cannot be cast to Point return false.
+            OpenableFile p = obj as OpenableFile;
+            if ((System.Object)p == null)
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return this.Equals(p);
+        }
+
+        public bool Equals(OpenableFile file)
+        {
+            // If parameter is null return false:
+            if ((object)file == null)
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return File != null && file.File != null && File.FullName == file.File.FullName;
+        }
+
+        public override int GetHashCode()
+        {
+            return file.GetHashCode();
+        }
+
     }
 }
