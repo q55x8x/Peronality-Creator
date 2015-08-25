@@ -14,7 +14,7 @@ namespace Personality_Creator
         public static ImageList iconList = new ImageList();
         public static Settings settings = new Settings();
         public static string AppPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-        public static string settingsPath = AppPath + @"settings.bin";
+        public static string settingsPath = AppPath + @"\settings.bin";
 
 
         public static void initDataManager()
