@@ -100,9 +100,12 @@ namespace Personality_Creator
             DataManager.initDataManager();
             AutoCompleteItemManager.load();
 
-            foreach (string personaPath in DataManager.settings.openedPersona)
+            if (DataManager.settings.openedPersonas.Count > 0)
             {
-                OpenPersonaIgnoreChecks(personaPath);
+                foreach (string personaPath in DataManager.settings.openedPersonas)
+                {
+                    OpenPersonaIgnoreChecks(personaPath);
+                }
             }
         }
 
@@ -434,12 +437,13 @@ namespace Personality_Creator
 
         private void OpenPersona(string path)
         {
-            if (!DataManager.settings.openedPersona.Contains(path))
+            if (!DataManager.settings.openedPersonas.Contains(path))
             {
                 OpenPersonaIgnoreChecks(path);
-                DataManager.settings.openedPersona.Add(path);
+                DataManager.settings.openedPersonas.Add(path);
             }
         }
+
         private void OpenPersonaIgnoreChecks(string path)
         {
             Personality persona = new Personality(path);
@@ -800,7 +804,7 @@ namespace Personality_Creator
                 {
                     Folder personaToDelete = (Folder)selectedNode.Tag;
                     selectedNode.Remove();
-                    DataManager.settings.openedPersona.Remove(personaToDelete.Directory.FullName);
+                    DataManager.settings.openedPersonas.Remove(personaToDelete.Directory.FullName);
                 }
             }
             else if (selectedNode.Tag.GetType() == typeof(Folder))

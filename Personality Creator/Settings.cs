@@ -12,7 +12,7 @@ namespace Personality_Creator
     {
         public string lastOpenedPersonaDirectory = @"C:\";
         public string lastOpenedSingleFileDirectory = @"C:\";
-        public List<string> openedPersona = new List<string>();
+        public List<string> openedPersonas = new List<string>();
 
         public static void save()
         {
