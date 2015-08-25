@@ -5,8 +5,6 @@ using FarsiLibrary.Win;
 using System.IO;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
-using System.Collections.ObjectModel;
-using System.Collections;
 
 namespace Personality_Creator
 {
@@ -443,11 +441,7 @@ namespace Personality_Creator
         private void processTabChanges(object sender, EventArgs e)
         {
             FATabStripItem tab = (FATabStripItem)sender;
-            //set unsaved changes
-            if (!tab.Title.StartsWith("*"))
-            {
-                tab.Title = tab.Title.Insert(0, "*");
-            }
+            TabStripUtils.flagTabAsModified(tab);
         }
 
         #endregion
@@ -471,7 +465,7 @@ namespace Personality_Creator
 
         private bool tryCloseTab(FATabStripItem tab)
         {
-            if (tabHasUnsavedChanges(tab))
+            if (TabStripUtils.isTagFlaggedAsModified(tab))
             {
                 DialogResult result = MessageBox.Show("Save all changes to this file?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 switch (result)
@@ -529,7 +523,7 @@ namespace Personality_Creator
             bool unsaved = false;
             foreach (FATabStripItem tab in items)
             {
-                if (tabHasUnsavedChanges(tab))
+                if (TabStripUtils.isTagFlaggedAsModified(tab))
                 {
                     unsaved = true;
                     break;
@@ -544,11 +538,6 @@ namespace Personality_Creator
             return unsavedChanges(copyTabCollectionAsList(tbStrip.Items));
         }
 
-        public bool tabHasUnsavedChanges(FATabStripItem tab)
-        {
-            return tab.Title.StartsWith("*");
-        }
-
         #endregion
 
         #region saving
@@ -560,7 +549,7 @@ namespace Personality_Creator
 
         private void saveTab(FATabStripItem tab)
         {
-            if (tabHasUnsavedChanges(tab))
+            if (TabStripUtils.isTagFlaggedAsModified(tab))
             {
                 ((OpenableFile)tab.Tag).Save();
             }
@@ -586,7 +575,7 @@ namespace Personality_Creator
         private void ApplyStyle()
         {
             bool unsavedChangesBefore = false;
-            if(tabHasUnsavedChanges(this.CurrentTab))
+            if(TabStripUtils.isTagFlaggedAsModified(this.CurrentTab))
             {
                 unsavedChangesBefore = true;
             }
@@ -595,10 +584,7 @@ namespace Personality_Creator
 
             if(!unsavedChangesBefore)
             {
-                //if (this.CurrentTab.Title.StartsWith("*")) //this should be redundant
-                //{
-                this.CurrentTab.Title = this.CurrentTab.Title.Remove(0, 1);
-                //}
+                TabStripUtils.unflagTabAsModified(this.CurrentTab);
             }
         }
 
