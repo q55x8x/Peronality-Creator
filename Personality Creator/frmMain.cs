@@ -762,17 +762,35 @@ namespace Personality_Creator
 
             if (CharIsGoto(p) && ModifierKeys == Keys.Control)
             {
-                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\(|chance[0-9]{2}\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
-                int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
-                Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
-                this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
-                this.currentEditor.DoCaretVisible();
+                MatchCollection matches = Matches(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=(\@goto\(|then\(|chance[0-9]{2}\())[A-z_0-9öäüáéíóú+\s]+(?=\))"); //extracting the goto specifier
+
+                for(int i = matches.Count-1; i >= 0; i--)
+                {
+                    if(matches[i].Groups[1].Index <= p.iChar)
+                    {
+                        string gotoName = matches[i].Groups[0].Value;
+                        int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
+                        Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
+                        this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
+                        this.currentEditor.DoCaretVisible();
+                        break;
+                    }
+                }
             }
         }
 
         private bool CharIsGoto(Place place)
         {
             if(this.currentEditor.GetStylesOfChar(place).Contains(GotoStyle))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CharIsCommand(Place place)
+        {
+            if (this.currentEditor.GetStylesOfChar(place).Contains(CommandStyle))
             {
                 return true;
             }
