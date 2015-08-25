@@ -137,7 +137,7 @@ namespace Personality_Creator
             
             if(ofd.ShowDialog() == DialogResult.OK)
             {
-                PersonaFile newFile = new PersonaFile(ofd.FileName);
+                Module newFile = new Module(ofd.FileName);
                 this.addUnAssociatedFile(newFile);
                 openFile(newFile);
             }
