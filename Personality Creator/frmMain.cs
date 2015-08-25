@@ -403,7 +403,9 @@ namespace Personality_Creator
         private void OpenPersonaIgnoreChecks(string path)
         {
             Personality persona = new Personality(path);
-            this.projectView.Nodes.Add(persona.getRootNode());
+            TreeNode personaRoot = persona.getRootNode();
+            this.projectView.Nodes.Add(personaRoot);
+            personaRoot.Expand();
         }
 
         private void openFile(OpenableFile file)
