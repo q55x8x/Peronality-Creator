@@ -9,6 +9,7 @@ using System.Drawing;
 using static System.Text.RegularExpressions.Regex;
 using System;
 using System.Collections.Generic;
+using static System.IO.File;
 
 namespace Personality_Creator.PersonaFiles
 {
@@ -44,12 +45,16 @@ namespace Personality_Creator.PersonaFiles
 
         public override void Save()
         {
-            System.IO.File.WriteAllText(this.File.FullName, this.editor.Text);
+            if(this.tab.Title.StartsWith("*"))
+            {
+                this.tab.Title = this.tab.Title.Remove(0, 1);
+            }
+            WriteAllText(this.File.FullName, this.editor.Text);
         }
 
         public string Read()
         {
-            return System.IO.File.ReadAllText(this.File.FullName);
+            return ReadAllText(this.File.FullName);
         }
 
         public override void Redraw()

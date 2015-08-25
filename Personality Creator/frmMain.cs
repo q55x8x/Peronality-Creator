@@ -561,7 +561,6 @@ namespace Personality_Creator
             if (tabHasUnsavedChanges(tab))
             {
                 ((OpenableFile)tab.Tag).Save();
-                tab.Title = tab.Title.Remove(0, 1);
             }
         }
 
