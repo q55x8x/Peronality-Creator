@@ -366,11 +366,14 @@ namespace Personality_Creator
             int index = this.tbStrip.Items.IndexOf(tab);
             if (tryCloseTab(tab))
             {
-                if (index >= this.tbStrip.Items.Count)
+                if (this.tbStrip.Items.Count > 1)
                 {
-                    index = this.tbStrip.Items.Count - 1;
+                    if (index >= this.tbStrip.Items.Count)
+                    {
+                        index = this.tbStrip.Items.Count - 1;
+                    }
+                    this.tbStrip.SelectedItem = this.tbStrip.Items[index];
                 }
-                this.tbStrip.SelectedItem = this.tbStrip.Items[index];
             }
         }
 
