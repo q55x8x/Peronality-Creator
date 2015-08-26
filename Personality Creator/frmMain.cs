@@ -18,7 +18,7 @@ namespace Personality_Creator
         {
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
-            this.renameToolStripMenuItem.Enabled = false;
+            //this.renameToolStripMenuItem.Enabled = false;
 
             this.recentlyOpenedScriptsToolStripMenuItem.EntryClicked += (object sender, EventArgs e) => {
                 ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
@@ -161,41 +161,6 @@ namespace Personality_Creator
             }
         }
 
-        private void projectView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-            if(e.Label == null) //no rename occured
-            {
-                return;
-            }
-
-            if(e.Node.Tag.GetType() == typeof(Folder))
-            {
-                TreeNode parentNode = e.Node.Parent;
-                Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
-
-                string parentDir = ((Folder)e.Node.Parent.Tag).Directory.FullName;
-                string newFolderPath = parentDir + @"\" + e.Label;
-
-                renamedFolder.Directory.MoveTo(newFolderPath);
-                renamedFolder = new Folder(newFolderPath); //refresh files inside dir, this is easier than doing all files manually
-
-                TreeNode replacementNode = Folder.getNode(renamedFolder);
-
-                this.projectView.Nodes.Remove(e.Node);
-
-                parentNode.Nodes.Add(replacementNode);
-            }
-            else if (e.Node.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
-            {
-                PersonaFile renamendFile = (PersonaFile)e.Node.Tag;
-                string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
-                File.Move(renamendFile.File.FullName, newFullName);
-                renamendFile.File = new FileInfo(newFullName);
-            }
-
-            this.projectView.Invalidate();
-        }
-
         #region context menu
 
         private void newScriptToolStripMenuItem_Click(object sender, EventArgs e)
@@ -235,8 +200,8 @@ namespace Personality_Creator
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Sry but this feature is currently bugged :(");
-            throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
+            //MessageBox.Show("Sry but this feature is currently bugged :(");
+            //throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
             this.BeginEditNode();
         }
 
@@ -282,12 +247,12 @@ namespace Personality_Creator
 
         private void BeginEditNode()
         {
-            if (this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
+            if (this.projectView.SelectedNode.Tag  is PersonaFile)
             {
                 this.projectView.SelectedNode.BeginEdit();
             }
 
-            if (this.projectView.SelectedNode.Tag.GetType() == typeof(Folder))
+            if (this.projectView.SelectedNode.Tag is Folder)
             {
                 Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
                 List<FATabStripItem> tabsWithOpenFIles = new List<FATabStripItem>();
@@ -323,6 +288,58 @@ namespace Personality_Creator
                     this.projectView.SelectedNode.BeginEdit();
                 }
             }
+        }
+
+        private void projectView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            if (e.Label == null) //no rename occured
+            {
+                return;
+            }
+
+            if (e.Node.Tag is Folder)
+            {
+                TreeNode parentNode = e.Node.Parent;
+                Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
+
+                string parentDir = ((Folder)e.Node.Parent.Tag).Directory.FullName;
+                string newFolderPath = parentDir + @"\" + e.Label;
+
+                renamedFolder.Directory.MoveTo(newFolderPath);
+                renamedFolder = new Folder(newFolderPath); //refresh files inside dir, this is easier than doing all files manually
+
+                TreeNode replacementNode = Folder.getNode(renamedFolder);
+
+                this.projectView.Nodes.Remove(e.Node);
+
+                parentNode.Nodes.Add(replacementNode);
+            }
+            else if (e.Node.Tag is PersonaFile)
+            {
+                e.Node.EndEdit(false);
+                PersonaFile renamedFile = (PersonaFile)e.Node.Tag;
+                string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
+                renamedFile.File = new FileInfo(newFullName);
+                if (renamedFile.tab != null)
+                {
+
+                    if (TabStripUtils.isTagFlaggedAsModified(renamedFile.tab))
+                    {
+                        renamedFile.tab.Title = e.Label;
+                        TabStripUtils.flagTabAsModified(renamedFile.tab);
+                    } else
+                    {
+                        renamedFile.tab.Title = e.Label;
+                        File.Move(renamedFile.File.FullName, newFullName);
+                    }
+                }
+                else
+                {
+                    File.Move(renamedFile.File.FullName, newFullName);
+                }
+            } 
+
+            this.projectView.Invalidate();
         }
 
         #endregion
