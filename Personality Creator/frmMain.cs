@@ -19,11 +19,25 @@ namespace Personality_Creator
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
             this.renameToolStripMenuItem.Enabled = false;
-    }
+
+            this.recentlyOpenedScriptsToolStripMenuItem.EntryClicked += (object sender, EventArgs e) => {
+                ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+                OpenableFile file = PersonaFile.CreateInstance(menuItem.Text);
+                openFile(file);
+            };
+
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.EntryClicked += (object sender, EventArgs e) => {
+                ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+                OpenPersona(menuItem.Text);
+            };
+        }
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = !trySaveTabs(copyTabCollectionAsList(this.tbStrip.Items));
+
+            DataManager.settings.last10OpenedScripts = this.recentlyOpenedScriptsToolStripMenuItem.Entries;
+            DataManager.settings.last10OpenedPersonas = this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries;
 
             Settings.save();
         }
@@ -46,6 +60,9 @@ namespace Personality_Creator
                 PersonaFile file = PersonaFile.CreateInstance(filePath);
                 openFileIgnoreChecks(file);
             }
+
+            this.recentlyOpenedScriptsToolStripMenuItem.Entries = DataManager.settings.last10OpenedScripts;
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries = DataManager.settings.last10OpenedPersonas;
         }
 
         #region toolstripMenu logic
@@ -78,7 +95,6 @@ namespace Personality_Creator
             if(ofd.ShowDialog() == DialogResult.OK)
             {
                 PersonaFile newFile = PersonaFile.CreateInstance(ofd.FileName);
-                this.addUnAssociatedFile(newFile);
                 openFile(newFile);
 
                 DataManager.settings.lastOpenedSingleFileDirectory = newFile.File.Directory.FullName;
@@ -93,12 +109,6 @@ namespace Personality_Creator
         #endregion
 
         #region project view logic
-
-        private void addUnAssociatedFile(PersonaFile file)
-        {
-            TreeNode node = new TreeNode(file.File.Name, 1, 1) { Tag = file };
-            this.projectView.Nodes.Add(node);
-        }
 
         private void addAssociatedFile(PersonaFile file, TreeNode parentNode)
         {
@@ -396,6 +406,7 @@ namespace Personality_Creator
                 OpenPersonaIgnoreChecks(path);
                 DataManager.settings.openedPersonas.Add(path);
             }
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.addEntry(path);
         }
 
         private void OpenPersonaIgnoreChecks(string path)
@@ -423,6 +434,7 @@ namespace Personality_Creator
                     }
                 }
             }
+            this.recentlyOpenedScriptsToolStripMenuItem.addEntry(file.File.FullName);
         }
 
         private void openFileIgnoreChecks(OpenableFile file)
@@ -632,6 +644,7 @@ namespace Personality_Creator
                 }
             }
         }
+
         #endregion
 
 

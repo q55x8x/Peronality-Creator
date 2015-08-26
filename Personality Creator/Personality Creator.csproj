@@ -56,6 +56,9 @@
   <ItemGroup>
     <Compile Include="AutoCompleteItemManager.cs" />
     <Compile Include="FastColoredEditorUtils.cs" />
+    <Compile Include="Last10ToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OpenableFile.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="frmMain.cs">
