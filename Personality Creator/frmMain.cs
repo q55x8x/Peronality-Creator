@@ -319,6 +319,17 @@ namespace Personality_Creator
                 e.Node.EndEdit(false);
                 PersonaFile renamedFile = (PersonaFile)e.Node.Tag;
                 string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
+                FileInfo fileInfo = new FileInfo(newFullName);
+
+                if(fileInfo.Exists)
+                {
+                    e.CancelEdit = true;
+                    e.Node.EndEdit(true);
+                    return;
+                }
+
+                e.Node.EndEdit(false);
+
                 if (renamedFile.tab != null)
                 {
 
@@ -339,7 +350,7 @@ namespace Personality_Creator
                 {
                     File.Move(renamedFile.File.FullName, newFullName);
                 }
-                renamedFile.File = new FileInfo(newFullName);
+                renamedFile.File = fileInfo;
             } 
 
             this.projectView.Invalidate();
