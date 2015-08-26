@@ -183,7 +183,7 @@ namespace Personality_Creator
         {
             if (e.KeyCode == Keys.F2)
             {
-                BeginEditNode();
+                this.projectView.SelectedNode.BeginEdit();
             }
         }
 
@@ -228,7 +228,7 @@ namespace Personality_Creator
         {
             //MessageBox.Show("Sry but this feature is currently bugged :(");
             //throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
-            this.BeginEditNode();
+            this.projectView.SelectedNode.BeginEdit();
         }
 
         //-------------------
@@ -271,51 +271,6 @@ namespace Personality_Creator
 
         #endregion
 
-        private void BeginEditNode()
-        {
-            if (this.projectView.SelectedNode.Tag  is PersonaFile)
-            {
-                this.projectView.SelectedNode.BeginEdit();
-            }
-
-            if (this.projectView.SelectedNode.Tag is Folder)
-            {
-                Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
-                List<FATabStripItem> tabsWithOpenFIles = new List<FATabStripItem>();
-
-                foreach (PersonaFile file in renamedFolder.GetAllFilesAndFilesInSubDirs())
-                {
-                    foreach (FATabStripItem tab in this.tbStrip.Items)
-                    {
-                        if (tab.Tag == file)
-                        {
-                            tabsWithOpenFIles.Add(tab);
-                        }
-                    }
-                }
-
-                if(tabsWithOpenFIles.Count > 0)
-                {
-                    DialogResult result = MessageBox.Show("One or more files need to close before renaming can be done. Save all files before closing?", "Included files still open!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-
-                    switch(result)
-                    {
-                        case DialogResult.Yes:
-                            saveTabs(tabsWithOpenFIles);
-                            closeTabs(tabsWithOpenFIles);
-                            break;
-                        case DialogResult.No:
-                            closeTabs(tabsWithOpenFIles);
-                            break;
-                        case DialogResult.Cancel:
-                            return;
-                    }
-
-                    this.projectView.SelectedNode.BeginEdit();
-                }
-            }
-        }
-
         private void projectView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             if (e.Label == null) //no rename occured
@@ -330,19 +285,23 @@ namespace Personality_Creator
 
                 string parentDir = ((Folder)e.Node.Parent.Tag).Directory.FullName;
                 string newFolderPath = parentDir + @"\" + e.Label;
+                DirectoryInfo dirInfo = new DirectoryInfo(newFolderPath);
+
+                if (dirInfo.Exists)
+                {
+                    e.CancelEdit = true;
+                    e.Node.EndEdit(true);
+                    return;
+                }
+
+                e.Node.EndEdit(false);
 
                 renamedFolder.Directory.MoveTo(newFolderPath);
-                renamedFolder = new Folder(newFolderPath); //refresh files inside dir, this is easier than doing all files manually
 
-                TreeNode replacementNode = Folder.getNode(renamedFolder);
-
-                this.projectView.Nodes.Remove(e.Node);
-
-                parentNode.Nodes.Add(replacementNode);
+                updateFolderChildrenPath(renamedFolder);
             }
             else if (e.Node.Tag is PersonaFile)
             {
-                e.Node.EndEdit(false);
                 PersonaFile renamedFile = (PersonaFile)e.Node.Tag;
                 string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
                 FileInfo fileInfo = new FileInfo(newFullName);
@@ -355,31 +314,50 @@ namespace Personality_Creator
                 }
 
                 e.Node.EndEdit(false);
+                File.Move(renamedFile.File.FullName, newFullName);
+                renamedFile.File = fileInfo;
 
                 if (renamedFile.tab != null)
                 {
-
                     if (TabStripUtils.isTagFlaggedAsModified(renamedFile.tab))
                     {
                         renamedFile.tab.Title = e.Label;
                         TabStripUtils.flagTabAsModified(renamedFile.tab);
-                    } else
+                    }
+                    else
                     {
                         renamedFile.tab.Title = e.Label;
-                        File.Move(renamedFile.File.FullName, newFullName);
                     }
 
                     int index = DataManager.settings.openedTabs.IndexOf(renamedFile.File.FullName);
-                    DataManager.settings.openedTabs[index] = newFullName;
+                    if (index >= 0)
+                    {
+                        DataManager.settings.openedTabs[index] = newFullName;
+                    }
                 }
-                else
-                {
-                    File.Move(renamedFile.File.FullName, newFullName);
-                }
-                renamedFile.File = fileInfo;
             } 
 
             this.projectView.Invalidate();
+        }
+
+        private void updateFolderChildrenPath(Folder folder)
+        {
+            foreach(PersonaFile file in folder.Files.Values) {
+                string newFullName = folder.Directory.FullName + @"\" + file.File.Name;
+
+                int index = DataManager.settings.openedTabs.IndexOf(file.File.FullName);
+                if (index >= 0)
+                {
+                    DataManager.settings.openedTabs[index] = newFullName;
+                }
+
+                file.File = new FileInfo(newFullName);
+            }
+            foreach(Folder childFolder in folder.Folders.Values) {
+                string newFullName = folder.Directory.FullName + @"\" + childFolder.Directory.Name;
+                childFolder.Directory = new DirectoryInfo(newFullName);
+                updateFolderChildrenPath(childFolder);
+            }
         }
 
         #endregion
