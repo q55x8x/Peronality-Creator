@@ -82,6 +82,7 @@
     <Compile Include="PersonaFiles\Script.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TabStripUtils.cs" />
     <Compile Include="Tools\BinarySerializer.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
