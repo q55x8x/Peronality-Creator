@@ -42,6 +42,27 @@ namespace Personality_Creator
             Settings.save();
         }
 
+        private OpenableFile findFileInTree(TreeNodeCollection nodes, string filePath)
+        {
+            OpenableFile foundFile = null;
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Tag is OpenableFile && ((OpenableFile)node.Tag).File.FullName == filePath)
+                {
+                    foundFile =  (OpenableFile)node.Tag;
+                }
+                else
+                {
+                    foundFile = findFileInTree(node.Nodes, filePath);
+                }
+                if (foundFile != null)
+                {
+                    return foundFile;
+                }
+            }
+            return foundFile;
+        }
+
         private void mainFrm_Load(object sender, EventArgs e)
         {
             DataManager.initDataManager();
@@ -57,7 +78,12 @@ namespace Personality_Creator
 
             foreach (string filePath in DataManager.settings.openedTabs)
             {
-                PersonaFile file = PersonaFile.CreateInstance(filePath);
+
+                OpenableFile file = findFileInTree(this.projectView.Nodes, filePath);
+                if (file == null)
+                {
+                    file = PersonaFile.CreateInstance(filePath);
+                }
                 openFileIgnoreChecks(file);
             }
 
