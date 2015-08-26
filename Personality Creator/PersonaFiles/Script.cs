@@ -51,7 +51,9 @@ namespace Personality_Creator.PersonaFiles
 
         public string Read()
         {
-            return ReadAllText(this.File.FullName);
+            if(this.File.Exists)
+                return ReadAllText(this.File.FullName);
+            return "";
         }
 
         public override void Redraw()
