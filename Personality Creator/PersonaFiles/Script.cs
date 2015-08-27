@@ -9,7 +9,6 @@ using System.Drawing;
 using static System.Text.RegularExpressions.Regex;
 using System;
 using System.Collections.Generic;
-using static System.IO.File;
 
 namespace Personality_Creator.PersonaFiles
 {
@@ -46,13 +45,13 @@ namespace Personality_Creator.PersonaFiles
         public override void Save()
         {
             TabStripUtils.unflagTabAsModified(this.tab);
-            WriteAllText(this.File.FullName, this.editor.Text);
+            System.IO.File.WriteAllText(this.File.FullName, this.editor.Text);
         }
 
         public string Read()
         {
-            if(this.File.Exists)
-                return ReadAllText(this.File.FullName);
+            if(System.IO.File.Exists(this.File.FullName))
+                return System.IO.File.ReadAllText(this.File.FullName);
             return "";
         }
 
@@ -88,7 +87,7 @@ namespace Personality_Creator.PersonaFiles
 
             AutocompleteMenu autoMenu = new AutocompleteMenu(this.editor);
             autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
-            autoMenu.MinFragmentLength = 1;
+            autoMenu.MinFragmentLength = 2;
             autoMenu.TopLevel = true;
             autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);
             autoMenu.Items.Width = 200;

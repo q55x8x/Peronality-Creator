@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Personality_Creator.Personality">
-    <Position X="10" Y="1.5" Width="1.5" />
+    <Position X="10" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Personality.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Personality_Creator.PersonaFile">
-    <Position X="2.5" Y="0.5" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PersonaFile.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Personality_Creator.Folder">
-    <Position X="7.75" Y="1.5" Width="1.5" />
+    <Position X="7.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgJAAAIAQAAAAAAAAAAAAAAAAABAAAAAAgAAAAIA=</HashCode>
       <FileName>Folder.cs</FileName>
@@ -25,28 +25,31 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Personality_Creator.PersonaFiles.Script">
-    <Position X="2.5" Y="3.25" Width="1.5" />
+    <Position X="3.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAgAAAgAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AQAAAJgAFQRAAAQAAAAiQACgAAQACAAACABAEAABACA=</HashCode>
       <FileName>PersonaFiles\Script.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Personality_Creator.PersonaFiles.Scripts.Module" Collapsed="true">
-    <Position X="4.5" Y="3.25" Width="1.5" />
+  <Class Name="Personality_Creator.PersonaFiles.Scripts.Module">
+    <Position X="5.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACAAAAEAAAAAg=</HashCode>
       <FileName>PersonaFiles\Scripts\Module.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="scriptDeclension" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Personality_Creator.PersonaFiles.Scripts.FragmentedScript" Collapsed="true">
-    <Position X="4.5" Y="5.25" Width="1.5" />
+    <Position X="5.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PersonaFiles\Scripts\FragmentedScript.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Personality_Creator.PersonaFiles.Scripts.Fragment" Collapsed="true">
-    <Position X="4.5" Y="4.25" Width="1.5" />
+    <Position X="5.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PersonaFiles\Scripts\Fragment.cs</FileName>
@@ -79,29 +82,26 @@
   <Class Name="Personality_Creator.Settings">
     <Position X="11.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAYCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAEAAAAYCAAAAAAAAACAAACAAAAVAAAAAAAAAAAAA=</HashCode>
       <FileName>Settings.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Personality_Creator.mainFrm" Collapsed="true">
-    <Position X="12" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>EAAgBJqoHSIAIIRGMISaagDCRAQIAZDsDAAgAAiAAAU=</HashCode>
-      <FileName>mainFrm.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="currentFile" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="Personality_Creator.Hotkeys" Collapsed="true">
-    <Position X="12" Y="1.5" Width="1.5" />
+    <Position X="12" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAIAAACAAAACAAAAQAgAAIAAAAAAAAA=</HashCode>
       <FileName>Hotkeys.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Personality_Creator.OpenableFile">
+    <Position X="1.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAKEAAAAAAAAAgAAAAAAAACAEAIAABABAAAAAACA=</HashCode>
+      <FileName>OpenableFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Enum Name="Personality_Creator.PersonaFiles.ScriptDeclensionType">
-    <Position X="0.5" Y="3.25" Width="1.5" />
+    <Position X="9" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAQAAAAAACAAAAAAAAAEAA=</HashCode>
       <FileName>PersonaFiles\Script.cs</FileName>
