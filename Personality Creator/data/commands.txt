@@ -12,6 +12,8 @@ AddEdgeHoldTime
 AddStrokeTime
 AFKOff
 AFKOn
+ApathyLevelDown
+ApathyLevelUp 
 BookmarkLink
 BookmarkModule
 CBT
