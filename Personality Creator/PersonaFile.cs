@@ -9,25 +9,14 @@ using Personality_Creator.PersonaFiles.Scripts;
 
 namespace Personality_Creator
 {
-    public class PersonaFile
+    public abstract class PersonaFile : OpenableFile
     {
         #region capsuled fields
-        private FileInfo file;
+        
         #endregion
 
         #region properties
-        public FileInfo File
-        {
-            get
-            {
-                return file;
-            }
-
-            set
-            {
-                file = value;
-            }
-        }
+        
         #endregion
 
         internal PersonaFile(FileInfo file)
@@ -49,7 +38,7 @@ namespace Personality_Creator
                 return new Module(file);
             }
 
-            return new PersonaFile(file);
+            return new Script(file);
         }
 
         public static PersonaFile CreateInstance(string path)

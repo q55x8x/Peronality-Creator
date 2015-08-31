@@ -55,6 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCompleteItemManager.cs" />
+    <Compile Include="FastColoredEditorUtils.cs" />
+    <Compile Include="Last10ToolStripMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OpenableFile.cs" />
     <Compile Include="Folder.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -80,6 +85,7 @@
     <Compile Include="PersonaFiles\Script.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TabStripUtils.cs" />
     <Compile Include="Tools\BinarySerializer.cs" />
     <Compile Include="UI\VocabFileEditor.cs">
       <SubType>UserControl</SubType>

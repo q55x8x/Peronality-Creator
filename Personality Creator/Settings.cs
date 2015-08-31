@@ -13,6 +13,9 @@ namespace Personality_Creator
         public string lastOpenedPersonaDirectory = @"C:\";
         public string lastOpenedSingleFileDirectory = @"C:\";
         public List<string> openedPersonas = new List<string>();
+        public List<string> openedTabs = new List<string>();
+        public List<string> last10OpenedScripts = new List<string>();
+        public List<string> last10OpenedPersonas = new List<string>();
 
         public static void save()
         {
@@ -26,6 +29,20 @@ namespace Personality_Creator
                 Tools.BinarySerializer.Serialize<Settings>(new Settings(), DataManager.settingsPath);
             }
             DataManager.settings = Tools.BinarySerializer.Deserialize<Settings>(DataManager.settingsPath);
+
+            DataManager.settings.openedTabs = initListIfNull(DataManager.settings.openedTabs);
+            DataManager.settings.openedPersonas = initListIfNull(DataManager.settings.openedPersonas);
+            DataManager.settings.last10OpenedScripts = initListIfNull(DataManager.settings.last10OpenedScripts);
+            DataManager.settings.last10OpenedPersonas = initListIfNull(DataManager.settings.last10OpenedPersonas);
+        }
+
+        private static List<string> initListIfNull(List<string> list)
+        {
+            if(list == null)
+            {
+                return new List<string>();
+            }
+            return list;
         }
     }
 }

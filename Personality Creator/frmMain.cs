@@ -1,106 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using FastColoredTextBoxNS;
 using FarsiLibrary.Win;
 using System.IO;
-using System.IO.Compression;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
-using static System.Text.RegularExpressions.Regex;
-using i00SpellCheck;
-using FastColoredTextBoxPlugin;
-using Personality_Creator.UI;
 
 namespace Personality_Creator
 {
     public partial class frmMain : Form
     {
-        private FastColoredTextBox currentEditor;
-        private FATabStripItem currentTab;
-        private PersonaFile currentFile;
+        private FATabStripItem CurrentTab;
 
-        public FastColoredTextBox CurrentEditor
-        {
-            get
-            {
-                return currentEditor;
-            }
-
-            set
-            {
-                currentEditor = value;
-
-                this.autoMenu = new AutocompleteMenu(this.CurrentEditor);
-                this.autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
-                this.autoMenu.MinFragmentLength = 1;
-                this.autoMenu.TopLevel = true;
-                this.autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);
-                this.autoMenu.Items.Width = 200;
-            }
-        }
-
-        public FATabStripItem CurrentTab
-        {
-            get
-            {
-                return currentTab;
-            }
-
-            set
-            {
-                currentTab = value;
-                if (value != null) //TODO: maybe we have to think about to refactor the currentEditor property to match the differentiation pattern
-                {
-                    if (this.CurrentTab.Tag.GetType() == typeof(Module))
-                    {
-                        this.CurrentEditor = (FastColoredTextBox)this.CurrentTab.Controls[0];
-                        this.CurrentFile = (PersonaFile)this.CurrentTab.Tag;
-                    }
-                    else if (this.CurrentTab.Tag.GetType() == typeof(Vocabfile))
-                    {
-                        this.CurrentFile = (PersonaFile)this.CurrentTab.Tag;
-                    }
-                }
-            }
-        }
-
-        public PersonaFile CurrentFile
-        {
-            get
-            {
-                return currentFile;
-            }
-
-            set
-            {
-                currentFile = value;
-            }
-        }
-
-        public Dictionary<string, Personality> OpenedPersonas = new Dictionary<string, Personality>(); //dont know exactly if I want to put this into DataManager or not
         public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
 
-        public AutocompleteMenu autoMenu;
         public frmMain()
         {
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
-            this.renameToolStripMenuItem.Enabled = false;
-    }
+            //this.renameToolStripMenuItem.Enabled = false;
+
+            this.recentlyOpenedScriptsToolStripMenuItem.EntryClicked += (object sender, EventArgs e) => {
+                ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+                OpenableFile file = PersonaFile.CreateInstance(menuItem.Text);
+                openFile(file);
+            };
+
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.EntryClicked += (object sender, EventArgs e) => {
+                ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+                OpenPersona(menuItem.Text);
+            };
+        }
 
         private void mainFrm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = !tryCloseAllTabs();
+            e.Cancel = !trySaveTabs(copyTabCollectionAsList(this.tbStrip.Items));
+
+            DataManager.settings.last10OpenedScripts = this.recentlyOpenedScriptsToolStripMenuItem.Entries;
+            DataManager.settings.last10OpenedPersonas = this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries;
 
             Settings.save();
+        }
+
+        private OpenableFile findFileInTree(TreeNodeCollection nodes, string filePath)
+        {
+            OpenableFile foundFile = null;
+            foreach (TreeNode node in nodes)
+            {
+                if (node.Tag is OpenableFile && ((OpenableFile)node.Tag).File.FullName == filePath)
+                {
+                    foundFile =  (OpenableFile)node.Tag;
+                }
+                else
+                {
+                    foundFile = findFileInTree(node.Nodes, filePath);
+                }
+                if (foundFile != null)
+                {
+                    return foundFile;
+                }
+            }
+            return foundFile;
         }
 
         private void mainFrm_Load(object sender, EventArgs e)
@@ -115,6 +75,20 @@ namespace Personality_Creator
                     OpenPersonaIgnoreChecks(personaPath);
                 }
             }
+
+            foreach (string filePath in DataManager.settings.openedTabs)
+            {
+
+                OpenableFile file = findFileInTree(this.projectView.Nodes, filePath);
+                if (file == null)
+                {
+                    file = PersonaFile.CreateInstance(filePath);
+                }
+                openFileIgnoreChecks(file);
+            }
+
+            this.recentlyOpenedScriptsToolStripMenuItem.Entries = DataManager.settings.last10OpenedScripts;
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries = DataManager.settings.last10OpenedPersonas;
         }
 
         #region toolstripMenu logic
@@ -147,7 +121,6 @@ namespace Personality_Creator
             if(ofd.ShowDialog() == DialogResult.OK)
             {
                 PersonaFile newFile = PersonaFile.CreateInstance(ofd.FileName);
-                this.addUnAssociatedFile(newFile);
                 openFile(newFile);
 
                 DataManager.settings.lastOpenedSingleFileDirectory = newFile.File.Directory.FullName;
@@ -163,12 +136,6 @@ namespace Personality_Creator
 
         #region project view logic
 
-        private void addUnAssociatedFile(PersonaFile file)
-        {
-            TreeNode node = new TreeNode(file.File.Name, 1, 1) { Tag = file };
-            this.projectView.Nodes.Add(node);
-        }
-
         private void addAssociatedFile(PersonaFile file, TreeNode parentNode)
         {
             TreeNode node = new TreeNode(file.File.Name, 1, 1) { Tag = file };
@@ -177,9 +144,9 @@ namespace Personality_Creator
 
         private void projectView_DoubleClick(object sender, EventArgs e)
         {
-            if(this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
+            if(this.projectView.SelectedNode.Tag is OpenableFile)
             { 
-                openFile((PersonaFile)projectView.SelectedNode.Tag);
+                openFile((OpenableFile)projectView.SelectedNode.Tag);
             }
         }
 
@@ -216,43 +183,98 @@ namespace Personality_Creator
         {
             if (e.KeyCode == Keys.F2)
             {
-                BeginEditNode();
+                this.projectView.SelectedNode.BeginEdit();
             }
         }
-
         private void projectView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-            if(e.Label == null) //no rename occured
+            if (e.Label == null) //no rename occured
             {
                 return;
             }
 
-            if(e.Node.Tag.GetType() == typeof(Folder))
+            if (e.Node.Tag is Folder)
             {
                 TreeNode parentNode = e.Node.Parent;
                 Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
 
                 string parentDir = ((Folder)e.Node.Parent.Tag).Directory.FullName;
                 string newFolderPath = parentDir + @"\" + e.Label;
+                DirectoryInfo dirInfo = new DirectoryInfo(newFolderPath);
+
+                if (dirInfo.Exists)
+                {
+                    e.CancelEdit = true;
+                    e.Node.EndEdit(true);
+                    return;
+                }
+
+                e.Node.EndEdit(false);
 
                 renamedFolder.Directory.MoveTo(newFolderPath);
-                renamedFolder = new Folder(newFolderPath); //refresh files inside dir, this is easier than doing all files manually
 
-                TreeNode replacementNode = Folder.getNode(renamedFolder);
-
-                this.projectView.Nodes.Remove(e.Node);
-
-                parentNode.Nodes.Add(replacementNode);
+                updateFolderChildrenPath(renamedFolder);
             }
-            else if (e.Node.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
+            else if (e.Node.Tag is PersonaFile)
             {
-                PersonaFile renamendFile = (PersonaFile)e.Node.Tag;
+                PersonaFile renamedFile = (PersonaFile)e.Node.Tag;
                 string newFullName = ((Folder)e.Node.Parent.Tag).Directory.FullName + @"\" + e.Label;
-                File.Move(renamendFile.File.FullName, newFullName);
-                renamendFile.File = new FileInfo(newFullName);
+                FileInfo fileInfo = new FileInfo(newFullName);
+
+                if (fileInfo.Exists)
+                {
+                    e.CancelEdit = true;
+                    e.Node.EndEdit(true);
+                    return;
+                }
+
+                e.Node.EndEdit(false);
+                File.Move(renamedFile.File.FullName, newFullName);
+                renamedFile.File = fileInfo;
+
+                if (renamedFile.tab != null)
+                {
+                    if (TabStripUtils.isTagFlaggedAsModified(renamedFile.tab))
+                    {
+                        renamedFile.tab.Title = e.Label;
+                        TabStripUtils.flagTabAsModified(renamedFile.tab);
+                    }
+                    else
+                    {
+                        renamedFile.tab.Title = e.Label;
+                    }
+
+                    int index = DataManager.settings.openedTabs.IndexOf(renamedFile.File.FullName);
+                    if (index >= 0)
+                    {
+                        DataManager.settings.openedTabs[index] = newFullName;
+                    }
+                }
             }
 
             this.projectView.Invalidate();
+        }
+
+        private void updateFolderChildrenPath(Folder folder)
+        {
+            foreach (PersonaFile file in folder.Files.Values)
+            {
+                string newFullName = folder.Directory.FullName + file.File.Name;
+
+                int index = DataManager.settings.openedTabs.IndexOf(file.File.FullName);
+                if (index >= 0)
+                {
+                    DataManager.settings.openedTabs[index] = newFullName;
+                }
+
+                file.File = new FileInfo(newFullName);
+            }
+            foreach (Folder childFolder in folder.Folders.Values)
+            {
+                string newFullName = folder.Directory.FullName + childFolder.Directory.Name;
+                childFolder.Directory = new DirectoryInfo(newFullName);
+                updateFolderChildrenPath(childFolder);
+            }
         }
 
         #region context menu
@@ -294,9 +316,9 @@ namespace Personality_Creator
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Sry but this feature is currently bugged :(");
-            throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
-            this.BeginEditNode();
+            //MessageBox.Show("Sry but this feature is currently bugged :(");
+            //throw new NotImplementedException(); //somehow context menu bugs out treeview Visuals - reproduce: rightclick -> rename a few times until editing does not trigger then try to get renaming triggered with F2 or tripple-click then rename -> treeview bugs out with Node-Texts but files are untouched from the error
+            this.projectView.SelectedNode.BeginEdit();
         }
 
         //-------------------
@@ -339,59 +361,20 @@ namespace Personality_Creator
 
         #endregion
 
-        private void BeginEditNode()
-        {
-            if (this.projectView.SelectedNode.Tag.GetType().BaseType.BaseType == typeof(PersonaFile))
-            {
-                this.projectView.SelectedNode.BeginEdit();
-            }
-
-            if (this.projectView.SelectedNode.Tag.GetType() == typeof(Folder))
-            {
-                Folder renamedFolder = (Folder)this.projectView.SelectedNode.Tag;
-                List<FATabStripItem> tabsWithOpenFIles = new List<FATabStripItem>();
-
-                foreach (PersonaFile file in renamedFolder.GetAllFilesAndFilesInSubDirs())
-                {
-                    foreach (FATabStripItem tab in this.tbStrip.Items)
-                    {
-                        if (tab.Tag == file)
-                        {
-                            tabsWithOpenFIles.Add(tab);
-                        }
-                    }
-                }
-
-                if(tabsWithOpenFIles.Count > 0)
-                {
-                    DialogResult result = MessageBox.Show("One or more files need to close before renaming can be done. Save all files before closing?", "Included files still open!", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-
-                    switch(result)
-                    {
-                        case DialogResult.Yes:
-                            foreach (FATabStripItem tab in tabsWithOpenFIles)
-                            {
-                                closeTab(tab, true);
-                            }
-                            break;
-                        case DialogResult.No:
-                            foreach (FATabStripItem tab in tabsWithOpenFIles)
-                            {
-                                closeTab(tab, false);
-                            }
-                            break;
-                        case DialogResult.Cancel:
-                            return;
-                    }
-
-                    this.projectView.SelectedNode.BeginEdit();
-                }
-            }
-        }
-
         #endregion
 
         #region tabStripLogic
+
+        private List<FATabStripItem> copyTabCollectionAsList(FATabStripItemCollection tabs)
+        {
+            List<FATabStripItem> list = new List<FATabStripItem>();
+            foreach(FATabStripItem tab in tabs)
+            {
+                list.Add(tab);
+            }
+
+            return list;
+        }
 
         private void tbStrip_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
@@ -400,7 +383,7 @@ namespace Personality_Creator
 
         private void tbStrip_TabStripItemClosing(TabStripItemClosingEventArgs e)
         {
-            e.Cancel = !tryCloseTab(e.Item); //cancel if tryClose did NOT succeed
+            e.Cancel = !tryCloseTab(e.Item);
         }
 
         private void tbStrip_MouseUp(object sender, MouseEventArgs e)
@@ -415,7 +398,19 @@ namespace Personality_Creator
 
         private void closeCurrentTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tryCloseTab(this.CurrentTab);
+            FATabStripItem tab = this.CurrentTab;
+            int index = this.tbStrip.Items.IndexOf(tab);
+            if (tryCloseTab(tab))
+            {
+                if (this.tbStrip.Items.Count > 1)
+                {
+                    if (index >= this.tbStrip.Items.Count)
+                    {
+                        index = this.tbStrip.Items.Count - 1;
+                    }
+                    this.tbStrip.SelectedItem = this.tbStrip.Items[index];
+                }
+            }
         }
 
         private void closeAllTabsExceptCurrentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -429,10 +424,7 @@ namespace Personality_Creator
 
             tabsToClose.Remove(this.CurrentTab);
 
-            FATabStripItemCollection collection = new FATabStripItemCollection();
-            collection.AddRange(tabsToClose.ToArray());
-
-            tryCloseTabs(collection);
+            tryCloseTabs(tabsToClose);
         }
 
         private void closeAllTabsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -453,66 +445,42 @@ namespace Personality_Creator
                 OpenPersonaIgnoreChecks(path);
                 DataManager.settings.openedPersonas.Add(path);
             }
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.addEntry(path);
         }
 
         private void OpenPersonaIgnoreChecks(string path)
         {
             Personality persona = new Personality(path);
-            this.OpenedPersonas.Add(persona.Name, persona);
-            this.projectView.Nodes.Add(persona.getRootNode());
+            TreeNode personaRoot = persona.getRootNode();
+            this.projectView.Nodes.Add(personaRoot);
+            personaRoot.Expand();
         }
 
-        private void openFile(PersonaFile file)
+        private void openFile(OpenableFile file)
         {
-            if(file.GetType().BaseType == typeof(Script))
+            if (!DataManager.settings.openedTabs.Contains(file.File.FullName))
             {
-                openScript((Script)file);
+                openFileIgnoreChecks(file);
+                DataManager.settings.openedTabs.Add(file.File.FullName);
+            } else
+            {
+                foreach(FATabStripItem tab in this.tbStrip.Items)
+                {
+                    if(tab.Tag.Equals(file))
+                    {
+                        this.tbStrip.SelectedItem = tab;
+                        tab.Focus();
+                    }
+                }
             }
+            this.recentlyOpenedScriptsToolStripMenuItem.addEntry(file.File.FullName);
         }
 
-        private void openScript(Script script)
+        private void openFileIgnoreChecks(OpenableFile file)
         {
-            if (script.GetType() == typeof(Module))
-            {
-                openModule((Module)script);
-            }
-            else if (script.GetType() == typeof(Vocabfile))
-            {
-                openVocab((Vocabfile)script);
-            }
-            else if (script.GetType() == typeof(Fragment))
-            {
-                openFragment((Fragment)script);
-            }
-            else if(script.GetType() == typeof(FragmentedScript))
-            {
-                openFragmentedScript((FragmentedScript)script);
-            }
-        }
+            FATabStripItem newTab = file.CreateTab();
 
-        private void openModule(Module module)
-        {
-            FastColoredTextBox newEditor = new FastColoredTextBox();
-
-            FATabStripItem newTab = new FATabStripItem();
-            newTab.Title = module.File.Name;
-            newTab.Tag = module;
-
-            //load the spellchecker extension for FastColoredTextBox
-            SpellCheckFastColoredTextBox spellCheckerTextBox = new SpellCheckFastColoredTextBox();
-            ControlExtensions.LoadSingleControlExtension(newEditor, spellCheckerTextBox);
-            //spellCheckerTextBox.SpellCheckMatch = @"(?<!<[^>]*)[^<^>]*"; // ignore HTML tags
-            spellCheckerTextBox.SpellCheckMatch = @"^([\w']+)| ([\w']+)|>([\w']+)"; // Only process words starting a line, following a space or a tag
-
-            newEditor.Parent = newTab;
-            newEditor.Dock = DockStyle.Fill;
-            newEditor.Text = module.Read();
-            newEditor.Focus();
-
-            newEditor.TextChanged += this.Editor_TextChanged;
-            newEditor.KeyDown += Editor_KeyDown;
-            newEditor.MouseMove += Editor_MouseMove;
-            newEditor.MouseUp += Editor_MouseUp;
+            file.ContentChanged += new ChangedEventHandler(processTabChanges);
 
             this.tbStrip.AddTab(newTab);
 
@@ -521,35 +489,10 @@ namespace Personality_Creator
             this.ApplyStyle();
         }
 
-        private void openVocab(Vocabfile vocabfile)
+        private void processTabChanges(object sender, EventArgs e)
         {
-            VocabFileEditor vocabEditor = new VocabFileEditor();
-
-            FATabStripItem newTab = new FATabStripItem();
-            newTab.Title = vocabfile.Keyword;
-            newTab.Tag = vocabfile;
-
-            vocabEditor.Parent = newTab;
-            vocabEditor.Dock = DockStyle.Fill;
-            vocabEditor.loadVocabfile(vocabfile);
-            vocabEditor.Focus();
-
-            vocabEditor.VocabItemCollectionChanged += VocabEditor_VocabItemCollectionChanged;
-            vocabEditor.KeyDown += VocabEditor_KeyDown;
-
-            this.tbStrip.AddTab(newTab);
-
-            this.tbStrip.SelectedItem = newTab;
-        }
-
-        private void openFragment(Fragment script)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void openFragmentedScript(FragmentedScript script)
-        {
-            throw new NotImplementedException();
+            FATabStripItem tab = (FATabStripItem)sender;
+            TabStripUtils.flagTabAsModified(tab);
         }
 
         #endregion
@@ -558,110 +501,80 @@ namespace Personality_Creator
 
         private bool tryCloseAllTabs()
         {
-            return tryCloseTabs(this.tbStrip.Items);
+            return tryCloseTabs(copyTabCollectionAsList(this.tbStrip.Items));
         }
 
-        private bool tryCloseTabs(FATabStripItemCollection tabs)
+        private bool tryCloseTabs(IList<FATabStripItem> tabs)
         {
-            bool success = true;
-            bool save = false;
+            if (trySaveTabs(tabs))
+            {
+                closeTabs(tabs);
+                return true;
+            }
+            return false;
+        }
 
+        private bool tryCloseTab(FATabStripItem tab)
+        {
+            if (TabStripUtils.isTagFlaggedAsModified(tab))
+            {
+                DialogResult result = MessageBox.Show("Save all changes to this file?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        saveTab(tab);
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                    default:
+                        return false;
+                }
+            }
+            closeTab(tab);
+            return true;
+        }
+
+        private bool trySaveTabs(IList<FATabStripItem> tabs)
+        {
             if (unsavedChanges(tabs))
             {
                 DialogResult result = MessageBox.Show("Save all changed files?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 switch (result)
                 {
                     case DialogResult.Yes:
-                        save = true;
+                        saveTabs(tabs);
                         break;
                     case DialogResult.No:
                         break;
                     case DialogResult.Cancel:
-                        success = false;
-                        break;
                     default:
-                        success = false;
-                        break;
+                        return false;
                 }
             }
-
-            if (success)
-            {
-                closeTabs(tabs, save);
-            }
-
-            return success;
+            return true;
         }
 
-        private bool tryCloseTab(FATabStripItem tab)
+        public void closeTab(FATabStripItem tab)
         {
-            bool success = true;
-            bool save = false;
-
-            if (tabHasUnsavedChanges(tab))
-            {
-                switch (MessageBox.Show("Save changes?", "Unsaved changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning))
-                {
-                    case DialogResult.Yes:
-                        save = true;
-                        break;
-                    case DialogResult.No:
-                        break;
-                    case DialogResult.Cancel:
-                        success = false;
-                        break;
-                    default:
-                        success = false;
-                        break;
-                }
-            }
-
-            if(success)
-            {
-                closeTab(tab, save);
-            }
-
-            return success;
-        }
-
-        public void closeTab(FATabStripItem tab, bool save)
-        {
-            if (tabHasUnsavedChanges(tab) && save)
-            {
-                saveFile((PersonaFile)tab.Tag, tab.TabIndex);
-                tab.Title = tab.Title.Remove(0, 1);
-            }
             this.tbStrip.Items.Remove(tab);
+            DataManager.settings.openedTabs.Remove(((OpenableFile)tab.Tag).File.FullName);
         }
 
-        private void closeTabs(FATabStripItemCollection tabs, bool save) //again the collection points directly to the original collection so we have to make a copy to not mess up deletion
+        private void closeTabs(IList<FATabStripItem> tabs)
         {
-            List<FATabStripItem> tabsToClose = new List<FATabStripItem>();
-
             foreach(FATabStripItem tab in tabs)
             {
-                tabsToClose.Add(tab);
+                closeTab(tab);
             }
-
-            foreach (FATabStripItem tab in tabsToClose)
-            {
-                closeTab(tab, save);
-            }
-
-            tabsToClose = null;
         }
 
-        public void closeAllTabs(bool save)
-        {
-            closeTabs(this.tbStrip.Items, save);
-        }
-
-        private bool unsavedChanges(FATabStripItemCollection items)
+        private bool unsavedChanges(IList<FATabStripItem> items)
         {
             bool unsaved = false;
             foreach (FATabStripItem tab in items)
             {
-                if (tabHasUnsavedChanges(tab))
+                if (TabStripUtils.isTagFlaggedAsModified(tab))
                 {
                     unsaved = true;
                     break;
@@ -673,173 +586,56 @@ namespace Personality_Creator
 
         public bool unsavedChanges() //overload currently unused but kept due to later features may be benefitting from it
         {
-            return unsavedChanges(this.tbStrip.Items);
-        }
-
-        public bool tabHasUnsavedChanges(FATabStripItem tab)
-        {
-            return tab.Title.StartsWith("*");
+            return unsavedChanges(copyTabCollectionAsList(tbStrip.Items));
         }
 
         #endregion
 
         #region saving
 
-        public void saveFile(PersonaFile file, int tabIndex)
+        public void saveCurrentFile()
         {
-            if (file.GetType().BaseType == typeof(Script))
+            saveTab(this.CurrentTab);
+        }
+
+        private void saveTab(FATabStripItem tab)
+        {
+            if (TabStripUtils.isTagFlaggedAsModified(tab))
             {
-                if (file.GetType() == typeof(Module))
-                {
-                    ((Module)file).Save(((FastColoredTextBox)this.tbStrip.Items[tabIndex].Controls?[0]).Text);
-
-                    if (this.tbStrip.Items[tabIndex].Title.StartsWith("*"))
-                    {
-                        this.tbStrip.Items[tabIndex].Title = this.tbStrip.Items[tabIndex].Title.Remove(0, 1);
-                    }
-                }
-                else if (file.GetType() == typeof(Vocabfile))
-                {
-                    ((Vocabfile)file).Save(((VocabFileEditor)this.tbStrip.Items[tabIndex].Controls?[0]).VocabItems);
-
-                    if (this.tbStrip.Items[tabIndex].Title.StartsWith("*"))
-                    {
-                        this.tbStrip.Items[tabIndex].Title = this.tbStrip.Items[tabIndex].Title.Remove(0, 1);
-                    }
-                }
+                ((OpenableFile)tab.Tag).Save();
             }
         }
 
-        public void saveCurrentFile() //TODO: in the future type recognition has to be tweaked accordingly to the file type
+        public void saveAllFiles()
         {
-            saveFile(this.CurrentFile, this.CurrentTab.TabIndex);
+            saveTabs((IList<FATabStripItem>)this.tbStrip.Items);
         }
 
-        public void saveAllFiles() //TODO: in the future type recognition has to be tweaked accordingly to the file type
+        public void saveTabs(IList<FATabStripItem> tabs)
         {
-            foreach (FATabStripItem tab in this.tbStrip.Items)
+            foreach (FATabStripItem tab in tabs)
             {
-                if (tab.Title.StartsWith("*"))
-                {
-                    saveFile((PersonaFile)tab.Tag, tab.TabIndex);
-                    tab.Title = this.CurrentTab.Title.Remove(0, 1);
-                }
+                saveTab(tab);
             }
         }
 
         #endregion
 
-        #region text editor logic
-
-        Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
-        Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
-        Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
-
-
-        private void Editor_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
-        {
-            //set unsaved changes
-            if (!tabHasUnsavedChanges(this.CurrentTab))
-            {
-                this.CurrentTab.Title = this.CurrentTab.Title.Insert(0, "*");
-            }
-
-            //colorization
-            e.ChangedRange.ClearStyle(KeywordStyle);
-            e.ChangedRange.SetStyle(KeywordStyle, @"(?<![A-z_0-9öäüáéíóú+])\#[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(CommandStyle);
-            e.ChangedRange.SetStyle(CommandStyle, @"(?<![A-z_0-9öäüáéíóú+])\@[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(ResponseStyle);
-            e.ChangedRange.SetStyle(ResponseStyle, @"\[.+\]", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(ParanthesisStyle);
-            e.ChangedRange.SetStyle(ParanthesisStyle, @"(?i)(?<=[A-z_0-9öäüáéíóú+\n])\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(GotoStyle);
-            e.ChangedRange.SetStyle(GotoStyle, @"(?i)(\@goto|then)\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-
-            e.ChangedRange.ClearStyle(FragmentStyle);
-            e.ChangedRange.SetStyle(FragmentStyle, @"(?i)\$\$frag\([A-z_0-9öäüáéíóú+\s]+\)", RegexOptions.None);
-
-            //e.ChangedRange.ClearStyle(CommentStyle);
-            //e.ChangedRange.SetStyle(CommentStyle, @"(?i)(?<!.)-.*", RegexOptions.None);
-
-            ////code folding
-            //e.ChangedRange.SetFoldingMarkers(@"-region", @"-endregion");
-        }
+        #region editor logic
 
         private void ApplyStyle()
         {
             bool unsavedChangesBefore = false;
-            if(tabHasUnsavedChanges(this.CurrentTab))
+            if(TabStripUtils.isTagFlaggedAsModified(this.CurrentTab))
             {
                 unsavedChangesBefore = true;
             }
 
-            this.CurrentEditor.OnTextChanged(); //redraws editor styles
+            ((OpenableFile)this.CurrentTab.Tag).Redraw();
 
             if(!unsavedChangesBefore)
             {
-                //if (this.CurrentTab.Title.StartsWith("*")) //this should be redundant
-                //{
-                this.CurrentTab.Title = this.CurrentTab.Title.Remove(0, 1);
-                //}
-            }
-        }
-
-        private void Editor_MouseMove(object sender, MouseEventArgs e)
-        {
-            Place p = this.CurrentEditor.PointToPlace(e.Location);
-            if (CharIsGoto(p) && ModifierKeys == Keys.Control)
-            {
-                this.CurrentEditor.Cursor = Cursors.Hand;
-            }
-            else
-            {
-                this.CurrentEditor.Cursor = Cursors.IBeam;
-            }
-        }
-
-        private void Editor_MouseUp(object sender, MouseEventArgs e)
-        {
-            Place p = this.CurrentEditor.PointToPlace(e.Location);
-
-            if (CharIsGoto(p) && ModifierKeys == Keys.Control)
-            {
-                string gotoName = Match(this.CurrentEditor.GetLineText(p.iLine), @"(?i)(?<=\@goto\(|then\()[A-z_0-9öäüáéíóú+\s]+(?=\))").Value; //extracting the goto specifier
-                int index = Match(this.CurrentEditor.Text, $@"(?<=\n)\({gotoName}\)").Index; //finding the goto destination
-                Range range = this.CurrentEditor.GetRange(index + gotoName.Length + 2, index + gotoName.Length + 2);
-                this.currentEditor.Selection = new Range(this.currentEditor, range.Start.iLine);
-                this.currentEditor.DoCaretVisible();
-            }
-        }
-
-        private bool CharIsGoto(Place place)
-        {
-            if(this.currentEditor.GetStylesOfChar(place).Contains(GotoStyle))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private void Editor_KeyUp(object sender, KeyEventArgs e)
-        {
-            Cursor.Position = Cursor.Position; //force cursor redraw
-        }
-
-        private void Editor_KeyDown(object sender, KeyEventArgs e)
-        {
-            Cursor.Position = Cursor.Position; //force cursor redraw
-            if (e.KeyCode == Keys.S && ModifierKeys == Keys.Control)
-            {
-                saveCurrentFile();
+                TabStripUtils.unflagTabAsModified(this.CurrentTab);
             }
         }
 
@@ -885,25 +681,6 @@ namespace Personality_Creator
                     fileToDelete.File.Delete();
                     selectedNode.Remove();
                 }
-            }
-        }
-        #endregion
-
-        #region vocab editor logic
-
-        private void VocabEditor_VocabItemCollectionChanged(object sender, VocabFileEditor.VocabItemsChangedEventArgs eventArgs)
-        {
-            if (!tabHasUnsavedChanges(this.CurrentTab))
-            {
-                this.CurrentTab.Title = this.CurrentTab.Title.Insert(0, "*");
-            }
-        }
-
-        private void VocabEditor_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.S && ModifierKeys == Keys.Control)
-            {
-                saveCurrentFile();
             }
         }
 

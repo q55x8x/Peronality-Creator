@@ -29,9 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.mnuStrip = new System.Windows.Forms.MenuStrip();
             this.tollStripMenuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recentlyOpenedScriptsToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
             this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,6 +59,7 @@
             this.closeCurrentTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllTabsExceptCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recentlyOpenedPersonalitiesToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -88,9 +91,11 @@
             // 
             this.tollStripMenuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openScriptToolStripMenuItem,
+            this.recentlyOpenedScriptsToolStripMenuItem,
             this.saveScriptToolStripMenuItem,
             this.toolStripMenuItem2,
-            this.openPersonalityToolStripMenuItem});
+            this.openPersonalityToolStripMenuItem,
+            this.recentlyOpenedPersonalitiesToolStripMenuItem});
             this.tollStripMenuFile.Name = "tollStripMenuFile";
             this.tollStripMenuFile.Size = new System.Drawing.Size(50, 29);
             this.tollStripMenuFile.Text = "File";
@@ -98,26 +103,34 @@
             // openScriptToolStripMenuItem
             // 
             this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(231, 30);
+            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(332, 30);
             this.openScriptToolStripMenuItem.Text = "Open Script";
             this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScriptToolStripMenuItem_Click);
+            // 
+            // recentlyOpenedScriptsToolStripMenuItem
+            // 
+            this.recentlyOpenedScriptsToolStripMenuItem.Enabled = false;
+            this.recentlyOpenedScriptsToolStripMenuItem.Entries = ((System.Collections.Generic.List<string>)(resources.GetObject("recentlyOpenedScriptsToolStripMenuItem.Entries")));
+            this.recentlyOpenedScriptsToolStripMenuItem.Name = "recentlyOpenedScriptsToolStripMenuItem";
+            this.recentlyOpenedScriptsToolStripMenuItem.Size = new System.Drawing.Size(332, 30);
+            this.recentlyOpenedScriptsToolStripMenuItem.Text = "Recently opened scripts";
             // 
             // saveScriptToolStripMenuItem
             // 
             this.saveScriptToolStripMenuItem.Name = "saveScriptToolStripMenuItem";
-            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(231, 30);
+            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(332, 30);
             this.saveScriptToolStripMenuItem.Text = "Save Script";
             this.saveScriptToolStripMenuItem.Click += new System.EventHandler(this.saveScriptToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(228, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(329, 6);
             // 
             // openPersonalityToolStripMenuItem
             // 
             this.openPersonalityToolStripMenuItem.Name = "openPersonalityToolStripMenuItem";
-            this.openPersonalityToolStripMenuItem.Size = new System.Drawing.Size(231, 30);
+            this.openPersonalityToolStripMenuItem.Size = new System.Drawing.Size(332, 30);
             this.openPersonalityToolStripMenuItem.Text = "Open Personality";
             this.openPersonalityToolStripMenuItem.Click += new System.EventHandler(this.openPersonalityToolStripMenuItem_Click);
             // 
@@ -325,6 +338,12 @@
             this.closeAllTabsToolStripMenuItem.Text = "Close all tabs";
             this.closeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsToolStripMenuItem_Click);
             // 
+            // recentlyOpenedPersonalitiesToolStripMenuItem
+            // 
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Name = "recentlyOpenedPersonalitiesToolStripMenuItem";
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Size = new System.Drawing.Size(332, 30);
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Text = "Recently opened personalities";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -386,6 +405,8 @@
         private System.Windows.Forms.ToolStripMenuItem asChastityDeclensionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem asBeggingDeclensionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private Personality_Creator.Last10ToolStripMenuItem recentlyOpenedScriptsToolStripMenuItem;
+        private Personality_Creator.Last10ToolStripMenuItem recentlyOpenedPersonalitiesToolStripMenuItem;
     }
 }
 
