@@ -118,15 +118,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\folderIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="stuff\icons\folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="stuff\icons\file.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="data\commandfilters.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -137,6 +128,20 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\Index.html" />
+    <Content Include="Resources\file.png" />
+    <Content Include="Resources\folder.png" />
+    <None Include="Resources\startwithoutdebugging_6556.png" />
+    <None Include="Resources\Record_8791.png" />
+    <None Include="Resources\Find_5650.png" />
+    <None Include="Resources\Redo_16x.png" />
+    <None Include="Resources\Undo_16x.png" />
+    <None Include="Resources\Paste_6520.png" />
+    <None Include="Resources\Cut_6523.png" />
+    <None Include="Resources\Copy_6524.png" />
+    <None Include="Resources\Saveall_6518.png" />
+    <None Include="Resources\Save_6530.png" />
+    <None Include="Resources\Open_6529.png" />
+    <None Include="Resources\Open_6296.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpellChecker\Components\i00BindingList\i00BindingList.vbproj">
@@ -151,6 +156,9 @@
       <Project>{27d0d9b3-719c-46b7-9f03-3f91e82e7436}</Project>
       <Name>i00SpellCheck</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

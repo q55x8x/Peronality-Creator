@@ -91,48 +91,7 @@ namespace Personality_Creator
             this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries = DataManager.settings.last10OpenedPersonas;
         }
 
-        #region toolstripMenu logic
-
-        private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Hotkeys hotkeys = new Hotkeys();
-            hotkeys.Show();
-        }
-
-        private void openPersonalityToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = DataManager.settings.lastOpenedPersonaDirectory;
-
-            if (fbd.ShowDialog() == DialogResult.OK)
-            {
-                OpenPersona(fbd.SelectedPath);
-
-                DataManager.settings.lastOpenedPersonaDirectory = fbd.SelectedPath;
-            }
-        }
-
-        private void openScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = DataManager.settings.lastOpenedSingleFileDirectory;
-
-            
-            if(ofd.ShowDialog() == DialogResult.OK)
-            {
-                PersonaFile newFile = PersonaFile.CreateInstance(ofd.FileName);
-                openFile(newFile);
-
-                DataManager.settings.lastOpenedSingleFileDirectory = newFile.File.Directory.FullName;
-            }
-        }
-
-        private void saveScriptToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.saveCurrentFile();
-        }
-
-        #endregion
+  
 
         #region project view logic
 
@@ -683,6 +642,112 @@ namespace Personality_Creator
                 }
             }
         }
+
+        #endregion
+
+        #region menu
+
+        #region file
+
+        private void openScript_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = DataManager.settings.lastOpenedSingleFileDirectory;
+
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                PersonaFile newFile = PersonaFile.CreateInstance(ofd.FileName);
+                openFile(newFile);
+
+                DataManager.settings.lastOpenedSingleFileDirectory = newFile.File.Directory.FullName;
+            }
+        }
+
+        private void saveScript_Click(object sender, EventArgs e)
+        {
+            this.saveCurrentFile();
+        }
+
+        private void saveAll_Click(object sender, EventArgs e)
+        {
+            this.saveAllFiles();
+        }
+
+        private void openPersonality_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = DataManager.settings.lastOpenedPersonaDirectory;
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                OpenPersona(fbd.SelectedPath);
+
+                DataManager.settings.lastOpenedPersonaDirectory = fbd.SelectedPath;
+            }
+        }
+
+        #endregion
+
+        #region edit
+
+        private void copy_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void cut_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void paste_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void undo_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void redo_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void find_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region makro
+
+
+        private void record_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void execute_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #endregion
+
+        #region toolstripMenu
+
+        private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Hotkeys hotkeys = new Hotkeys();
+            hotkeys.Show();
+        }
+
+        #endregion
 
         #endregion
 
