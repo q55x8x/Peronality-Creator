@@ -693,32 +693,32 @@ namespace Personality_Creator
 
         private void copy_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).Copy(); //still looks very messy we may have to e.g. wrap these functions in OpenableFile so every fileType can react differently to the calls
         }
 
         private void cut_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).Cut();
         }
 
         private void paste_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).Paste();
         }
 
         private void undo_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).Undo();
         }
 
         private void redo_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).Redo();
         }
 
         private void find_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).ShowFindDialog();
         }
 
         #endregion
