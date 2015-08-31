@@ -144,6 +144,10 @@
     <None Include="Resources\Open_6296.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProjectView\ProjectView.csproj">
+      <Project>{ee7e75e3-fb20-4603-99ff-3dea815edaf6}</Project>
+      <Name>ProjectView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpellChecker\Components\i00BindingList\i00BindingList.vbproj">
       <Project>{1a3066d9-b48c-4ec1-ac93-4b0bbe5aa812}</Project>
       <Name>i00BindingList</Name>

@@ -51,7 +51,6 @@
             this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbStrip = new FarsiLibrary.Win.FATabStrip();
-            this.projectView = new System.Windows.Forms.TreeView();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.contextMenuStripProjectView = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,10 +71,6 @@
             this.toolStripFileBtnSaveAll = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripFileBtnOpenPersona = new System.Windows.Forms.ToolStripButton();
-            this.contextMenuStripTabContainer = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.closeCurrentTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeAllTabsExceptCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripEdit = new System.Windows.Forms.ToolStrip();
             this.toolStripEditBtnCopy = new System.Windows.Forms.ToolStripButton();
             this.toolStripEditBtnCut = new System.Windows.Forms.ToolStripButton();
@@ -88,6 +83,11 @@
             this.toolStripMakro = new System.Windows.Forms.ToolStrip();
             this.toolStripMakroBtnRecord = new System.Windows.Forms.ToolStripButton();
             this.toolStripMakroBtnExecute = new System.Windows.Forms.ToolStripButton();
+            this.contextMenuStripTabContainer = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.closeCurrentTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllTabsExceptCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectView = new Personality_Creator.UI.ProjectView();
             this.recentlyOpenedScriptsToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
             this.recentlyOpenedPersonalitiesToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
@@ -102,9 +102,9 @@
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer.SuspendLayout();
             this.toolStripFile.SuspendLayout();
-            this.contextMenuStripTabContainer.SuspendLayout();
             this.toolStripEdit.SuspendLayout();
             this.toolStripMakro.SuspendLayout();
+            this.contextMenuStripTabContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // mnuStrip
@@ -291,19 +291,6 @@
             this.tbStrip.TabStripItemSelectionChanged += new FarsiLibrary.Win.TabStripItemChangedHandler(this.tbStrip_TabStripItemSelectionChanged);
             this.tbStrip.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tbStrip_MouseUp);
             // 
-            // projectView
-            // 
-            this.projectView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.projectView.LabelEdit = true;
-            this.projectView.Location = new System.Drawing.Point(0, 0);
-            this.projectView.Name = "projectView";
-            this.projectView.Size = new System.Drawing.Size(234, 439);
-            this.projectView.TabIndex = 3;
-            this.projectView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.projectView_AfterLabelEdit);
-            this.projectView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.projectView_NodeMouseClick);
-            this.projectView.DoubleClick += new System.EventHandler(this.projectView_DoubleClick);
-            this.projectView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.projectView_KeyDown);
-            // 
             // splitContainer
             // 
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -447,7 +434,7 @@
             this.toolStripFileBtnSaveAll,
             this.toolStripSeparator1,
             this.toolStripFileBtnOpenPersona});
-            this.toolStripFile.Location = new System.Drawing.Point(3, 0);
+            this.toolStripFile.Location = new System.Drawing.Point(5, 0);
             this.toolStripFile.Name = "toolStripFile";
             this.toolStripFile.Size = new System.Drawing.Size(110, 25);
             this.toolStripFile.TabIndex = 0;
@@ -497,37 +484,6 @@
             this.toolStripFileBtnOpenPersona.Text = "Open Persona";
             this.toolStripFileBtnOpenPersona.Click += new System.EventHandler(this.openPersonality_Click);
             // 
-            // contextMenuStripTabContainer
-            // 
-            this.contextMenuStripTabContainer.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStripTabContainer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.closeCurrentTabToolStripMenuItem,
-            this.closeAllTabsExceptCurrentToolStripMenuItem,
-            this.closeAllTabsToolStripMenuItem});
-            this.contextMenuStripTabContainer.Name = "contextMenuStripTabContainer";
-            this.contextMenuStripTabContainer.Size = new System.Drawing.Size(222, 70);
-            // 
-            // closeCurrentTabToolStripMenuItem
-            // 
-            this.closeCurrentTabToolStripMenuItem.Name = "closeCurrentTabToolStripMenuItem";
-            this.closeCurrentTabToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.closeCurrentTabToolStripMenuItem.Text = "Close current tab";
-            this.closeCurrentTabToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentTabToolStripMenuItem_Click);
-            // 
-            // closeAllTabsExceptCurrentToolStripMenuItem
-            // 
-            this.closeAllTabsExceptCurrentToolStripMenuItem.Name = "closeAllTabsExceptCurrentToolStripMenuItem";
-            this.closeAllTabsExceptCurrentToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.closeAllTabsExceptCurrentToolStripMenuItem.Text = "Close all tabs except current";
-            this.closeAllTabsExceptCurrentToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsExceptCurrentToolStripMenuItem_Click);
-            // 
-            // closeAllTabsToolStripMenuItem
-            // 
-            this.closeAllTabsToolStripMenuItem.Name = "closeAllTabsToolStripMenuItem";
-            this.closeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
-            this.closeAllTabsToolStripMenuItem.Text = "Close all tabs";
-            this.closeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsToolStripMenuItem_Click);
-            // 
             // toolStripEdit
             // 
             this.toolStripEdit.Dock = System.Windows.Forms.DockStyle.None;
@@ -540,7 +496,7 @@
             this.toolStripEditBtnRedo,
             this.toolStripSeparator3,
             this.toolStripEditBtnFind});
-            this.toolStripEdit.Location = new System.Drawing.Point(158, 0);
+            this.toolStripEdit.Location = new System.Drawing.Point(180, 0);
             this.toolStripEdit.Name = "toolStripEdit";
             this.toolStripEdit.Size = new System.Drawing.Size(162, 25);
             this.toolStripEdit.TabIndex = 1;
@@ -621,9 +577,9 @@
             this.toolStripMakro.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMakroBtnRecord,
             this.toolStripMakroBtnExecute});
-            this.toolStripMakro.Location = new System.Drawing.Point(393, 0);
+            this.toolStripMakro.Location = new System.Drawing.Point(409, 0);
             this.toolStripMakro.Name = "toolStripMakro";
-            this.toolStripMakro.Size = new System.Drawing.Size(89, 25);
+            this.toolStripMakro.Size = new System.Drawing.Size(58, 25);
             this.toolStripMakro.TabIndex = 1;
             // 
             // toolStripMakroBtnRecord
@@ -645,6 +601,50 @@
             this.toolStripMakroBtnExecute.Size = new System.Drawing.Size(23, 22);
             this.toolStripMakroBtnExecute.Text = "Execute last Makro";
             this.toolStripMakroBtnExecute.Click += new System.EventHandler(this.execute_Click);
+            // 
+            // contextMenuStripTabContainer
+            // 
+            this.contextMenuStripTabContainer.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStripTabContainer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.closeCurrentTabToolStripMenuItem,
+            this.closeAllTabsExceptCurrentToolStripMenuItem,
+            this.closeAllTabsToolStripMenuItem});
+            this.contextMenuStripTabContainer.Name = "contextMenuStripTabContainer";
+            this.contextMenuStripTabContainer.Size = new System.Drawing.Size(222, 70);
+            // 
+            // closeCurrentTabToolStripMenuItem
+            // 
+            this.closeCurrentTabToolStripMenuItem.Name = "closeCurrentTabToolStripMenuItem";
+            this.closeCurrentTabToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.closeCurrentTabToolStripMenuItem.Text = "Close current tab";
+            this.closeCurrentTabToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentTabToolStripMenuItem_Click);
+            // 
+            // closeAllTabsExceptCurrentToolStripMenuItem
+            // 
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Name = "closeAllTabsExceptCurrentToolStripMenuItem";
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Text = "Close all tabs except current";
+            this.closeAllTabsExceptCurrentToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsExceptCurrentToolStripMenuItem_Click);
+            // 
+            // closeAllTabsToolStripMenuItem
+            // 
+            this.closeAllTabsToolStripMenuItem.Name = "closeAllTabsToolStripMenuItem";
+            this.closeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
+            this.closeAllTabsToolStripMenuItem.Text = "Close all tabs";
+            this.closeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsToolStripMenuItem_Click);
+            // 
+            // projectView
+            // 
+            this.projectView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectView.LabelEdit = true;
+            this.projectView.Location = new System.Drawing.Point(0, 0);
+            this.projectView.Name = "projectView";
+            this.projectView.Size = new System.Drawing.Size(234, 439);
+            this.projectView.TabIndex = 0;
+            this.projectView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.projectView_AfterLabelEdit);
+            this.projectView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.projectView_NodeMouseClick);
+            this.projectView.DoubleClick += new System.EventHandler(this.projectView_DoubleClick);
+            this.projectView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.projectView_KeyDown);
             // 
             // recentlyOpenedScriptsToolStripMenuItem
             // 
@@ -693,11 +693,11 @@
             this.toolStripContainer.PerformLayout();
             this.toolStripFile.ResumeLayout(false);
             this.toolStripFile.PerformLayout();
-            this.contextMenuStripTabContainer.ResumeLayout(false);
             this.toolStripEdit.ResumeLayout(false);
             this.toolStripEdit.PerformLayout();
             this.toolStripMakro.ResumeLayout(false);
             this.toolStripMakro.PerformLayout();
+            this.contextMenuStripTabContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -710,7 +710,6 @@
         private System.Windows.Forms.ToolStripMenuItem openScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveScriptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openPersonalityToolStripMenuItem;
-        private System.Windows.Forms.TreeView projectView;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripProjectView;
         private System.Windows.Forms.ToolStripMenuItem newScriptToolStripMenuItem;
@@ -764,6 +763,7 @@
         private System.Windows.Forms.ToolStripButton toolStripMakroBtnExecute;
         private System.Windows.Forms.ToolStripButton toolStripFileBtnSaveAll;
         private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
+        private UI.ProjectView projectView;
     }
 }
 
