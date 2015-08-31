@@ -259,7 +259,7 @@ namespace Personality_Creator
         {
             foreach (PersonaFile file in folder.Files.Values)
             {
-                string newFullName = folder.Directory.FullName + @"\" + file.File.Name;
+                string newFullName = folder.Directory.FullName + file.File.Name;
 
                 int index = DataManager.settings.openedTabs.IndexOf(file.File.FullName);
                 if (index >= 0)
@@ -271,7 +271,7 @@ namespace Personality_Creator
             }
             foreach (Folder childFolder in folder.Folders.Values)
             {
-                string newFullName = folder.Directory.FullName + @"\" + childFolder.Directory.Name;
+                string newFullName = folder.Directory.FullName + childFolder.Directory.Name;
                 childFolder.Directory = new DirectoryInfo(newFullName);
                 updateFolderChildrenPath(childFolder);
             }
