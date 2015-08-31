@@ -567,7 +567,7 @@ namespace Personality_Creator
 
         public void saveAllFiles()
         {
-            saveTabs((IList<FATabStripItem>)this.tbStrip.Items);
+            saveTabs(copyTabCollectionAsList(this.tbStrip.Items));
         }
 
         public void saveTabs(IList<FATabStripItem> tabs)
