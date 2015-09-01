@@ -50,12 +50,14 @@ namespace Personality_Creator.UI
             }
             else
             {
+                this.SuspendLayout();
                 this.Nodes.Clear();
 
                 foreach (TreeNode node in this.unfilteredTrees)
                 {
                     searchNode(node);
                 }
+                this.ResumeLayout();
             }
         }
 
