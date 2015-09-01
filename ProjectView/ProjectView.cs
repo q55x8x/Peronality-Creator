@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Personality_Creator.UI
 {
     public partial class ProjectView : System.Windows.Forms.TreeView
     {
         TreeNode[] unfilteredTrees;
-        TreeNode[] filteredTrees;
-        Task search;
 
         public ProjectView()
         {
@@ -22,8 +21,7 @@ namespace Personality_Creator.UI
             this.txtSearch.Visible = false;
             this.PreviewKeyDown += this.previewKeyDown;
             this.txtSearch.TextChanged += this.txtSearch_TextChanged;
-
-            search = new Task(() => filter());
+            Form.CheckForIllegalCrossThreadCalls = false;
         }
 
         private void previewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -39,7 +37,7 @@ namespace Personality_Creator.UI
 
             }
         }
-
+        
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             if(this.txtSearch.Text == "")
@@ -52,50 +50,28 @@ namespace Personality_Creator.UI
             }
             else
             {
-                filter();
+                this.Nodes.Clear();
+
+                foreach (TreeNode node in this.unfilteredTrees)
+                {
+                    searchNode(node);
+                }
             }
         }
 
-        private void filter()
+        private void searchNode(TreeNode node)
         {
-            this.filteredTrees = new TreeNode[this.Nodes.Count];
-
-            this.unfilteredTrees.CopyTo(filteredTrees, 0);
-
-            this.Nodes.Clear();
-
-            foreach (TreeNode node in this.filteredTrees)
+            if (node.Text.ToLower().Contains(this.txtSearch.Text.ToLower()))
             {
-                this.Nodes.Add(filterTree(node));
+                this.Nodes.Add(node);
             }
-        }
-
-        private TreeNode filterTree(TreeNode node)
-        {
-            bool nestedResult = false;
-
-            if(node.Nodes.Count > 0)
+            else if (node.Nodes.Count > 0)
             {
-                for (int i = 0; i < node.Nodes.Count; i++)
+                foreach(TreeNode childNode in node.Nodes)
                 {
-                    filterTree(node.Nodes[i]);
-
-                    if(node.Nodes[i] != null)
-                    {
-                        nestedResult = true;
-                    }
+                    searchNode(childNode);
                 }
             }
-
-            if (!nestedResult)
-            {
-                if (!node.Text.Contains(this.txtSearch.Text))
-                {
-                    node = null;
-                }
-            }
-
-            return node;
         }
     }
 }
