@@ -24,6 +24,8 @@ namespace Personality_Creator.UI
             this.txtSearch.TextChanged += this.txtSearch_TextChanged;
         }
 
+
+        CancellationTokenSource cancelSource;
         private void previewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if(e.KeyCode == Keys.Space && ModifierKeys == Keys.Control) //sadly the first key pressed gets suppressed and is not recognize by the textbox so the easy solution is to handle the popup search is by activating it through a simple key press
@@ -40,12 +42,26 @@ namespace Personality_Creator.UI
                 this.txtSearch.Visible = true;
                 this.txtSearch.Focus();
 
+                cancelSource = new CancellationTokenSource();
+
+                cancelSource.Token.Register(cancellationHandler);
+
             }
         }
-        
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+
+        Task searchTask;
+
+        private async void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if(this.txtSearch.Text == "")
+            if(searchTask != null)
+            {
+                if (searchTask.Status == TaskStatus.Running)
+                {
+                    cancelSource.Cancel();
+                }
+            }
+
+            if (this.txtSearch.Text == "")
             {
                 this.txtSearch.Visible = false;
 
@@ -56,19 +72,44 @@ namespace Personality_Creator.UI
             else
             {
                 this.SuspendLayout();
-                this.Nodes.Clear();
 
-                foreach (TreeNode node in this.unfilteredTrees)
+                searchTask = Task.Factory.StartNew( () => search(cancelSource.Token),
+                                                    cancelSource.Token,
+                                                    TaskCreationOptions.None,
+                                                    TaskScheduler.FromCurrentSynchronizationContext());
+
+                try
                 {
-                    searchNode(node);
+                    await searchTask;
+                }
+                catch(TaskCanceledException cancelException)
+                {
+                    cancellationHandler();
                 }
 
                 this.ResumeLayout();
             }
         }
 
-        private void searchNode(TreeNode node)
+        private void cancellationHandler()
         {
+            Nodes.Clear();
+        }
+
+        private void search(CancellationToken cancelToken)
+        {
+            this.Nodes.Clear();
+
+            foreach (TreeNode node in this.unfilteredTrees)
+            {
+                searchNode(node, cancelToken);
+            }
+        }
+
+        private void searchNode(TreeNode node, CancellationToken cancelToken)
+        {
+            cancelToken.ThrowIfCancellationRequested();
+
             if (node.Text.Contains(this.txtSearch.Text))
             {
                 this.Nodes.Add(node);
@@ -77,7 +118,7 @@ namespace Personality_Creator.UI
             {
                 foreach(TreeNode childNode in node.Nodes)
                 {
-                    searchNode(childNode);
+                    searchNode(childNode, cancelToken);
                 }
             }
         }
