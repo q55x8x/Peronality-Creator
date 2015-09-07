@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
@@ -13,7 +14,7 @@ namespace Personality_Creator.UI
 {
     public partial class ProjectView : System.Windows.Forms.TreeView
     {
-        TreeNode[] unfilteredTrees;
+        ConcurrentBag<TreeNode> unfilteredTrees;
 
         public ProjectView()
         {
@@ -21,16 +22,20 @@ namespace Personality_Creator.UI
             this.txtSearch.Visible = false;
             this.PreviewKeyDown += this.previewKeyDown;
             this.txtSearch.TextChanged += this.txtSearch_TextChanged;
-            Form.CheckForIllegalCrossThreadCalls = false;
         }
 
         private void previewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if(e.KeyCode == Keys.Space && ModifierKeys == Keys.Control) //sadly the first key pressed gets suppressed and is not recognize by the textbox so the easy solution is to handle the popup search is by activating it through a simple key press
             {
-                this.unfilteredTrees = new TreeNode[this.Nodes.Count];
+                this.unfilteredTrees = new ConcurrentBag<TreeNode>();
 
-                this.Nodes.CopyTo(this.unfilteredTrees, 0);
+                //Parallel.ForEach<TreeNode>(Nodes.Cast<TreeNode>(), element => this.unfilteredTrees.Add(element));
+
+                foreach(TreeNode node in this.Nodes)
+                {
+                    unfilteredTrees.Add(node);
+                }
 
                 this.txtSearch.Visible = true;
                 this.txtSearch.Focus();
@@ -46,7 +51,7 @@ namespace Personality_Creator.UI
 
                 this.Nodes.Clear();
 
-                this.Nodes.AddRange(this.unfilteredTrees);
+                this.Nodes.AddRange(this.unfilteredTrees.ToArray());
             }
             else
             {
@@ -57,13 +62,14 @@ namespace Personality_Creator.UI
                 {
                     searchNode(node);
                 }
+
                 this.ResumeLayout();
             }
         }
 
         private void searchNode(TreeNode node)
         {
-            if (node.Text.ToLower().Contains(this.txtSearch.Text.ToLower()))
+            if (node.Text.Contains(this.txtSearch.Text))
             {
                 this.Nodes.Add(node);
             }
