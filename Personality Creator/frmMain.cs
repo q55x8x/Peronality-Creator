@@ -453,7 +453,14 @@ namespace Personality_Creator
 
         private void File_FileReferenceClicked(object sender, OpenableFile.FileReferenceClickedEventArgs e)
         {
-            openFile((OpenableFile)this.projectView.Nodes[((OpenableFile)this.CurrentTab.Tag).Persona.Name].Nodes["Vocabulary"].Nodes[$"{e.VocabFileName}.txt"].Tag);
+            try
+            {
+                openFile((OpenableFile)this.projectView.Nodes[((OpenableFile)this.CurrentTab.Tag).Persona.Name].Nodes["Vocabulary"].Nodes[$"{e.VocabFileName}.txt"].Tag);
+            }
+            catch(NullReferenceException ex)
+            {
+                MessageBox.Show("Either this vocabulary-file does not exist or it is included vocabulary in teaseAI");
+            }
         }
 
         private void processTabChanges(object sender, EventArgs e)

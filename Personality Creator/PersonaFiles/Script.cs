@@ -223,21 +223,16 @@ namespace Personality_Creator.PersonaFiles
 
         private string findVocabClickedTarget(Place p)
         {
-            Match vocabClickedTargetsMatch = Match(this.editor.GetLineText(p.iLine), @"(?i)(?<=\s|^)#[\w\-.]+(?=\s|$)"); //extracting the vocab name
+            MatchCollection vocabClickedTargetsMatches = Matches(this.editor.GetLineText(p.iLine), @"(?i)(?<=\s|^)#[\w\-.]+(?=\s|$)"); //extracting the vocab name
 
             string foundTarget = null;
-
-            for (int i = vocabClickedTargetsMatch.Captures.Count - 1; i >= 0 && foundTarget == null; i--)
+            
+            for (int i = vocabClickedTargetsMatches.Count - 1; i >= 0 && foundTarget == null; i--)
             {
-                if (vocabClickedTargetsMatch.Captures[i].Index <= p.iChar)
+                if (vocabClickedTargetsMatches[i].Index <= p.iChar)
                 {
-                    foundTarget = vocabClickedTargetsMatch.Captures[i].Value;
+                    foundTarget = vocabClickedTargetsMatches[i].Value;
                 }
-            }
-
-            if (foundTarget == null)
-            {
-                foundTarget = vocabClickedTargetsMatch.Value;
             }
 
             return foundTarget;
