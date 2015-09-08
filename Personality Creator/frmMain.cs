@@ -16,6 +16,8 @@ namespace Personality_Creator
 
         public frmMain()
         {
+            this.toolStripMakroBtnRecord.Enabled = false;
+            this.toolStripMakroBtnExecute.Enabled = false; //TODO: enable in later version after implementation
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
             //this.renameToolStripMenuItem.Enabled = false;
@@ -459,7 +461,7 @@ namespace Personality_Creator
             }
             catch(NullReferenceException ex)
             {
-                MessageBox.Show("Either this vocabulary-file does not exist or it is included vocabulary in teaseAI");
+                MessageBox.Show($"Either {e.VocabFileName}.txt vocabulary does not exist or it is default vocabulary of teaseAI and therefore has no openable file: \n {ex.Message}");
             }
         }
 

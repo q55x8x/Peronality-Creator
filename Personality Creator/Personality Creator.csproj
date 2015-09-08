@@ -129,6 +129,8 @@
     </Content>
     <Content Include="Help\Index.html" />
     <Content Include="Resources\file.png" />
+    <None Include="Resources\FindinFiles_6299.png" />
+    <None Include="Resources\FindResults1_6264.png" />
     <Content Include="Resources\folder.png" />
     <None Include="Resources\startwithoutdebugging_6556.png" />
     <None Include="Resources\Record_8791.png" />
