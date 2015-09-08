@@ -828,10 +828,10 @@ namespace Personality_Creator
 
         private async void BtnSearch_Click(object sender, EventArgs e)
         {
-            Search(this.GlobalSearchControl.txtSearchInput.Text);
+            await Search(this.GlobalSearchControl.txtSearchInput.Text);
         }
 
-        private Dictionary<PersonaFile, List<SearchResult>> Search(string searchInput)
+        private async Task<Dictionary<PersonaFile, List<SearchResult>>> Search(string searchInput)
         {
             SearchCriteria criteria = 0;
 
