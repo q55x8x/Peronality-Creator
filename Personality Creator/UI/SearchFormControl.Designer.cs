@@ -1,4 +1,4 @@
-﻿namespace GlobalSearch
+﻿namespace Personality_Creator.UI
 {
     partial class SearchFormControl
     {
@@ -30,6 +30,7 @@
         {
             this.lblSearchFor = new System.Windows.Forms.Label();
             this.txtSearchInput = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblSearchFor
@@ -43,15 +44,27 @@
             // 
             // txtSearchInput
             // 
+            this.txtSearchInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearchInput.Location = new System.Drawing.Point(71, 0);
             this.txtSearchInput.Name = "txtSearchInput";
             this.txtSearchInput.Size = new System.Drawing.Size(909, 20);
             this.txtSearchInput.TabIndex = 1;
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearch.Location = new System.Drawing.Point(902, 404);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 2;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            // 
             // SearchFormControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearchInput);
             this.Controls.Add(this.lblSearchFor);
             this.Name = "SearchFormControl";
@@ -65,5 +78,6 @@
 
         private System.Windows.Forms.Label lblSearchFor;
         private System.Windows.Forms.TextBox txtSearchInput;
+        private System.Windows.Forms.Button btnSearch;
     }
 }

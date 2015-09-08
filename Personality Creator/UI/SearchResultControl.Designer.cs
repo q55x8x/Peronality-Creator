@@ -1,6 +1,6 @@
-﻿namespace GlobalSearch
+﻿namespace Personality_Creator.UI
 {
-    partial class GlobalSearchControl
+    partial class SearchResultControl
     {
         /// <summary> 
         /// Erforderliche Designervariable.
@@ -28,18 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.resultView = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
-            // GlobalSearchControl
+            // resultView
+            // 
+            this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultView.Location = new System.Drawing.Point(0, 0);
+            this.resultView.Name = "resultView";
+            this.resultView.Size = new System.Drawing.Size(1083, 570);
+            this.resultView.TabIndex = 0;
+            // 
+            // SearchResultControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "GlobalSearchControl";
-            this.Size = new System.Drawing.Size(833, 504);
+            this.Controls.Add(this.resultView);
+            this.Name = "SearchResultControl";
+            this.Size = new System.Drawing.Size(1083, 570);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TreeView resultView;
     }
 }

@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace GlobalSearch
+namespace Personality_Creator.UI
 {
-    public partial class SearchResultControl : UserControl
+    public partial class GlobalSearchControl : UserControl
     {
-        public SearchResultControl()
+        public GlobalSearchControl()
         {
             InitializeComponent();
         }

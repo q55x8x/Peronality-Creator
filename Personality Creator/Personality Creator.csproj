@@ -87,6 +87,24 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TabStripUtils.cs" />
     <Compile Include="Tools\BinarySerializer.cs" />
+    <Compile Include="UI\GlobalSearchControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\GlobalSearchControl.Designer.cs">
+      <DependentUpon>GlobalSearchControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SearchFormControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\SearchFormControl.Designer.cs">
+      <DependentUpon>SearchFormControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SearchResultControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\SearchResultControl.Designer.cs">
+      <DependentUpon>SearchResultControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,6 +121,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\GlobalSearchControl.resx">
+      <DependentUpon>GlobalSearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SearchFormControl.resx">
+      <DependentUpon>SearchFormControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SearchResultControl.resx">
+      <DependentUpon>SearchResultControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ClassDiagram_complete.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -146,9 +173,9 @@
     <None Include="Resources\Open_6296.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GlobalSearch\GlobalSearchFramework.csproj">
+    <ProjectReference Include="..\GlobalSearch\GlobalSearch.csproj">
       <Project>{08dcd9a0-2bab-4ba8-a153-694bcd4c5f54}</Project>
-      <Name>GlobalSearchFramework</Name>
+      <Name>GlobalSearch</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProjectView\ProjectView.csproj">
       <Project>{ee7e75e3-fb20-4603-99ff-3dea815edaf6}</Project>

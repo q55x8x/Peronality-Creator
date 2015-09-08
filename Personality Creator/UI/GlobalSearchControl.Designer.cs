@@ -1,6 +1,6 @@
-﻿namespace GlobalSearch
+﻿namespace Personality_Creator.UI
 {
-    partial class SearchResultControl
+    partial class GlobalSearchControl
     {
         /// <summary> 
         /// Erforderliche Designervariable.
@@ -30,12 +30,12 @@
         {
             this.SuspendLayout();
             // 
-            // SearchResultControl
+            // GlobalSearchControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "SearchResultControl";
-            this.Size = new System.Drawing.Size(797, 527);
+            this.Name = "GlobalSearchControl";
+            this.Size = new System.Drawing.Size(833, 504);
             this.ResumeLayout(false);
 
         }
