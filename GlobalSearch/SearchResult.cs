@@ -11,7 +11,9 @@ namespace GlobalSearch
         private int line;
         private int index;
         private int length;
-        private int value;
+        private string value;
+        private string lineText;
+        private ISearchable searchable;
 
         public int Line
         {
@@ -37,7 +39,7 @@ namespace GlobalSearch
             }
         }
 
-        public int Value
+        public string Value
         {
             get
             {
@@ -45,12 +47,35 @@ namespace GlobalSearch
             }
         }
 
-        public SearchResult(int line, int index, int length, int value)
+        public ISearchable Searchable
+        {
+            get
+            {
+                return searchable;
+            }
+        }
+
+        public string LineText
+        {
+            get
+            {
+                return lineText;
+            }
+
+            set
+            {
+                lineText = value;
+            }
+        }
+
+        public SearchResult(int line, int index, int length, string value, string lineText, ISearchable searchable)
         {
             this.line = line;
             this.index = index;
             this.length = length;
             this.value = value;
+            this.lineText = lineText;
+            this.searchable = searchable;
         }
     }
 }

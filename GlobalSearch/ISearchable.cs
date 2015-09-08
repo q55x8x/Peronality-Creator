@@ -8,8 +8,16 @@ namespace GlobalSearch
 {
     public interface ISearchable
     {
-        IList<SearchResult> Search(string input);
+        List<SearchResult> Search(string input, SearchCriteria operation);
 
         string GetSearchContent();     
+    }
+
+    [Flags]
+    public enum SearchCriteria
+    {
+        Full_Word = 1,
+        CaseSensitive = 2,
+        RegularExpression = 4
     }
 }

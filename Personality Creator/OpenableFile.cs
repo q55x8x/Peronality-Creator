@@ -1,12 +1,14 @@
 ﻿using FarsiLibrary.Win;
 using System;
 using System.IO;
+using GlobalSearch;
+using System.Collections.Generic;
 
 namespace Personality_Creator
 {
     public delegate void ChangedEventHandler(object sender, EventArgs e);
 
-    public abstract class OpenableFile
+    public abstract class OpenableFile : ISearchable
     {
         private FileInfo file;
         private Personality persona;
@@ -101,6 +103,9 @@ namespace Personality_Creator
         {
             return file.GetHashCode();
         }
+        
+        public abstract List<SearchResult> Search(string input, SearchCriteria criteria);
 
+        public abstract string GetSearchContent();
     }
 }

@@ -9,6 +9,7 @@ using System.Drawing;
 using static System.Text.RegularExpressions.Regex;
 using System;
 using System.Collections.Generic;
+using GlobalSearch;
 
 namespace Personality_Creator.PersonaFiles
 {
@@ -251,6 +252,47 @@ namespace Personality_Creator.PersonaFiles
         private void Editor_DblClick(object sender, EventArgs e)
         {
             this.highlightedText = FastColoredEditorUtils.highlightText(this.editor.SelectedText, this.editor);
+        }
+
+        public override List<SearchResult> Search(string input, SearchCriteria criteria)
+        {
+            List<SearchResult> results = new List<SearchResult>();
+
+            bool CaseSensitive = criteria.HasFlag(SearchCriteria.CaseSensitive);
+            bool Regex = criteria.HasFlag(SearchCriteria.RegularExpression);
+
+            string searchRegex = Regex ? input : Escape(input);
+            string searchText = null;
+
+            if(this.editor != null)
+            {
+                searchText = this.editor.Text;
+            }
+            else
+            {
+                searchText = GetSearchContent();
+            }
+
+            List<string> lines = new List<string>();
+            lines.AddRange(searchText.Split('\n'));
+
+            for(int i = 0; i < lines.Count; i++)
+            {
+                string line = lines[i];
+
+                MatchCollection matches = Matches(line, searchRegex);
+                foreach(Match match in matches)
+                {
+                    results.Add(new SearchResult(i + 1, match.Index, match.Length, match.Value, line, this));
+                }
+            }
+
+            return results;
+        }
+
+        public override string GetSearchContent()
+        {
+            return this.Read();
         }
     }
 

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using FarsiLibrary.Win;
 using System.IO;
+using Personality_Creator.UI;
 using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
+using System.Threading.Tasks;
+using GlobalSearch;
 
 namespace Personality_Creator
 {
@@ -16,8 +19,6 @@ namespace Personality_Creator
 
         public frmMain()
         {
-            this.toolStripMakroBtnRecord.Enabled = false;
-            this.toolStripMakroBtnExecute.Enabled = false; //TODO: enable in later version after implementation
             InitializeComponent();
             this.projectView.ImageList = DataManager.iconList;
             //this.renameToolStripMenuItem.Enabled = false;
@@ -91,6 +92,9 @@ namespace Personality_Creator
 
             this.recentlyOpenedScriptsToolStripMenuItem.Entries = DataManager.settings.last10OpenedScripts;
             this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries = DataManager.settings.last10OpenedPersonas;
+
+            this.toolStripMakroBtnRecord.Enabled = false;
+            this.toolStripMakroBtnExecute.Enabled = false; //TODO: enable in later version after implementation
         }
 
   
@@ -764,7 +768,121 @@ namespace Personality_Creator
             hotkeys.Show();
         }
 
+        private void toolStripEditBtnGlobalSearch_Click(object sender, EventArgs e)
+        {
+            if (this.GlobalSearchTab != null && !this.tbStrip.Items.Contains(this.GlobalSearchTab))
+            {
+                this.tbStrip.AddTab(this.globalSearchTab);
+            }
+            else if (this.GlobalSearchTab == null)
+            {
+                FATabStripItem searchTab = new FATabStripItem();
+                GlobalSearchControl gsc = new GlobalSearchControl();
+
+                this.GlobalSearchTab = searchTab;
+                this.GlobalSearchControl = gsc;
+
+                this.GlobalSearchTab.Controls.Add(gsc);
+                this.GlobalSearchTab.Title = "Global Search";
+                this.GlobalSearchControl.Dock = DockStyle.Fill;
+                this.GlobalSearchControl.btnSearch.Click += BtnSearch_Click;
+
+                this.tbStrip.AddTab(this.globalSearchTab);
+            }
+        }
+
         #endregion
+
+        #endregion
+
+        #region globalSearch
+
+        private FATabStripItem globalSearchTab;
+        private GlobalSearchControl globalSearchControl;
+
+        public FATabStripItem GlobalSearchTab
+        {
+            get
+            {
+                return globalSearchTab;
+            }
+
+            set
+            {
+                globalSearchTab = value;
+            }
+        }
+
+        public GlobalSearchControl GlobalSearchControl
+        {
+            get
+            {
+                return globalSearchControl;
+            }
+
+            set
+            {
+                globalSearchControl = value;
+            }
+        }
+
+        private async void BtnSearch_Click(object sender, EventArgs e)
+        {
+            Search(this.GlobalSearchControl.txtSearchInput.Text);
+        }
+
+        private Dictionary<PersonaFile, List<SearchResult>> Search(string searchInput)
+        {
+            SearchCriteria criteria = 0;
+
+            if(this.GlobalSearchControl.chkBxCaseSensitive.Checked)
+            {
+                criteria |= SearchCriteria.CaseSensitive;
+            }
+            if (this.GlobalSearchControl.chkBxRegex.Checked)
+            {
+                criteria |= SearchCriteria.RegularExpression;
+            }
+
+            Dictionary<PersonaFile, List<SearchResult>> results = new Dictionary<PersonaFile, List<SearchResult>>();
+            List<SearchResult> fileResults = new List<SearchResult>();
+
+            foreach (TreeNode personaNode in this.projectView.Nodes)
+            {
+                foreach(PersonaFile file in ((Personality)personaNode.Tag).GetAllFilesAndFilesInSubDirs())
+                {
+                    fileResults = file.Search(searchInput, criteria);
+
+                    if (fileResults.Count > 0)
+                    {
+                        results.Add(file, fileResults);
+                    }
+                }
+            }
+
+            foreach(PersonaFile fileWithResult in results.Keys)
+            {
+                TreeNode fileNode = new TreeNode();
+                fileNode.Text = $"{fileWithResult.File.Name} has {results[fileWithResult].Count} results.";
+                fileNode.Tag = fileWithResult;
+
+                List<TreeNode> resultNodes = new List<TreeNode>();
+
+                foreach(SearchResult result in results[fileWithResult])
+                {
+                    TreeNode resultNode = new TreeNode();
+                    resultNode.Text = $"Line {result.Line} at {result.Index}:\t{result.LineText}";
+                    resultNode.Tag = result;
+                    resultNodes.Add(resultNode);
+                }
+
+                fileNode.Nodes.AddRange(resultNodes.ToArray());
+
+                this.GlobalSearchControl.ResultsView.Nodes.Add(fileNode);
+            }
+
+            return results;
+        }
 
         #endregion
 

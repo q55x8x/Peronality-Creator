@@ -8,13 +8,18 @@ namespace GlobalSearch
 {
     public class GlobalSearch
     {
-        public static IDictionary<ISearchable, IList<SearchResult>> Search(List<ISearchable> searchables, string input)
+        public static Dictionary<ISearchable, List<SearchResult>> Search(List<ISearchable> searchables, string input, SearchCriteria criteria)
         {
-            Dictionary<ISearchable, IList<SearchResult>> results = new Dictionary<ISearchable, IList<SearchResult>>();
+            Dictionary<ISearchable, List<SearchResult>> results = new Dictionary<ISearchable, List<SearchResult>>();
 
-            foreach(ISearchable searchable in searchables)
+            foreach (ISearchable searchable in searchables)
             {
-                results.Add(searchable, searchable.Search(searchable.GetSearchContent()));
+                List<SearchResult> fileResults = searchable.Search(input, criteria);
+
+                if (results.Count > 0)
+                {
+                    results.Add(searchable, fileResults);
+                }
             }
 
             return results;

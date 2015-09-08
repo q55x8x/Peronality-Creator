@@ -87,6 +87,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TabStripUtils.cs" />
     <Compile Include="Tools\BinarySerializer.cs" />
+    <Compile Include="UI\GlobalSearchControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\GlobalSearchControl.Designer.cs">
+      <DependentUpon>GlobalSearchControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,6 +109,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\GlobalSearchControl.resx">
+      <DependentUpon>GlobalSearchControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="ClassDiagram_complete.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
