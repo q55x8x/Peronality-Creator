@@ -18,7 +18,7 @@ namespace Personality_Creator.PersonaFiles
 
         private FastColoredTextBox editor;
 
-        Style KeywordStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
+        Style VocabStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
         Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
         Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
         Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
@@ -29,12 +29,19 @@ namespace Personality_Creator.PersonaFiles
 
         private List<Range> highlightedText = new List<Range>();
 
-
         #endregion
 
         #region properties
 
         #endregion
+
+        #region events
+
+        public override event FileReferencClickedEventHandler FileReferenceClicked;
+
+        #endregion
+
+
 
         public Script(FileInfo file) : base (file)
         { }
@@ -100,8 +107,8 @@ namespace Personality_Creator.PersonaFiles
             this.OnContentChanged(EventArgs.Empty);
 
             //colorization
-            e.ChangedRange.ClearStyle(KeywordStyle);
-            e.ChangedRange.SetStyle(KeywordStyle, @"(?<![A-z_0-9öäüáéíóú+])\#[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
+            e.ChangedRange.ClearStyle(VocabStyle);
+            e.ChangedRange.SetStyle(VocabStyle, @"(?i)(?<=\s|^)#[\w\-.]+(?=\s|$)", RegexOptions.None);
 
             e.ChangedRange.ClearStyle(CommandStyle);
             e.ChangedRange.SetStyle(CommandStyle, @"(?<![A-z_0-9öäüáéíóú+])\@[A-z_0-9öäüáéíóú+]+", RegexOptions.None);
@@ -141,7 +148,8 @@ namespace Personality_Creator.PersonaFiles
         {
             Place p = this.editor.PointToPlace(e.Location);
             if (FastColoredEditorUtils.cursorIsOnTextOfStyle(p, GotoStyle, this.editor) && Control.ModifierKeys == Keys.Control
-            || FastColoredEditorUtils.cursorIsOnTextOfStyle(p, CheckFlagStyle, this.editor) && Control.ModifierKeys == Keys.Control)
+            || FastColoredEditorUtils.cursorIsOnTextOfStyle(p, CheckFlagStyle, this.editor) && Control.ModifierKeys == Keys.Control
+            || FastColoredEditorUtils.cursorIsOnTextOfStyle(p, VocabStyle, this.editor) && Control.ModifierKeys == Keys.Control)
             {
                 this.editor.Cursor = Cursors.Hand;
             }
@@ -163,10 +171,16 @@ namespace Personality_Creator.PersonaFiles
                     FastColoredEditorUtils.SelectText(gotoName, this.editor);
                 }
             }
-            else if (FastColoredEditorUtils.cursorIsOnTextOfStyle(p, GotoStyle, this.editor) && Control.ModifierKeys == Keys.Control)
+            else if (FastColoredEditorUtils.cursorIsOnTextOfStyle(p, CheckFlagStyle, this.editor) && Control.ModifierKeys == Keys.Control)
             {
                 string foundTarget = findCheckFlagClickedTarget(p);
                 FastColoredEditorUtils.SelectText(foundTarget.Trim(), this.editor);
+            }
+            else if(FastColoredEditorUtils.cursorIsOnTextOfStyle(p, VocabStyle, this.editor) && Control.ModifierKeys == Keys.Control)
+            {
+                string foundTarget = findVocabClickedTarget(p);
+
+                this.FileReferenceClicked(this, new FileReferenceClickedEventArgs { VocabFileName = foundTarget } );
             }
         }
 
@@ -202,6 +216,28 @@ namespace Personality_Creator.PersonaFiles
             if (foundTarget == null)
             {
                 foundTarget = checkflagTargetsMatch.Groups[1].Value;
+            }
+
+            return foundTarget;
+        }
+
+        private string findVocabClickedTarget(Place p)
+        {
+            Match vocabClickedTargetsMatch = Match(this.editor.GetLineText(p.iLine), @"(?i)(?<=\s|^)#[\w\-.]+(?=\s|$)"); //extracting the vocab name
+
+            string foundTarget = null;
+
+            for (int i = vocabClickedTargetsMatch.Captures.Count - 1; i >= 0 && foundTarget == null; i--)
+            {
+                if (vocabClickedTargetsMatch.Captures[i].Index <= p.iChar)
+                {
+                    foundTarget = vocabClickedTargetsMatch.Captures[i].Value;
+                }
+            }
+
+            if (foundTarget == null)
+            {
+                foundTarget = vocabClickedTargetsMatch.Value;
             }
 
             return foundTarget;

@@ -16,6 +16,7 @@ namespace Personality_Creator
         private Dictionary<string, Folder> folders = new Dictionary<string, Folder>();
         private Dictionary<string, PersonaFile> files = new Dictionary<string, PersonaFile>();
         private DirectoryInfo directory;
+        private Personality persona;
         #endregion
 
         #region properties
@@ -57,6 +58,27 @@ namespace Personality_Creator
                 directory = value;
             }
         }
+
+        public Personality Persona //optional to set so won't be set in constructor
+        {
+            get
+            {
+                return persona;
+            }
+
+            set
+            {
+                persona = value;
+                foreach(Folder folder in this.Folders.Values)
+                {
+                    folder.Persona = this.Persona;
+                }
+                foreach(PersonaFile file in this.Files.Values)
+                {
+                    file.Persona = this.Persona;
+                }
+            }
+        }
         #endregion
 
         public Folder(DirectoryInfo dir)
@@ -89,7 +111,7 @@ namespace Personality_Creator
             }
             return files;
         }
-
+        
         public static TreeNode getNode(Folder folder)
         {
             List<TreeNode> children = new List<TreeNode>();
@@ -103,10 +125,12 @@ namespace Personality_Creator
                 TreeNode[] empty = new TreeNode[0];
                 TreeNode child = new TreeNode(folder.Files[file].File.Name, 1, 1, empty);
                 child.Tag = folder.Files[file];
+                child.Name = folder.Files[file].File.Name;
                 children.Add(child);
             }
             TreeNode node = new TreeNode(folder.Directory.Name, 0, 0, children.ToArray());
             node.Tag = folder;
+            node.Name = folder.Directory.Name;
 
             return node;
         }

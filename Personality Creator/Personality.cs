@@ -32,6 +32,7 @@ namespace Personality_Creator
         public Personality(DirectoryInfo rootPath) : base(rootPath)
         {
             this.Directory = rootPath;
+            this.Persona = this;
         }
 
         public Personality(string rootPath) : this(new DirectoryInfo(rootPath))
@@ -41,6 +42,8 @@ namespace Personality_Creator
         {
             TreeNode node = getNode(this);
             node.Tag = this;
+            node.Name = this.Name;
+
             return node;
         }
     }

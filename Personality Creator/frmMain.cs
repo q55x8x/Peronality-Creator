@@ -247,6 +247,7 @@ namespace Personality_Creator
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 PersonaFile file = PersonaFile.CreateInstance(sfd.FileName);
+                file.Persona = ((Folder)this.projectView.SelectedNode.Tag)?.Persona; //if persona is set in parent folder set it to the new file too
 
                 File.Create(file.File.FullName).Close();
 
@@ -266,7 +267,8 @@ namespace Personality_Creator
                 Directory.CreateDirectory(newFolderPath);
 
                 Folder newFolder = new Folder(newFolderPath);
-                
+                newFolder.Persona = ((Folder)this.projectView.SelectedNode.Tag)?.Persona; //if persona is set in parent folder set it to the new folder too
+
                 this.projectView.SelectedNode.Nodes.Add(Folder.getNode(newFolder));
             }
         }
@@ -440,12 +442,18 @@ namespace Personality_Creator
             FATabStripItem newTab = file.CreateTab();
 
             file.ContentChanged += new ChangedEventHandler(processTabChanges);
+            file.FileReferenceClicked += File_FileReferenceClicked;
 
             this.tbStrip.AddTab(newTab);
 
             this.tbStrip.SelectedItem = newTab;
 
             this.ApplyStyle();
+        }
+
+        private void File_FileReferenceClicked(object sender, OpenableFile.FileReferenceClickedEventArgs e)
+        {
+            openFile((OpenableFile)this.projectView.Nodes[((OpenableFile)this.CurrentTab.Tag).Persona.Name].Nodes["Vocabulary"].Nodes[$"{e.VocabFileName}.txt"].Tag);
         }
 
         private void processTabChanges(object sender, EventArgs e)

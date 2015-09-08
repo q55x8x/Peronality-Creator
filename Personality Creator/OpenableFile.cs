@@ -9,6 +9,7 @@ namespace Personality_Creator
     public abstract class OpenableFile
     {
         private FileInfo file;
+        private Personality persona;
         public FileInfo File
         {
             get
@@ -22,7 +23,34 @@ namespace Personality_Creator
             }
         }
 
+        public Personality Persona
+        {
+            get
+            {
+                return persona;
+            }
+
+            set
+            {
+                persona = value;
+            }
+        }
+
+        #region events
+
+        public delegate void FileReferencClickedEventHandler(object sender, FileReferenceClickedEventArgs e);
+        public abstract event FileReferencClickedEventHandler FileReferenceClicked;
+
+        public class FileReferenceClickedEventArgs : EventArgs //Up to here this is only for Vocab files but we may have to change these event args in the future
+        {
+            public string VocabFileName = "";
+        }
+
         public event ChangedEventHandler ContentChanged;
+
+        #endregion
+
+
         public FATabStripItem tab;
 
         public abstract FATabStripItem CreateTab();

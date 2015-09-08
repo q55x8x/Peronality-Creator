@@ -27,7 +27,7 @@
   <Class Name="Personality_Creator.PersonaFiles.Script">
     <Position X="3.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAJgAFQRAAAQAAAAiQACgAAQACAAACABAEAABACA=</HashCode>
+      <HashCode>AQAAAJgABQRAAAQBAAAiQACgAgQgCAAACABAEAABACA=</HashCode>
       <FileName>PersonaFiles\Script.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -95,8 +95,23 @@
   </Class>
   <Class Name="Personality_Creator.OpenableFile">
     <Position X="1.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="Personality_Creator.OpenableFile.FileReferencClickedEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>OpenableFile.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="Personality_Creator.OpenableFile.FileReferenceClickedEventArgs">
+        <TypeIdentifier>
+          <NewMemberFileName>OpenableFile.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAKEAAAAAAAAAgAAAAAAAACAEAIAABABAAAAAACA=</HashCode>
+      <HashCode>AAAAAKEAAAAAAAAAgAAAAAAAACAkAIAABABAAAAAACA=</HashCode>
       <FileName>OpenableFile.cs</FileName>
     </TypeIdentifier>
   </Class>
