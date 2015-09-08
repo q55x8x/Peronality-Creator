@@ -13,6 +13,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "i00BindingList", "SpellChec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectView", "ProjectView\ProjectView.csproj", "{EE7E75E3-FB20-4603-99FF-3DEA815EDAF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalSearchFramework", "GlobalSearch\GlobalSearchFramework.csproj", "{08DCD9A0-2BAB-4BA8-A153-694BCD4C5F54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{EE7E75E3-FB20-4603-99FF-3DEA815EDAF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE7E75E3-FB20-4603-99FF-3DEA815EDAF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE7E75E3-FB20-4603-99FF-3DEA815EDAF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08DCD9A0-2BAB-4BA8-A153-694BCD4C5F54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DCD9A0-2BAB-4BA8-A153-694BCD4C5F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08DCD9A0-2BAB-4BA8-A153-694BCD4C5F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08DCD9A0-2BAB-4BA8-A153-694BCD4C5F54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

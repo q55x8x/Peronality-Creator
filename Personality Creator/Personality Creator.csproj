@@ -146,6 +146,10 @@
     <None Include="Resources\Open_6296.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GlobalSearch\GlobalSearchFramework.csproj">
+      <Project>{08dcd9a0-2bab-4ba8-a153-694bcd4c5f54}</Project>
+      <Name>GlobalSearchFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProjectView\ProjectView.csproj">
       <Project>{ee7e75e3-fb20-4603-99ff-3dea815edaf6}</Project>
       <Name>ProjectView</Name>
