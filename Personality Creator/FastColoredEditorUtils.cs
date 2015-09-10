@@ -24,6 +24,12 @@ namespace Personality_Creator
             editor.DoCaretVisible();
         }
 
+        public static void Select(Place placeStart, Place placeEnd, FastColoredTextBox editor)
+        {
+            editor.Selection = new Range(editor, placeStart, placeEnd);
+            editor.DoCaretVisible();
+        }
+
         public static List<Range> highlightText(string text, FastColoredTextBox editor)
         {
             List<Range> highlightedText = new List<Range>();

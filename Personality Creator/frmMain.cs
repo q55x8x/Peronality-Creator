@@ -8,6 +8,7 @@ using Personality_Creator.PersonaFiles;
 using Personality_Creator.PersonaFiles.Scripts;
 using System.Threading.Tasks;
 using GlobalSearch;
+using FastColoredTextBoxNS;
 
 namespace Personality_Creator
 {
@@ -16,6 +17,8 @@ namespace Personality_Creator
         private FATabStripItem CurrentTab;
 
         public Dictionary<string, PersonaFile> OpenedUnAssociatedFiles = new Dictionary<string, PersonaFile>();
+
+        List<Range> lastSearchSelection = new List<Range>();
 
         public frmMain()
         {
@@ -433,7 +436,7 @@ namespace Personality_Creator
             {
                 foreach(FATabStripItem tab in this.tbStrip.Items)
                 {
-                    if(tab.Tag.Equals(file))
+                    if(tab.Tag != null && tab.Tag.Equals(file))
                     {
                         this.tbStrip.SelectedItem = tab;
                         tab.Focus();
@@ -783,11 +786,30 @@ namespace Personality_Creator
                 this.GlobalSearchControl = gsc;
 
                 this.GlobalSearchTab.Controls.Add(gsc);
+                this.GlobalSearchTab.Tag = null;
                 this.GlobalSearchTab.Title = "Global Search";
                 this.GlobalSearchControl.Dock = DockStyle.Fill;
                 this.GlobalSearchControl.btnSearch.Click += BtnSearch_Click;
 
-                this.tbStrip.AddTab(this.globalSearchTab);
+                this.GlobalSearchControl.ResultsView.NodeMouseDoubleClick += ResultsView_NodeMouseDoubleClick;
+
+                this.tbStrip.AddTab(this.GlobalSearchTab);
+                this.tbStrip.SelectedItem = this.GlobalSearchTab;
+            }
+        }
+
+        private void ResultsView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if(e.Node.Tag.GetType() == typeof(SearchResult))
+            {
+                SearchResult result = (SearchResult)e.Node.Tag;
+                OpenableFile fileWithResult = (OpenableFile)result.Searchable;
+
+                openFile(fileWithResult);
+                if(fileWithResult.tab.Controls?[0].GetType() == typeof(FastColoredTextBox))
+                {
+                    FastColoredEditorUtils.Select(new Place(result.Index, result.Line - 1), new Place(result.Index + result.Length, result.Line - 1), ((FastColoredTextBox)fileWithResult.tab.Controls?[0]));
+                }
             }
         }
 
@@ -828,6 +850,7 @@ namespace Personality_Creator
 
         private async void BtnSearch_Click(object sender, EventArgs e)
         {
+            this.globalSearchControl.ResultsView.Nodes.Clear();
             await Search(this.GlobalSearchControl.txtSearchInput.Text);
         }
 
