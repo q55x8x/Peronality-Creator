@@ -19,13 +19,13 @@ namespace Personality_Creator.PersonaFiles
 
         private FastColoredTextBox editor;
 
-        Style VocabStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
-        Style CommandStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style ResponseStyle = new TextStyle(Brushes.DarkMagenta, Brushes.White, FontStyle.Regular);
-        Style ParanthesisStyle = new TextStyle(Brushes.DarkOrange, Brushes.White, FontStyle.Regular);
-        Style GotoStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style CheckFlagStyle = new TextStyle(Brushes.DarkRed, Brushes.White, FontStyle.Regular);
-        Style FragmentStyle = new TextStyle(Brushes.DarkBlue, Brushes.White, FontStyle.Regular);
+        Style VocabStyle = new TextStyle(DataManager.settings.VocabStyle.ForeBrush, DataManager.settings.VocabStyle.BackgroundBrush, DataManager.settings.VocabStyle.FontStyle);
+        Style CommandStyle = new TextStyle(DataManager.settings.CommandStyle.ForeBrush, DataManager.settings.CommandStyle.BackgroundBrush, DataManager.settings.CommandStyle.FontStyle);
+        Style ResponseStyle = new TextStyle(DataManager.settings.ResponseStyle.ForeBrush, DataManager.settings.ResponseStyle.BackgroundBrush, DataManager.settings.ResponseStyle.FontStyle);
+        Style ParanthesisStyle = new TextStyle(DataManager.settings.ParanthesisStyle.ForeBrush, DataManager.settings.ParanthesisStyle.BackgroundBrush, DataManager.settings.ParanthesisStyle.FontStyle);
+        Style GotoStyle = new TextStyle(DataManager.settings.GotoStyle.ForeBrush, DataManager.settings.GotoStyle.BackgroundBrush, DataManager.settings.GotoStyle.FontStyle);
+        Style CheckFlagStyle = new TextStyle(DataManager.settings.CheckFlagStyle.ForeBrush, DataManager.settings.CheckFlagStyle.BackgroundBrush, DataManager.settings.CheckFlagStyle.FontStyle);
+        Style FragmentStyle = new TextStyle(DataManager.settings.FragmentStyle.ForeBrush, DataManager.settings.FragmentStyle.BackgroundBrush, DataManager.settings.FragmentStyle.FontStyle);
         //Style CommentStyle = new TextStyle(Brushes.DarkGreen, Brushes.White, FontStyle.Regular);
 
         private List<Range> highlightedText = new List<Range>();
@@ -63,9 +63,33 @@ namespace Personality_Creator.PersonaFiles
             return "";
         }
 
+        public override void ReApplyStyles()
+        {
+            this.VocabStyle = new TextStyle(DataManager.settings.VocabStyle.ForeBrush, DataManager.settings.VocabStyle.BackgroundBrush, DataManager.settings.VocabStyle.FontStyle);
+            this.CommandStyle = new TextStyle(DataManager.settings.CommandStyle.ForeBrush, DataManager.settings.CommandStyle.BackgroundBrush, DataManager.settings.CommandStyle.FontStyle);
+            this.ResponseStyle = new TextStyle(DataManager.settings.ResponseStyle.ForeBrush, DataManager.settings.ResponseStyle.BackgroundBrush, DataManager.settings.ResponseStyle.FontStyle);
+            this.ParanthesisStyle = new TextStyle(DataManager.settings.ParanthesisStyle.ForeBrush, DataManager.settings.ParanthesisStyle.BackgroundBrush, DataManager.settings.ParanthesisStyle.FontStyle);
+            this.GotoStyle = new TextStyle(DataManager.settings.GotoStyle.ForeBrush, DataManager.settings.GotoStyle.BackgroundBrush, DataManager.settings.GotoStyle.FontStyle);
+            this.CheckFlagStyle = new TextStyle(DataManager.settings.CheckFlagStyle.ForeBrush, DataManager.settings.CheckFlagStyle.BackgroundBrush, DataManager.settings.CheckFlagStyle.FontStyle);
+            this.FragmentStyle = new TextStyle(DataManager.settings.FragmentStyle.ForeBrush, DataManager.settings.FragmentStyle.BackgroundBrush, DataManager.settings.FragmentStyle.FontStyle);
+            this.Redraw();
+        }
+
         public override void Redraw()
         {
+            bool unsavedChangesBefore = false;
+            if (TabStripUtils.isTagFlaggedAsModified(this.tab))
+            {
+                unsavedChangesBefore = true;
+            }
+
+            this.editor.ClearStylesBuffer();
             this.editor.OnTextChanged(); //redraws editor styles
+
+            if (!unsavedChangesBefore)
+            {
+                TabStripUtils.unflagTabAsModified(this.tab);
+            }
         }
 
         public override FATabStripItem CreateTab()

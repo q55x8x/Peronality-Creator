@@ -457,7 +457,7 @@ namespace Personality_Creator
 
             this.tbStrip.SelectedItem = newTab;
 
-            this.ApplyStyle();
+            file.Redraw();
         }
 
         private void File_FileReferenceClicked(object sender, OpenableFile.FileReferenceClickedEventArgs e)
@@ -671,6 +671,12 @@ namespace Personality_Creator
 
         #region menu
 
+        private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Hotkeys hotkeys = new Hotkeys();
+            hotkeys.Show();
+        }
+
         #region file
 
         private void openScript_Click(object sender, EventArgs e)
@@ -745,32 +751,6 @@ namespace Personality_Creator
             ((FastColoredTextBoxNS.FastColoredTextBox)((OpenableFile)this.CurrentTab.Tag).tab.Controls?[0]).ShowFindDialog();
         }
 
-        #endregion
-
-        #region makro
-
-
-        private void record_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void execute_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        #endregion
-
-        #region toolstripMenu
-
-        private void hotkeysToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Hotkeys hotkeys = new Hotkeys();
-            hotkeys.Show();
-        }
-
         private void toolStripEditBtnGlobalSearch_Click(object sender, EventArgs e)
         {
             if (this.GlobalSearchTab != null && !this.tbStrip.Items.Contains(this.GlobalSearchTab))
@@ -798,20 +778,41 @@ namespace Personality_Creator
             }
         }
 
-        private void ResultsView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if(e.Node.Tag.GetType() == typeof(SearchResult))
-            {
-                SearchResult result = (SearchResult)e.Node.Tag;
-                OpenableFile fileWithResult = (OpenableFile)result.Searchable;
 
-                openFile(fileWithResult);
-                if(fileWithResult.tab.Controls?[0].GetType() == typeof(FastColoredTextBox))
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmSettings settings = new frmSettings();
+            settings.styleChanged += Settings_applySettings;
+            settings.Show();
+        }
+
+        private void Settings_applySettings(object sender)
+        {
+            foreach(FATabStripItem tab in this.tbStrip.Items)
+            {
+                if(tab.Tag != null)
                 {
-                    FastColoredEditorUtils.Select(new Place(result.Index, result.Line - 1), new Place(result.Index + result.Length, result.Line - 1), ((FastColoredTextBox)fileWithResult.tab.Controls?[0]));
+                    ((OpenableFile)tab.Tag).ReApplyStyles();
                 }
             }
+            this.Invalidate(true);
         }
+
+        #endregion
+
+        #region makro
+
+
+        private void record_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void execute_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
 
         #endregion
 
@@ -905,6 +906,21 @@ namespace Personality_Creator
             }
 
             return results;
+        }
+
+        private void ResultsView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Tag.GetType() == typeof(SearchResult))
+            {
+                SearchResult result = (SearchResult)e.Node.Tag;
+                OpenableFile fileWithResult = (OpenableFile)result.Searchable;
+
+                openFile(fileWithResult);
+                if (fileWithResult.tab.Controls?[0].GetType() == typeof(FastColoredTextBox))
+                {
+                    FastColoredEditorUtils.Select(new Place(result.Index, result.Line - 1), new Place(result.Index + result.Length, result.Line - 1), ((FastColoredTextBox)fileWithResult.tab.Controls?[0]));
+                }
+            }
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿namespace Personality_Creator
+﻿namespace Personality_Creator.UI
 {
     partial class Hotkeys
     {

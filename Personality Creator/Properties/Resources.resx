@@ -166,4 +166,10 @@
   <data name="FindResults" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FindResults1_6264.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="gear" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gear_16xLG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GotoProperties" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GotoProperties_6175.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

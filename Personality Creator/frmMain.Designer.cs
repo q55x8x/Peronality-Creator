@@ -32,25 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.mnuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recentlyOpenedScriptsToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
-            this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recentlyOpenedPersonalitiesToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
-            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotkeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbStrip = new FarsiLibrary.Win.FATabStrip();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
@@ -69,29 +55,45 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.toolStripFile = new System.Windows.Forms.ToolStrip();
-            this.toolStripFileBtnOpen = new System.Windows.Forms.ToolStripButton();
-            this.toolStripFileButtonSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripFileBtnSaveAll = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripFileBtnOpenPersona = new System.Windows.Forms.ToolStripButton();
             this.toolStripEdit = new System.Windows.Forms.ToolStrip();
-            this.toolStripEditBtnCopy = new System.Windows.Forms.ToolStripButton();
-            this.toolStripEditBtnCut = new System.Windows.Forms.ToolStripButton();
-            this.toolStripEditBtnPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripEditBtnUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripEditBtnRedo = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripEditDrpBtnSearch = new System.Windows.Forms.ToolStripDropDownButton();
-            this.toolStripEditBtnFind = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripEditBtnGlobalSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMakro = new System.Windows.Forms.ToolStrip();
-            this.toolStripMakroBtnRecord = new System.Windows.Forms.ToolStripButton();
-            this.toolStripMakroBtnExecute = new System.Windows.Forms.ToolStripButton();
             this.contextMenuStripTabContainer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeCurrentTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllTabsExceptCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeAllTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMakroBtnRecord = new System.Windows.Forms.ToolStripButton();
+            this.toolStripMakroBtnExecute = new System.Windows.Forms.ToolStripButton();
+            this.toolStripFileBtnOpen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripFileButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripFileBtnSaveAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripFileBtnOpenPersona = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditBtnCopy = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditBtnCut = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditBtnPaste = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditBtnUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditBtnRedo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEditDrpBtnSearch = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripEditBtnFind = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripEditBtnGlobalSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.openScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recentlyOpenedScriptsToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
+            this.saveScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openPersonalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recentlyOpenedPersonalitiesToolStripMenuItem = new Personality_Creator.Last10ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.recordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbStrip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -137,60 +139,10 @@
             this.toolStripMenuFile.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuFile.Text = "&File";
             // 
-            // openScriptToolStripMenuItem
-            // 
-            this.openScriptToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_File;
-            this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
-            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.openScriptToolStripMenuItem.Text = "Open Script";
-            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScript_Click);
-            // 
-            // recentlyOpenedScriptsToolStripMenuItem
-            // 
-            this.recentlyOpenedScriptsToolStripMenuItem.Enabled = false;
-            this.recentlyOpenedScriptsToolStripMenuItem.Entries = ((System.Collections.Generic.List<string>)(resources.GetObject("recentlyOpenedScriptsToolStripMenuItem.Entries")));
-            this.recentlyOpenedScriptsToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_File;
-            this.recentlyOpenedScriptsToolStripMenuItem.Name = "recentlyOpenedScriptsToolStripMenuItem";
-            this.recentlyOpenedScriptsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.recentlyOpenedScriptsToolStripMenuItem.Text = "Recently opened scripts";
-            // 
-            // saveScriptToolStripMenuItem
-            // 
-            this.saveScriptToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Save_File;
-            this.saveScriptToolStripMenuItem.Name = "saveScriptToolStripMenuItem";
-            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.saveScriptToolStripMenuItem.Text = "Save Script";
-            this.saveScriptToolStripMenuItem.Click += new System.EventHandler(this.saveScript_Click);
-            // 
-            // saveAllToolStripMenuItem
-            // 
-            this.saveAllToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Save_All;
-            this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.saveAllToolStripMenuItem.Text = "Save All";
-            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAll_Click);
-            // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(228, 6);
-            // 
-            // openPersonalityToolStripMenuItem
-            // 
-            this.openPersonalityToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_Folder;
-            this.openPersonalityToolStripMenuItem.Name = "openPersonalityToolStripMenuItem";
-            this.openPersonalityToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.openPersonalityToolStripMenuItem.Text = "Open Personality";
-            this.openPersonalityToolStripMenuItem.Click += new System.EventHandler(this.openPersonality_Click);
-            // 
-            // recentlyOpenedPersonalitiesToolStripMenuItem
-            // 
-            this.recentlyOpenedPersonalitiesToolStripMenuItem.Enabled = false;
-            this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries = ((System.Collections.Generic.List<string>)(resources.GetObject("recentlyOpenedPersonalitiesToolStripMenuItem.Entries")));
-            this.recentlyOpenedPersonalitiesToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_Folder;
-            this.recentlyOpenedPersonalitiesToolStripMenuItem.Name = "recentlyOpenedPersonalitiesToolStripMenuItem";
-            this.recentlyOpenedPersonalitiesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.recentlyOpenedPersonalitiesToolStripMenuItem.Text = "Recently opened personalities";
             // 
             // editToolStripMenuItem
             // 
@@ -202,68 +154,22 @@
             this.undoToolStripMenuItem,
             this.redoToolStripMenuItem,
             this.toolStripMenuItem5,
-            this.findToolStripMenuItem});
+            this.findToolStripMenuItem,
+            this.toolStripMenuItem6,
+            this.settingsToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "&Edit";
             // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Copy;
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copy_Click);
-            // 
-            // cutToolStripMenuItem
-            // 
-            this.cutToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Cut;
-            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.cutToolStripMenuItem.Text = "Cut";
-            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cut_Click);
-            // 
-            // pasteToolStripMenuItem
-            // 
-            this.pasteToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Paste;
-            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.pasteToolStripMenuItem.Text = "Paste";
-            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.paste_Click);
-            // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(100, 6);
-            // 
-            // undoToolStripMenuItem
-            // 
-            this.undoToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Undo;
-            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.undoToolStripMenuItem.Text = "Undo";
-            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undo_Click);
-            // 
-            // redoToolStripMenuItem
-            // 
-            this.redoToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Redo;
-            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.redoToolStripMenuItem.Text = "Redo";
-            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redo_Click);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(157, 6);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(100, 6);
-            // 
-            // findToolStripMenuItem
-            // 
-            this.findToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Find;
-            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.findToolStripMenuItem.Text = "Find";
-            this.findToolStripMenuItem.Click += new System.EventHandler(this.find_Click);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(157, 6);
             // 
             // makroToolStripMenuItem
             // 
@@ -273,22 +179,6 @@
             this.makroToolStripMenuItem.Name = "makroToolStripMenuItem";
             this.makroToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.makroToolStripMenuItem.Text = "&Makro";
-            // 
-            // recordToolStripMenuItem
-            // 
-            this.recordToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Record;
-            this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
-            this.recordToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
-            this.recordToolStripMenuItem.Text = "Record";
-            this.recordToolStripMenuItem.Click += new System.EventHandler(this.record_Click);
-            // 
-            // executeToolStripMenuItem
-            // 
-            this.executeToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Execute;
-            this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
-            this.executeToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
-            this.executeToolStripMenuItem.Text = "Execute";
-            this.executeToolStripMenuItem.Click += new System.EventHandler(this.execute_Click);
             // 
             // hotkeysToolStripMenuItem
             // 
@@ -472,50 +362,10 @@
             this.toolStripFile.Size = new System.Drawing.Size(110, 25);
             this.toolStripFile.TabIndex = 0;
             // 
-            // toolStripFileBtnOpen
-            // 
-            this.toolStripFileBtnOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripFileBtnOpen.Image = global::Personality_Creator.Properties.Resources.Open_File;
-            this.toolStripFileBtnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripFileBtnOpen.Name = "toolStripFileBtnOpen";
-            this.toolStripFileBtnOpen.Size = new System.Drawing.Size(23, 22);
-            this.toolStripFileBtnOpen.Text = "Open Script";
-            this.toolStripFileBtnOpen.Click += new System.EventHandler(this.openScript_Click);
-            // 
-            // toolStripFileButtonSave
-            // 
-            this.toolStripFileButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripFileButtonSave.Image = global::Personality_Creator.Properties.Resources.Save_File;
-            this.toolStripFileButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripFileButtonSave.Name = "toolStripFileButtonSave";
-            this.toolStripFileButtonSave.Size = new System.Drawing.Size(23, 22);
-            this.toolStripFileButtonSave.Text = "Save";
-            this.toolStripFileButtonSave.Click += new System.EventHandler(this.saveScript_Click);
-            // 
-            // toolStripFileBtnSaveAll
-            // 
-            this.toolStripFileBtnSaveAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripFileBtnSaveAll.Image = global::Personality_Creator.Properties.Resources.Save_All;
-            this.toolStripFileBtnSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripFileBtnSaveAll.Name = "toolStripFileBtnSaveAll";
-            this.toolStripFileBtnSaveAll.Size = new System.Drawing.Size(23, 22);
-            this.toolStripFileBtnSaveAll.Text = "Save all";
-            this.toolStripFileBtnSaveAll.Click += new System.EventHandler(this.saveAll_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripFileBtnOpenPersona
-            // 
-            this.toolStripFileBtnOpenPersona.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripFileBtnOpenPersona.Image = global::Personality_Creator.Properties.Resources.Open_Folder;
-            this.toolStripFileBtnOpenPersona.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripFileBtnOpenPersona.Name = "toolStripFileBtnOpenPersona";
-            this.toolStripFileBtnOpenPersona.Size = new System.Drawing.Size(23, 22);
-            this.toolStripFileBtnOpenPersona.Text = "Open Persona";
-            this.toolStripFileBtnOpenPersona.Click += new System.EventHandler(this.openPersonality_Click);
             // 
             // toolStripEdit
             // 
@@ -531,96 +381,18 @@
             this.toolStripEditDrpBtnSearch});
             this.toolStripEdit.Location = new System.Drawing.Point(113, 0);
             this.toolStripEdit.Name = "toolStripEdit";
-            this.toolStripEdit.Size = new System.Drawing.Size(199, 25);
+            this.toolStripEdit.Size = new System.Drawing.Size(168, 25);
             this.toolStripEdit.TabIndex = 1;
-            // 
-            // toolStripEditBtnCopy
-            // 
-            this.toolStripEditBtnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripEditBtnCopy.Image = global::Personality_Creator.Properties.Resources.Copy;
-            this.toolStripEditBtnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEditBtnCopy.Name = "toolStripEditBtnCopy";
-            this.toolStripEditBtnCopy.Size = new System.Drawing.Size(23, 22);
-            this.toolStripEditBtnCopy.Text = "Copy";
-            this.toolStripEditBtnCopy.Click += new System.EventHandler(this.copy_Click);
-            // 
-            // toolStripEditBtnCut
-            // 
-            this.toolStripEditBtnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripEditBtnCut.Image = global::Personality_Creator.Properties.Resources.Cut;
-            this.toolStripEditBtnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEditBtnCut.Name = "toolStripEditBtnCut";
-            this.toolStripEditBtnCut.Size = new System.Drawing.Size(23, 22);
-            this.toolStripEditBtnCut.Text = "Cut";
-            this.toolStripEditBtnCut.Click += new System.EventHandler(this.cut_Click);
-            // 
-            // toolStripEditBtnPaste
-            // 
-            this.toolStripEditBtnPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripEditBtnPaste.Image = global::Personality_Creator.Properties.Resources.Paste;
-            this.toolStripEditBtnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEditBtnPaste.Name = "toolStripEditBtnPaste";
-            this.toolStripEditBtnPaste.Size = new System.Drawing.Size(23, 22);
-            this.toolStripEditBtnPaste.Text = "Paste";
-            this.toolStripEditBtnPaste.Click += new System.EventHandler(this.paste_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripEditBtnUndo
-            // 
-            this.toolStripEditBtnUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripEditBtnUndo.Image = global::Personality_Creator.Properties.Resources.Undo;
-            this.toolStripEditBtnUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEditBtnUndo.Name = "toolStripEditBtnUndo";
-            this.toolStripEditBtnUndo.Size = new System.Drawing.Size(23, 22);
-            this.toolStripEditBtnUndo.Text = "Undo";
-            this.toolStripEditBtnUndo.Click += new System.EventHandler(this.undo_Click);
-            // 
-            // toolStripEditBtnRedo
-            // 
-            this.toolStripEditBtnRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripEditBtnRedo.Image = global::Personality_Creator.Properties.Resources.Redo;
-            this.toolStripEditBtnRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEditBtnRedo.Name = "toolStripEditBtnRedo";
-            this.toolStripEditBtnRedo.Size = new System.Drawing.Size(23, 22);
-            this.toolStripEditBtnRedo.Text = "Redo";
-            this.toolStripEditBtnRedo.Click += new System.EventHandler(this.redo_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripEditDrpBtnSearch
-            // 
-            this.toolStripEditDrpBtnSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripEditDrpBtnSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripEditBtnFind,
-            this.toolStripEditBtnGlobalSearch});
-            this.toolStripEditDrpBtnSearch.Image = global::Personality_Creator.Properties.Resources.Find;
-            this.toolStripEditDrpBtnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripEditDrpBtnSearch.Name = "toolStripEditDrpBtnSearch";
-            this.toolStripEditDrpBtnSearch.Size = new System.Drawing.Size(29, 22);
-            this.toolStripEditDrpBtnSearch.Text = "toolStripDropDownButton1";
-            // 
-            // toolStripEditBtnFind
-            // 
-            this.toolStripEditBtnFind.Image = global::Personality_Creator.Properties.Resources.FindResults;
-            this.toolStripEditBtnFind.Name = "toolStripEditBtnFind";
-            this.toolStripEditBtnFind.Size = new System.Drawing.Size(146, 22);
-            this.toolStripEditBtnFind.Text = "Find";
-            this.toolStripEditBtnFind.Click += new System.EventHandler(this.find_Click);
-            // 
-            // toolStripEditBtnGlobalSearch
-            // 
-            this.toolStripEditBtnGlobalSearch.Image = global::Personality_Creator.Properties.Resources.FindinFiles;
-            this.toolStripEditBtnGlobalSearch.Name = "toolStripEditBtnGlobalSearch";
-            this.toolStripEditBtnGlobalSearch.Size = new System.Drawing.Size(152, 22);
-            this.toolStripEditBtnGlobalSearch.Text = "Global Search";
-            this.toolStripEditBtnGlobalSearch.Click += new System.EventHandler(this.toolStripEditBtnGlobalSearch_Click);
             // 
             // toolStripMakro
             // 
@@ -628,30 +400,10 @@
             this.toolStripMakro.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMakroBtnRecord,
             this.toolStripMakroBtnExecute});
-            this.toolStripMakro.Location = new System.Drawing.Point(356, 0);
+            this.toolStripMakro.Location = new System.Drawing.Point(313, 0);
             this.toolStripMakro.Name = "toolStripMakro";
             this.toolStripMakro.Size = new System.Drawing.Size(58, 25);
             this.toolStripMakro.TabIndex = 1;
-            // 
-            // toolStripMakroBtnRecord
-            // 
-            this.toolStripMakroBtnRecord.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripMakroBtnRecord.Image = global::Personality_Creator.Properties.Resources.Record;
-            this.toolStripMakroBtnRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripMakroBtnRecord.Name = "toolStripMakroBtnRecord";
-            this.toolStripMakroBtnRecord.Size = new System.Drawing.Size(23, 22);
-            this.toolStripMakroBtnRecord.Text = "Record Makro";
-            this.toolStripMakroBtnRecord.Click += new System.EventHandler(this.record_Click);
-            // 
-            // toolStripMakroBtnExecute
-            // 
-            this.toolStripMakroBtnExecute.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripMakroBtnExecute.Image = global::Personality_Creator.Properties.Resources.Execute;
-            this.toolStripMakroBtnExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripMakroBtnExecute.Name = "toolStripMakroBtnExecute";
-            this.toolStripMakroBtnExecute.Size = new System.Drawing.Size(23, 22);
-            this.toolStripMakroBtnExecute.Text = "Execute last Makro";
-            this.toolStripMakroBtnExecute.Click += new System.EventHandler(this.execute_Click);
             // 
             // contextMenuStripTabContainer
             // 
@@ -683,6 +435,271 @@
             this.closeAllTabsToolStripMenuItem.Size = new System.Drawing.Size(221, 22);
             this.closeAllTabsToolStripMenuItem.Text = "Close all tabs";
             this.closeAllTabsToolStripMenuItem.Click += new System.EventHandler(this.closeAllTabsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(157, 6);
+            // 
+            // toolStripMakroBtnRecord
+            // 
+            this.toolStripMakroBtnRecord.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripMakroBtnRecord.Image = global::Personality_Creator.Properties.Resources.Record;
+            this.toolStripMakroBtnRecord.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMakroBtnRecord.Name = "toolStripMakroBtnRecord";
+            this.toolStripMakroBtnRecord.Size = new System.Drawing.Size(23, 22);
+            this.toolStripMakroBtnRecord.Text = "Record Makro";
+            this.toolStripMakroBtnRecord.Click += new System.EventHandler(this.record_Click);
+            // 
+            // toolStripMakroBtnExecute
+            // 
+            this.toolStripMakroBtnExecute.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripMakroBtnExecute.Image = global::Personality_Creator.Properties.Resources.Execute;
+            this.toolStripMakroBtnExecute.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripMakroBtnExecute.Name = "toolStripMakroBtnExecute";
+            this.toolStripMakroBtnExecute.Size = new System.Drawing.Size(23, 22);
+            this.toolStripMakroBtnExecute.Text = "Execute last Makro";
+            this.toolStripMakroBtnExecute.Click += new System.EventHandler(this.execute_Click);
+            // 
+            // toolStripFileBtnOpen
+            // 
+            this.toolStripFileBtnOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripFileBtnOpen.Image = global::Personality_Creator.Properties.Resources.Open_File;
+            this.toolStripFileBtnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripFileBtnOpen.Name = "toolStripFileBtnOpen";
+            this.toolStripFileBtnOpen.Size = new System.Drawing.Size(23, 22);
+            this.toolStripFileBtnOpen.Text = "Open Script";
+            this.toolStripFileBtnOpen.Click += new System.EventHandler(this.openScript_Click);
+            // 
+            // toolStripFileButtonSave
+            // 
+            this.toolStripFileButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripFileButtonSave.Image = global::Personality_Creator.Properties.Resources.Save_File;
+            this.toolStripFileButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripFileButtonSave.Name = "toolStripFileButtonSave";
+            this.toolStripFileButtonSave.Size = new System.Drawing.Size(23, 22);
+            this.toolStripFileButtonSave.Text = "Save";
+            this.toolStripFileButtonSave.Click += new System.EventHandler(this.saveScript_Click);
+            // 
+            // toolStripFileBtnSaveAll
+            // 
+            this.toolStripFileBtnSaveAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripFileBtnSaveAll.Image = global::Personality_Creator.Properties.Resources.Save_All;
+            this.toolStripFileBtnSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripFileBtnSaveAll.Name = "toolStripFileBtnSaveAll";
+            this.toolStripFileBtnSaveAll.Size = new System.Drawing.Size(23, 22);
+            this.toolStripFileBtnSaveAll.Text = "Save all";
+            this.toolStripFileBtnSaveAll.Click += new System.EventHandler(this.saveAll_Click);
+            // 
+            // toolStripFileBtnOpenPersona
+            // 
+            this.toolStripFileBtnOpenPersona.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripFileBtnOpenPersona.Image = global::Personality_Creator.Properties.Resources.Open_Folder;
+            this.toolStripFileBtnOpenPersona.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripFileBtnOpenPersona.Name = "toolStripFileBtnOpenPersona";
+            this.toolStripFileBtnOpenPersona.Size = new System.Drawing.Size(23, 22);
+            this.toolStripFileBtnOpenPersona.Text = "Open Persona";
+            this.toolStripFileBtnOpenPersona.Click += new System.EventHandler(this.openPersonality_Click);
+            // 
+            // toolStripEditBtnCopy
+            // 
+            this.toolStripEditBtnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripEditBtnCopy.Image = global::Personality_Creator.Properties.Resources.Copy;
+            this.toolStripEditBtnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEditBtnCopy.Name = "toolStripEditBtnCopy";
+            this.toolStripEditBtnCopy.Size = new System.Drawing.Size(23, 22);
+            this.toolStripEditBtnCopy.Text = "Copy";
+            this.toolStripEditBtnCopy.Click += new System.EventHandler(this.copy_Click);
+            // 
+            // toolStripEditBtnCut
+            // 
+            this.toolStripEditBtnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripEditBtnCut.Image = global::Personality_Creator.Properties.Resources.Cut;
+            this.toolStripEditBtnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEditBtnCut.Name = "toolStripEditBtnCut";
+            this.toolStripEditBtnCut.Size = new System.Drawing.Size(23, 22);
+            this.toolStripEditBtnCut.Text = "Cut";
+            this.toolStripEditBtnCut.Click += new System.EventHandler(this.cut_Click);
+            // 
+            // toolStripEditBtnPaste
+            // 
+            this.toolStripEditBtnPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripEditBtnPaste.Image = global::Personality_Creator.Properties.Resources.Paste;
+            this.toolStripEditBtnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEditBtnPaste.Name = "toolStripEditBtnPaste";
+            this.toolStripEditBtnPaste.Size = new System.Drawing.Size(23, 22);
+            this.toolStripEditBtnPaste.Text = "Paste";
+            this.toolStripEditBtnPaste.Click += new System.EventHandler(this.paste_Click);
+            // 
+            // toolStripEditBtnUndo
+            // 
+            this.toolStripEditBtnUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripEditBtnUndo.Image = global::Personality_Creator.Properties.Resources.Undo;
+            this.toolStripEditBtnUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEditBtnUndo.Name = "toolStripEditBtnUndo";
+            this.toolStripEditBtnUndo.Size = new System.Drawing.Size(23, 22);
+            this.toolStripEditBtnUndo.Text = "Undo";
+            this.toolStripEditBtnUndo.Click += new System.EventHandler(this.undo_Click);
+            // 
+            // toolStripEditBtnRedo
+            // 
+            this.toolStripEditBtnRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripEditBtnRedo.Image = global::Personality_Creator.Properties.Resources.Redo;
+            this.toolStripEditBtnRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEditBtnRedo.Name = "toolStripEditBtnRedo";
+            this.toolStripEditBtnRedo.Size = new System.Drawing.Size(23, 22);
+            this.toolStripEditBtnRedo.Text = "Redo";
+            this.toolStripEditBtnRedo.Click += new System.EventHandler(this.redo_Click);
+            // 
+            // toolStripEditDrpBtnSearch
+            // 
+            this.toolStripEditDrpBtnSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripEditDrpBtnSearch.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripEditBtnFind,
+            this.toolStripEditBtnGlobalSearch});
+            this.toolStripEditDrpBtnSearch.Image = global::Personality_Creator.Properties.Resources.Find;
+            this.toolStripEditDrpBtnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripEditDrpBtnSearch.Name = "toolStripEditDrpBtnSearch";
+            this.toolStripEditDrpBtnSearch.Size = new System.Drawing.Size(29, 22);
+            this.toolStripEditDrpBtnSearch.Text = "toolStripDropDownButton1";
+            // 
+            // toolStripEditBtnFind
+            // 
+            this.toolStripEditBtnFind.Image = global::Personality_Creator.Properties.Resources.FindResults;
+            this.toolStripEditBtnFind.Name = "toolStripEditBtnFind";
+            this.toolStripEditBtnFind.Size = new System.Drawing.Size(146, 22);
+            this.toolStripEditBtnFind.Text = "Find";
+            this.toolStripEditBtnFind.Click += new System.EventHandler(this.find_Click);
+            // 
+            // toolStripEditBtnGlobalSearch
+            // 
+            this.toolStripEditBtnGlobalSearch.Image = global::Personality_Creator.Properties.Resources.FindinFiles;
+            this.toolStripEditBtnGlobalSearch.Name = "toolStripEditBtnGlobalSearch";
+            this.toolStripEditBtnGlobalSearch.Size = new System.Drawing.Size(146, 22);
+            this.toolStripEditBtnGlobalSearch.Text = "Global Search";
+            this.toolStripEditBtnGlobalSearch.Click += new System.EventHandler(this.toolStripEditBtnGlobalSearch_Click);
+            // 
+            // openScriptToolStripMenuItem
+            // 
+            this.openScriptToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_File;
+            this.openScriptToolStripMenuItem.Name = "openScriptToolStripMenuItem";
+            this.openScriptToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.openScriptToolStripMenuItem.Text = "Open Script";
+            this.openScriptToolStripMenuItem.Click += new System.EventHandler(this.openScript_Click);
+            // 
+            // recentlyOpenedScriptsToolStripMenuItem
+            // 
+            this.recentlyOpenedScriptsToolStripMenuItem.Enabled = false;
+            this.recentlyOpenedScriptsToolStripMenuItem.Entries = ((System.Collections.Generic.List<string>)(resources.GetObject("recentlyOpenedScriptsToolStripMenuItem.Entries")));
+            this.recentlyOpenedScriptsToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_File;
+            this.recentlyOpenedScriptsToolStripMenuItem.Name = "recentlyOpenedScriptsToolStripMenuItem";
+            this.recentlyOpenedScriptsToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.recentlyOpenedScriptsToolStripMenuItem.Text = "Recently opened scripts";
+            // 
+            // saveScriptToolStripMenuItem
+            // 
+            this.saveScriptToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Save_File;
+            this.saveScriptToolStripMenuItem.Name = "saveScriptToolStripMenuItem";
+            this.saveScriptToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.saveScriptToolStripMenuItem.Text = "Save Script";
+            this.saveScriptToolStripMenuItem.Click += new System.EventHandler(this.saveScript_Click);
+            // 
+            // saveAllToolStripMenuItem
+            // 
+            this.saveAllToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Save_All;
+            this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.saveAllToolStripMenuItem.Text = "Save All";
+            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAll_Click);
+            // 
+            // openPersonalityToolStripMenuItem
+            // 
+            this.openPersonalityToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_Folder;
+            this.openPersonalityToolStripMenuItem.Name = "openPersonalityToolStripMenuItem";
+            this.openPersonalityToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.openPersonalityToolStripMenuItem.Text = "Open Personality";
+            this.openPersonalityToolStripMenuItem.Click += new System.EventHandler(this.openPersonality_Click);
+            // 
+            // recentlyOpenedPersonalitiesToolStripMenuItem
+            // 
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Enabled = false;
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Entries = ((System.Collections.Generic.List<string>)(resources.GetObject("recentlyOpenedPersonalitiesToolStripMenuItem.Entries")));
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Open_Folder;
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Name = "recentlyOpenedPersonalitiesToolStripMenuItem";
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.recentlyOpenedPersonalitiesToolStripMenuItem.Text = "Recently opened personalities";
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Copy;
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copy_Click);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Cut;
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.cutToolStripMenuItem.Text = "Cut";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cut_Click);
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Paste;
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.paste_Click);
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Undo;
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undo_Click);
+            // 
+            // redoToolStripMenuItem
+            // 
+            this.redoToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Redo;
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redo_Click);
+            // 
+            // findToolStripMenuItem
+            // 
+            this.findToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Find;
+            this.findToolStripMenuItem.Name = "findToolStripMenuItem";
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.findToolStripMenuItem.Text = "Find";
+            this.findToolStripMenuItem.Click += new System.EventHandler(this.find_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.gear;
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // recordToolStripMenuItem
+            // 
+            this.recordToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Record;
+            this.recordToolStripMenuItem.Name = "recordToolStripMenuItem";
+            this.recordToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.recordToolStripMenuItem.Text = "Record";
+            this.recordToolStripMenuItem.Click += new System.EventHandler(this.record_Click);
+            // 
+            // executeToolStripMenuItem
+            // 
+            this.executeToolStripMenuItem.Image = global::Personality_Creator.Properties.Resources.Execute;
+            this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
+            this.executeToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.executeToolStripMenuItem.Text = "Execute";
+            this.executeToolStripMenuItem.Click += new System.EventHandler(this.execute_Click);
             // 
             // frmMain
             // 
@@ -786,6 +803,8 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripEditDrpBtnSearch;
         private System.Windows.Forms.ToolStripMenuItem toolStripEditBtnFind;
         private System.Windows.Forms.ToolStripMenuItem toolStripEditBtnGlobalSearch;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

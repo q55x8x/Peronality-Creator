@@ -58,6 +58,7 @@ namespace Personality_Creator
         public abstract FATabStripItem CreateTab();
         public abstract void Save();
         public abstract void Redraw();
+        public abstract void ReApplyStyles();
 
         protected virtual void OnContentChanged(EventArgs e)
         {

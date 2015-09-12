@@ -33,10 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FastColoredTextBox, Version=2.16.11.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\l00s3s\Downloads\FastColoredTextBox-master\FastColoredTextBox-master\Binary\FastColoredTextBox.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -67,10 +63,16 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Hotkeys.cs">
+    <Compile Include="UI\frmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Hotkeys.Designer.cs">
+    <Compile Include="UI\frmSettings.Designer.cs">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Hotkeys.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Hotkeys.Designer.cs">
       <DependentUpon>Hotkeys.cs</DependentUpon>
     </Compile>
     <Compile Include="PersonaFiles\Scripts\Fragment.cs" />
@@ -96,7 +98,10 @@
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Hotkeys.resx">
+    <EmbeddedResource Include="UI\frmSettings.resx">
+      <DependentUpon>frmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Hotkeys.resx">
       <DependentUpon>Hotkeys.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -138,6 +143,8 @@
     </Content>
     <Content Include="Help\Index.html" />
     <Content Include="Resources\file.png" />
+    <None Include="Resources\gear_16xLG.png" />
+    <None Include="Resources\GotoProperties_6175.png" />
     <None Include="Resources\FindinFiles_6299.png" />
     <None Include="Resources\FindResults1_6264.png" />
     <Content Include="Resources\folder.png" />
@@ -174,6 +181,10 @@
     <ProjectReference Include="..\SpellChecker\i00SpellCheck\i00SpellCheck.vbproj">
       <Project>{27d0d9b3-719c-46b7-9f03-3f91e82e7436}</Project>
       <Name>i00SpellCheck</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\l00s3s\Downloads\FastColoredTextBox-master\FastColoredTextBox-master\FastColoredTextBox\FastColoredTextBox.csproj">
+      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
+      <Name>FastColoredTextBox</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

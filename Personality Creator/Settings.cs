@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using FastColoredTextBoxNS;
+using System.Drawing;
 
 namespace Personality_Creator
 {   
@@ -16,6 +18,13 @@ namespace Personality_Creator
         public List<string> openedTabs = new List<string>();
         public List<string> last10OpenedScripts = new List<string>();
         public List<string> last10OpenedPersonas = new List<string>();
+        public StyleData VocabStyle = new StyleData(Color.DarkBlue, Color.White, FontStyle.Regular);
+        public StyleData CommandStyle = new StyleData(Color.DarkRed, Color.White, FontStyle.Regular);
+        public StyleData ResponseStyle = new StyleData(Color.DarkMagenta, Color.White, FontStyle.Regular);
+        public StyleData ParanthesisStyle = new StyleData(Color.DarkOrange, Color.White, FontStyle.Regular);
+        public StyleData GotoStyle = new StyleData(Color.DarkRed, Color.White, FontStyle.Regular);
+        public StyleData CheckFlagStyle = new StyleData(Color.DarkRed, Color.White, FontStyle.Regular);
+        public StyleData FragmentStyle = new StyleData(Color.DarkBlue, Color.White, FontStyle.Regular);
 
         public static void save()
         {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Personality_Creator
+namespace Personality_Creator.UI
 {
     public partial class Hotkeys : Form
     {

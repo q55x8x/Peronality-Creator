@@ -143,6 +143,26 @@ namespace Personality_Creator.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap gear {
+            get {
+                object obj = ResourceManager.GetObject("gear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GotoProperties {
+            get {
+                object obj = ResourceManager.GetObject("GotoProperties", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Open_File {
             get {
                 object obj = ResourceManager.GetObject("Open_File", resourceCulture);
