@@ -162,6 +162,10 @@
     <None Include="Resources\Open_6296.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FastColoredTextBox\FastColoredTextBox.csproj">
+      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
+      <Name>FastColoredTextBox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GlobalSearch\GlobalSearch.csproj">
       <Project>{08dcd9a0-2bab-4ba8-a153-694bcd4c5f54}</Project>
       <Name>GlobalSearch</Name>
@@ -181,10 +185,6 @@
     <ProjectReference Include="..\SpellChecker\i00SpellCheck\i00SpellCheck.vbproj">
       <Project>{27d0d9b3-719c-46b7-9f03-3f91e82e7436}</Project>
       <Name>i00SpellCheck</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\l00s3s\Downloads\FastColoredTextBox-master\FastColoredTextBox-master\FastColoredTextBox\FastColoredTextBox.csproj">
-      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
-      <Name>FastColoredTextBox</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
