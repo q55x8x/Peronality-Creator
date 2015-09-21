@@ -28,7 +28,7 @@ namespace Personality_Creator.UI
                                 "Ctrl + (C, V, X) -standard clipboard operations\r\n" +
                                 "Ctrl + A - selects all text\r\n" +
                                 "Ctrl + Z, Alt + Backspace, Ctrl + R - Undo / Redo opertions\r\n" +
-                                "Ctrl + Click on @Goto or Then statement jumps to the goto-section\r\n" +
+                                "Ctrl + Click on @Goto, #Vocab, Then, @CheckFlag statement to jump to/open corresponding line/file\r\n" +
                                 "Tab, Shift + Tab - increase / decrease left indent of selected range\r\n" +
                                 "Ctrl + Home, Ctrl + End - go to first/ last char of the text\r\n" +
                                 "Shift + Ctrl + Home, Shift + Ctrl + End - go to first/ last char of the text with selection\r\n" +
@@ -48,7 +48,9 @@ namespace Personality_Creator.UI
                                 "Alt + F[char] - finds nearest[char]\r\n" +
                                 "Ctrl + (Up, Down) -scrolls Up / Down\r\n" +
                                 "Ctrl + (NumpadPlus, NumpadMinus, 0) -zoom in, zoom out, no zoom\r\n" +
-                                "Ctrl + I - forced AutoIndentChars of current line";
+                                "Ctrl + I - forced AutoIndentChars of current line" + 
+                                "Ctrl + Space - force open auto completion" +
+                                "Ctrl + Space on project view - open project view search";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
