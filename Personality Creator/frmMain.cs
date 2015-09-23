@@ -349,6 +349,11 @@ namespace Personality_Creator
         private void tbStrip_TabStripItemSelectionChanged(TabStripItemChangedEventArgs e)
         {
             this.CurrentTab = tbStrip.SelectedItem;
+
+            if (this.CurrentTab?.Tag.GetType().BaseType == typeof(Script))
+            {
+                ((Script)this.CurrentTab.Tag).autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.getItemsWithVocabFiles(((Script)this.CurrentTab.Tag).Persona));
+            }
         }
 
         private void tbStrip_TabStripItemClosing(TabStripItemClosingEventArgs e)

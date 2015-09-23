@@ -18,6 +18,7 @@ namespace Personality_Creator.PersonaFiles
         #region capsuled fields
 
         private FastColoredTextBox editor;
+        public AutocompleteMenu autoMenu;
 
         Style VocabStyle = new TextStyle(DataManager.settings.VocabStyle.ForeBrush, DataManager.settings.VocabStyle.BackgroundBrush, DataManager.settings.VocabStyle.FontStyle);
         Style CommandStyle = new TextStyle(DataManager.settings.CommandStyle.ForeBrush, DataManager.settings.CommandStyle.BackgroundBrush, DataManager.settings.CommandStyle.FontStyle);
@@ -113,12 +114,10 @@ namespace Personality_Creator.PersonaFiles
             this.editor.TextChanged += this.Editor_TextChanged;
             this.editor.KeyDown += this.Editor_KeyDown;
             this.editor.MouseMove += this.Editor_MouseMove;
-            this.editor.MouseUp += Editor_MouseUp;
-            this.editor.MouseDown += Editor_MouseDown;
-            this.editor.DoubleClick += Editor_DblClick;
+            this.editor.MouseUp += this.Editor_MouseUp;
+            this.editor.MouseDown += this.Editor_MouseDown;
 
-            AutocompleteMenu autoMenu = new AutocompleteMenu(this.editor);
-            autoMenu.Items.SetAutocompleteItems(AutoCompleteItemManager.Items);
+            autoMenu = new AutocompleteMenu(this.editor); //Autocompletion items will be set upon tab selection to be able to include all vocab files
             autoMenu.MinFragmentLength = 2;
             autoMenu.TopLevel = true;
             autoMenu.Items.MaximumSize = new System.Drawing.Size(200, 300);

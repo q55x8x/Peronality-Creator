@@ -21,5 +21,27 @@ namespace Personality_Creator
 
             Items.Add("testItem");
         }
+
+        public static List<string> getItemsWithVocabFiles(Personality persona)
+        {
+            List<string> items = new List<string>(); 
+
+            string[] itemsCopy = new string[Items.Count]; //Have to copy all items to not change "Items"
+            Items.CopyTo(itemsCopy);
+
+            items.AddRange(itemsCopy);
+
+            try
+            {
+                foreach (FileInfo file in new DirectoryInfo(persona.Directory.FullName + @"\Vocabulary\").GetFiles())
+                {
+                    items.Add(file.Name.Replace("#", "").Replace(".txt", ""));
+                }
+            }
+            catch (DirectoryNotFoundException dirNotFoundEx)
+            { }
+
+            return items;
+        }
     }
 }
