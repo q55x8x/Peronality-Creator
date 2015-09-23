@@ -16,6 +16,8 @@ ApathyLevelDown
 ApathyLevelUp 
 BookmarkLink
 BookmarkModule
+Call
+CallRandom
 CBT
 CBTBalls
 CBTCock
@@ -30,6 +32,7 @@ CustomTask
 DecideOrgasm
 DeleteFlag
 DeleteLocalImage
+DeleteVar
 DislikeBlogImage
 DommeLevelDown
 DommeLevelUp
@@ -45,6 +48,7 @@ EdgeToRuinSecret
 EdgingDecide
 EdgingHold
 EdgingStop
+EmoteMessage
 EndTease
 FinishTease
 GiveUpCheck
@@ -55,8 +59,11 @@ GotoDommeOrgasm
 GotoDommeRuin
 GotoSlideshow
 If
+InputVar
 Interrupt
 InterruptLongEdge
+InterruptsOff
+InterruptsOn
 InterruptStartStroking
 LikeBlogImage
 LockImages
@@ -70,6 +77,8 @@ PlaylistOff
 PlayRedLightGreenLight
 PlayVideo
 PlayVideo[]
+RapidCodeOff
+RapidCodeOn
 RapidTextOff
 RapidTextOn
 ResumeAvoidTheEdge
@@ -112,6 +121,7 @@ StrokeFaster
 StrokeFastest
 StrokeSlower
 StrokeSlowest
+SystemMessage
 Tag
 TempFlag
 UnlockImages

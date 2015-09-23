@@ -71,6 +71,7 @@ NotAlwaysRuinsOrgasm
 NotNeverAllowsOrgasm
 NotNeverRuinsOrgasm
 NotFirstRound
+NullResponse
 RarelyAllowsOrgasm
 RarelyRuinsOrgasm
 OftenAllowsOrgasm
