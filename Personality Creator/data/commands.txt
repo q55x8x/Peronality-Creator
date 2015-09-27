@@ -41,10 +41,10 @@ EdgeHold
 EdgeNoHold
 EdgeToRuin
 EdgeToRuinHold
-EdgeToRuinHoldSecret
+EdgeToRuinHoldNoSecret
+EdgeToRuinNoSecret
 EdgeToRuinNoHold
-EdgeToRuinNoHoldSecret
-EdgeToRuinSecret
+EdgeToRuinNoHoldNoSecret
 EdgingDecide
 EdgingHold
 EdgingStop
